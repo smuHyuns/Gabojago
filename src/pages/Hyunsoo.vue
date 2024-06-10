@@ -14,10 +14,21 @@
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
-        <li class="selected">전체</li>
-        <li>여행중</li>
-        <li>다가오는여행</li>
-        <li>지난 여행</li>
+        <li class="tripCategory selected">
+          <div class="tripCategoryName">전체</div>
+        </li>
+        <li class="tripCategory">
+          <div class="tripCategoryName">여행중</div>
+          <div class="tripCategoryCount">0</div>
+        </li>
+        <li class="tripCategory">
+          <div class="tripCategoryName">다가오는여행</div>
+          <div class="tripCategoryCount">0</div>
+        </li>
+        <li class="tripCategory">
+          <div class="tripCategoryName">지난 여행</div>
+          <div class="tripCategoryCount">0</div>
+        </li>
       </ul>
     </div>
     <div class="planListBox">
@@ -45,6 +56,8 @@ import InfoBox from '@/components/InfoBox.vue';
   flex-direction: column;
   align-items: center;
   overflow: hidden; /* 이미지가 박스를 넘지 않도록 설정 */
+  margin-bottom: 0; /* 잔여 공간이 없도록 설정 */
+  padding-bottom: 0; /* 추가된 여백 제거 */
 }
 
 .imgContainer {
@@ -72,8 +85,16 @@ import InfoBox from '@/components/InfoBox.vue';
 
 .infoBox {
   position: absolute;
-  bottom: 20px; /* imgContainer의 밑부분을 살짝 덮도록 설정 */
-  box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.5); /* 상단에 그림자 효과 추가 */
+  height: 430px;
+  bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
+  width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(123, 160, 255, 0) 0%,
+    #749bff 36%,
+    #5d8bff 100%
+  );
 }
 
 .whiteBox {
@@ -92,43 +113,53 @@ import InfoBox from '@/components/InfoBox.vue';
   gap: 10px;
   padding: 10px;
   overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
-  justify-content: space-between;
+  justify-content: flex-start; /* 좌측 정렬 */
   margin: 30px;
 }
 
 .kindTripBox ul {
   display: flex;
-  gap: 10px; /* li 요소 간의 간격 */
+  gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
   list-style: none; /* 기본 리스트 스타일 제거 */
   padding: 0; /* 기본 패딩 제거 */
   margin: 0; /* 기본 마진 제거 */
 }
 
-.kindTripBox ul li {
-  flex-direction: column;
-  padding: 22px 30px;
-  border-radius: 55px;
-  color: black;
-  font-size: 35px;
-  font-weight: bold;
-  margin-left: 20px;
-  flex-shrink: 0; /* li 요소가 수평 방향으로 압축되지 않도록 설정 */
-  transition: background-color 0.5s ease, color 0.5s ease; /* 천천히 변화하는 효과 추가 */
+/* trip category */
+.tripCategory {
+  height: 60px; /* 높이를 더 키움 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 중앙 정렬 */
+  gap: 15px; /* 간격을 더 키움 */
+  display: inline-flex;
+  background: var(--grey-200); /* 기본 배경 색상 */
+  border-radius: 40px;
+  padding: 20px 25px; /* 패딩을 더 키움 */
+  font-size: 30px; /* 글자 크기를 더 키움 */
+  color: var(--grey-700); /* 기본 글자 색상 */
 }
 
-li.selected {
-  background-color: var(--grey-700);
-  color: white !important;
+.tripCategory:hover {
+  background-color: var(--grey-700); /* 선택된 배경 색상 */
+  color: white !important; /* 선택된 글자 색상 */
+  transition-duration: 0.8s;
 }
 
-ul li {
-  background-color: var(--grey-200);
-  color: var(--grey-700) !important;
+.tripCategoryName,
+.tripCategoryCount {
+  font-family: Pretendard;
+  font-weight: 600;
+  word-wrap: break-word;
+  color: inherit; /* 부모 요소의 글자 색상 상속 */
 }
 
-ul li:hover {
-  background-color: var(--grey-700);
-  color: white !important;
+.tripCategoryCount {
+  font-size: 22px; /* 글자 크기를 더 키움 */
+}
+
+.selected {
+  background-color: var(--grey-700); /* 선택된 배경 색상 */
+  color: white !important; /* 선택된 글자 색상 */
 }
 
 .planListBox {
@@ -146,8 +177,8 @@ ul li:hover {
 }
 
 .addPlanBtn {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   position: absolute;
   right: 50px; /* 오른쪽 50px 위치 */
   bottom: 100px; /* 아래쪽 100px 위치 */

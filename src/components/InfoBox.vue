@@ -65,13 +65,13 @@ const props = defineProps({
 .thirdBox {
   display: flex;
   flex-direction: column;
-  padding: 18px 19px 18px 18px;
+  padding: 36px 38px 36px 36px;
   gap: 10px;
   width: auto;
   left: calc(50% - 130px / 2 + 0.5px);
   top: 341px;
   background: #ffffff;
-  border-radius: 23px;
+  border-radius: 40px;
   color: black;
   font-size: 30px;
   font-weight: bold;
