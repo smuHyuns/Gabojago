@@ -25,9 +25,7 @@
         여행 중인 곳이 없습니다<br />여행을 등록해주세요
       </div>
     </div>
-    <button class="addPlanBtn">
-      <div class="cross"></div>
-    </button>
+    <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
   </div>
 </template>
 
@@ -150,37 +148,10 @@ ul li:hover {
 .addPlanBtn {
   width: 150px;
   height: 150px;
-  border-radius: 50%;
-  background-color: var(--grey-700); /* 원형 버튼의 배경 색상 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: absolute;
   right: 50px; /* 오른쪽 50px 위치 */
   bottom: 100px; /* 아래쪽 100px 위치 */
   border: none;
   cursor: pointer;
-}
-
-.addPlanBtn .cross {
-  width: 60px; /* 십자가의 너비 */
-  height: 60px; /* 십자가의 높이 */
-  position: relative;
-}
-
-.addPlanBtn .cross::before,
-.addPlanBtn .cross::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px; /* 십자가의 가로선 길이 */
-  height: 10px; /* 십자가의 가로선 두께 */
-  background-color: white; /* 십자가 색상 */
-  transform: translate(-50%, -50%);
-}
-
-.addPlanBtn .cross::before {
-  transform: translate(-50%, -50%) rotate(90deg);
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="header">
     <div class="logoBox"></div>
     <div class="icon-container">
-      <i class="fa-solid fa-user"></i>
+      <img class="infoIcon" src="../assets/userInfoIcon.png" />
     </div>
   </div>
 </template>
@@ -34,9 +34,9 @@
   flex-grow: 1;
 }
 
-.fa-solid {
-  font-size: 3rem;
+.infoIcon {
   margin-right: 75px;
-  color: white;
+  height: 70px;
+  object-fit: cover;
 }
 </style>
