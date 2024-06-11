@@ -66,8 +66,15 @@ const limitInput = (event) => {
   color: #000;
 }
 .page-container {
-  height: inherit;
-  position: relative;
+  width: 1080px;
+  height: 2340px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
 .down {
