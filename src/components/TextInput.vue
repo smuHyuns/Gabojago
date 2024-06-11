@@ -51,7 +51,7 @@ const props = defineProps({
 .header {
   font-family: Pretendard;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 52px;
   line-height: 1;
   text-align: left;
@@ -68,7 +68,7 @@ const props = defineProps({
   border-radius: 28.8px;
   font-family: Pretendard;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 46px;
   line-height: 1.3;
   text-align: left;
