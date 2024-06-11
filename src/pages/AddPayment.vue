@@ -7,8 +7,8 @@
     </div>
     <div class="price-box">
       <div class="price-details">
-        <div class="print-big-price">0JPY</div>
-        <div class="type-of-money">(일본 엔)</div>
+        <div class="print-big-price">0JPY<span class="type-of-money">(일본 엔)</span></div>
+        <!-- <div class="type-of-money">(일본 엔)</div> -->
       </div>
       <div class="print-small-price">=0원</div>
     </div>
@@ -110,7 +110,7 @@ import CtaBar from '@/components/CtaBar.vue';
 }
 
 .price-box {
-  margin: 50px auto;
+  margin: 50px;
   width: 964.8px;
   padding: 15px;
   height: 250px;
@@ -120,15 +120,16 @@ import CtaBar from '@/components/CtaBar.vue';
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* This centers the box itself */
+  align-items: flex-start; /* This centers the box itself */
 }
 
 .price-details {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   color: #8892a0;
-  margin: 0;
+  margin-left: 30px;
 }
 
 .print-big-price {
@@ -151,6 +152,7 @@ import CtaBar from '@/components/CtaBar.vue';
   font-weight: 600;
   line-height: 46.08px;
   word-wrap: break-word;
+  margin-left: 30px;
 }
 
 .price-box-content {
