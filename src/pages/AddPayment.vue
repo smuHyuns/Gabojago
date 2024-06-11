@@ -21,7 +21,7 @@
     </div>
     <div class="payDetail">
       <span class="title">지출 내용</span>
-      <input type="text" class="payDetail-input" />
+      <input type="text" class="payDetail-input" placeholder=" 내용을 입력해 주세요" />
     </div>
     <div class="category"><span class="title">카테고리</span></div>
 
@@ -36,12 +36,10 @@ import CtaBar from '@/components/CtaBar.vue';
 </script>
 
 <style scoped>
-.temp {
-}
-
 .payment-box {
   width: 1080px;
   height: 2340px;
+  max-width: 1080px;
   margin: 0;
   padding: 0;
 }
@@ -52,7 +50,6 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .payment-box .tab-bar {
   width: 964.8px;
-
   display: flex;
   padding: 15px;
   border-radius: 20px;
@@ -81,9 +78,8 @@ import CtaBar from '@/components/CtaBar.vue';
 }
 
 .price-box {
-  margin: 30px auto;
+  margin: 50px auto;
   width: 964.8px;
-
   padding: 15px;
   height: 250px;
   background-color: #f5f6f7;
@@ -99,18 +95,30 @@ import CtaBar from '@/components/CtaBar.vue';
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #8892a0;
+  margin: 0;
 }
 
 .print-big-price {
-  font-size: 50px;
+  font-size: 80.64px;
+  font-weight: 700;
+  line-height: 80.64px;
 }
 
 .type-of-money {
-  font-size: 20px;
+  color: #8892a0;
+  font-size: 34.56px;
+  font-weight: 600;
+  line-height: 34.56px;
+  word-wrap: break-word;
 }
 
 .print-small-price {
-  font-size: 30px;
+  color: #8892a0;
+  font-size: 46.08px;
+  font-weight: 600;
+  line-height: 46.08px;
+  word-wrap: break-word;
 }
 
 .price-box-content {
@@ -122,7 +130,6 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .payInfoBox {
   width: 964.8px;
-
   padding: 15px;
   border-radius: 20px;
   font-size: 40px;
@@ -133,11 +140,12 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .payType {
   width: 964.8px;
+  height: 184.32px;
   border-radius: 20px;
   font-size: 40px;
   /* gap: 20px; */
   /* border: 1px solid black; */
-  padding: 15px;
+  padding-bottom: 23.04px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -146,9 +154,9 @@ import CtaBar from '@/components/CtaBar.vue';
 .title {
   margin: 0;
   font-weight: bold;
-}
-
-.payType-title {
+  font-size: 46.08px;
+  font-weight: 500;
+  line-height: 59.9px;
 }
 
 .payType-box {
@@ -158,14 +166,17 @@ import CtaBar from '@/components/CtaBar.vue';
 }
 
 .payType-list {
-  width: 150px;
+  width: 259.2px;
+  height: 126.72px;
   border-radius: 20px;
-  padding: 20px;
-  font-size: 30px;
-  text-align: center;
+  font-weight: 600;
+  line-height: 46.08px;
   color: black;
   background-color: #f5f6f7;
   word-wrap: break-word;
+  display: flex; /* 추가 */
+  align-items: center; /* 추가 */
+  justify-content: center; /* 추가 */
 }
 
 .payType .selected {
@@ -188,25 +199,28 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .payDetail-input {
   margin: 0;
-  width: 500px;
+  width: 737.28px;
+  height: 138.24px;
   background-color: #f5f6f7;
-  padding: 20px;
   font-size: 20px;
-  border-radius: 10px;
+  border-radius: 28.8px;
   border: transparent;
+  color: #caced4;
+  font-size: 46.08px;
+  font-weight: 500;
+  line-height: 59.9px;
 }
 
 .category {
   width: 964.8px;
-
-  padding: 15px;
+  height: 184.32px;
   border-radius: 20px;
   font-size: 40px;
-  gap: 20px;
+  /* gap: 20px; */
   /* border: 1px solid black; */
-  margin: 25px auto;
-  justify-content: space-between;
+  padding-bottom: 23.04px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 </style>

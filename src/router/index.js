@@ -4,6 +4,7 @@ import Isu from '@/pages/Isu.vue';
 import Hyunsoo from '@/pages/Hyunsoo.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
+import TravleName from '@/pages/TravleName.vue';
 import AddPayment from '@/pages/AddPayment.vue';
 
 const router = createRouter({
@@ -35,8 +36,13 @@ const router = createRouter({
       component: Siwan,
     },
     {
-      path: '/addPayment',
-      name: 'addPayment',
+      path: '/TravleName',
+      name: 'TravleName',
+      component: TravleName,
+    },
+    {
+      path: '/addpayment',
+      name: 'AddPayment',
       component: AddPayment,
     },
   ],

@@ -71,9 +71,9 @@ const props = defineProps({
   left: calc(50% - 130px / 2 + 0.5px);
   top: 341px;
   background: #ffffff;
-  border-radius: 40px;
-  color: black;
-  font-size: 30px;
+  border-radius: 60px;
+  color: #3e444e;
+  font-size: 40px;
   font-weight: bold;
 }
 </style>
