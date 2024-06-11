@@ -14,3 +14,15 @@
   --blue-200: #84a7ff;
   --blue-300: #5d8bff;
 }
+
+body.light {
+  background-color: var(--light-body);
+  color: var(--light-text);
+}
+
+body.dark {
+  background-color: var(--dark-body);
+  color: var(--dark-text);
+}
+
+/* 추가 스타일을 여기에 작성하세요 */
