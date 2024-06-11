@@ -44,7 +44,7 @@ defineProps({
 
 .title {
   color: #353b43;
-  font-size: 31.2px; /* 폰트 크기를 1.3배 증가 (24px * 1.3) */
+  font-size: 58px; /* 폰트 크기를 1.3배 증가 (24px * 1.3) */
   font-family: Pretendard;
   font-weight: 700;
   line-height: 91px; /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
