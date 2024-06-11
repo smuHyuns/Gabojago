@@ -1,9 +1,11 @@
 <template>
   <div>
-    <h1>홈인데용</h1>
+    <Topbar titleText="여행지 제목" />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Topbar from '@/components/Topbar.vue';
+</script>
 
 <style scoped></style>
