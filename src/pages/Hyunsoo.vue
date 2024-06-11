@@ -4,7 +4,12 @@
     <div class="imgContainer">
       <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
-    <InfoBox class="infoBox" firstInput="돈 관리는 저희가 도와드릴게요" secondInput="어디로 떠나시나요?" thirdInput="여행 등록하기 >" />
+    <InfoBox
+      class="infoBox"
+      firstInput="돈 관리는 저희가 도와드릴게요"
+      secondInput="어디로 떠나시나요?"
+      thirdInput="여행 등록하기 >"
+    />
   </div>
   <div class="whiteBox">
     <div class="kindTripBox">
@@ -82,7 +87,12 @@ import InfoBox from '@/components/InfoBox.vue';
   bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
   margin: 0;
-  background: linear-gradient(180deg, rgba(123, 160, 255, 0) 0%, #749bff 36%, #5d8bff 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(123, 160, 255, 0) 0%,
+    #749bff 36%,
+    #5d8bff 100%
+  );
 }
 
 .whiteBox {

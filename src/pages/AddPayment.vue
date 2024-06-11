@@ -21,9 +21,41 @@
     </div>
     <div class="payDetail">
       <span class="title">지출 내용</span>
-      <input type="text" class="payDetail-input" placeholder=" 내용을 입력해 주세요" />
+      <input
+        type="text"
+        class="payDetail-input"
+        placeholder=" 내용을 입력해 주세요"
+      />
     </div>
-    <div class="category"><span class="title">카테고리</span></div>
+    <div class="category">
+      <span class="title">카테고리</span>
+      <div class="category-box">
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
+      </div>
+    </div>
 
     <CtaBar inputname="등록하기" />
     <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
@@ -213,14 +245,49 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .category {
   width: 964.8px;
-  height: 184.32px;
+  padding: 15px;
   border-radius: 20px;
   font-size: 40px;
-  /* gap: 20px; */
+  gap: 20px;
   /* border: 1px solid black; */
-  padding-bottom: 23.04px;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-box {
+  width: 100%;
+  /* align-self: stretch; */
+  /* border: 1px solid black; */
   display: flex;
   justify-content: space-between;
+  gap: 30px;
+}
+
+.category-box-component {
+  width: 138.24px;
+  height: 195.84px;
+  flex-direction: column;
+  justify-content: flex-start; /* 변경 */
   align-items: center;
+  gap: 10px;
+  display: flex;
+  margin: 0;
+}
+
+.category-box-img {
+  width: 138.24px;
+  height: 138.24px;
+  object-fit: cover;
+  border: 1px solid black;
+}
+
+.category-box-txt {
+  text-align: center;
+  color: #caced4;
+  font-size: 40.32px;
+  font-weight: 700;
+  line-height: 40.32px;
+  word-wrap: break-word;
 }
 </style>
