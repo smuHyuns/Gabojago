@@ -7,6 +7,7 @@
     <h3><router-link to="/gun">gun 이동</router-link></h3>
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
+    <h3><router-link to="/modal">modal-test</router-link></h3>
     <hr />
 
     &nbsp;
@@ -29,7 +30,8 @@
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
   font-weight: 400;
   font-style: normal;
 }

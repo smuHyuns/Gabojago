@@ -26,23 +26,28 @@
       </div>
     </div>
 
-    <div>
-      <ul>
-        <li v-for="country in filteredCountries" :key="country">
-          {{ country }}
-        </li>
-      </ul>
+    <div class="country-buttons">
+      <CountryButton
+        v-for="country in filteredCountries"
+        :key="country.name"
+        :countryName="country.name"
+        :flagSrc="getFlagSrc(country.flag)"
+        :isSelected="selectedCountries.includes(country.name)"
+        @update:isSelected="updateSelectedCountries(country.name)"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import TopbarXSign from '@/components/TopbarXSign.vue';
 import CountrySearch from '@/components/CountrySearch.vue';
+import CountryButton from '@/components/CountryButton.vue';
 
 const searchQuery = ref('');
 const selectedCategory = ref('전체');
+const selectedCountries = ref([]);
 
 const categories = [
   '전체',
@@ -56,128 +61,60 @@ const categories = [
 
 const countries = {
   전체: [
-    '대한민국',
-    '일본',
-    '중국',
-    '인도',
-    '베트남',
-    '태국',
-    '말레이시아',
-    '필리핀',
-    '프랑스',
-    '독일',
-    '영국',
-    '이탈리아',
-    '스페인',
-    '네덜란드',
-    '스위스',
-    '러시아',
-    '미국',
-    '캐나다',
-    '멕시코',
-    '쿠바',
-    '파나마',
-    '바하마',
-    '코스타리카',
-    '자메이카',
-    '브라질',
-    '아르헨티나',
-    '칠레',
-    '페루',
-    '콜롬비아',
-    '볼리비아',
-    '에콰도르',
-    '우루과이',
-    '남아프리카 공화국',
-    '이집트',
-    '모로코',
-    '나이지리아',
-    '케냐',
-    '에티오피아',
-    '탄자니아',
-    '알제리',
-    '호주',
-    '뉴질랜드',
-    '피지',
-    '파푸아뉴기니',
-    '사모아',
-    '통가',
-    '바누아투',
-    '솔로몬 제도',
+    { name: '대한민국', flag: 'korea.png' },
+    { name: '일본', flag: 'japan.png' },
+    { name: '중국', flag: 'china.png' },
+    { name: '인도', flag: 'india.png' },
+    { name: '베트남', flag: 'vietnam.png' },
+    { name: '태국', flag: 'thailand.png' },
+    { name: '말레이시아', flag: 'malaysia.png' },
+    { name: '필리핀', flag: 'philippines.png' },
+    { name: '프랑스', flag: 'france.png' },
+    { name: '독일', flag: 'germany.png' },
+    // ... 다른 국가들 추가
   ],
   아시아: [
-    '대한민국',
-    '일본',
-    '중국',
-    '인도',
-    '베트남',
-    '태국',
-    '말레이시아',
-    '필리핀',
-    '싱가포르',
-    '인도네시아',
+    { name: '대한민국', flag: 'korea.png' },
+    { name: '일본', flag: 'japan.png' },
+    { name: '중국', flag: 'china.png' },
+    // ... 나머지 아시아 국가들
   ],
   유럽: [
-    '프랑스',
-    '독일',
-    '영국',
-    '이탈리아',
-    '스페인',
-    '네덜란드',
-    '스위스',
-    '러시아',
-    '벨기에',
-    '포르투갈',
+    { name: '프랑스', flag: 'france.png' },
+    { name: '독일', flag: 'germany.png' },
+    // ... 나머지 유럽 국가들
   ],
   북아메리카: [
-    '미국',
-    '캐나다',
-    '멕시코',
-    '쿠바',
-    '파나마',
-    '바하마',
-    '코스타리카',
-    '자메이카',
+    { name: '미국', flag: 'usa.png' },
+    { name: '캐나다', flag: 'canada.png' },
+    // ... 나머지 북아메리카 국가들
   ],
   남아메리카: [
-    '브라질',
-    '아르헨티나',
-    '칠레',
-    '페루',
-    '콜롬비아',
-    '볼리비아',
-    '에콰도르',
-    '우루과이',
-    '파라과이',
-    '베네수엘라',
+    { name: '브라질', flag: 'brazil.png' },
+    { name: '아르헨티나', flag: 'argentina.png' },
+    // ... 나머지 남아메리카 국가들
   ],
   아프리카: [
-    '남아프리카 공화국',
-    '이집트',
-    '모로코',
-    '나이지리아',
-    '케냐',
-    '에티오피아',
-    '탄자니아',
-    '알제리',
+    { name: '남아프리카 공화국', flag: 'southafrica.png' },
+    { name: '이집트', flag: 'egypt.png' },
+    // ... 나머지 아프리카 국가들
   ],
   오세아니아: [
-    '호주',
-    '뉴질랜드',
-    '피지',
-    '파푸아뉴기니',
-    '사모아',
-    '통가',
-    '바누아투',
-    '솔로몬 제도',
+    { name: '호주', flag: 'australia.png' },
+    { name: '뉴질랜드', flag: 'newzealand.png' },
+    // ... 나머지 오세아니아 국가들
   ],
 };
+
+function getFlagSrc(flag) {
+  return new URL(`../assets/country_flag/${flag}`, import.meta.url).href;
+}
 
 const filteredCountries = computed(() => {
   let filtered = countries[selectedCategory.value];
   if (searchQuery.value) {
     filtered = filtered.filter((country) =>
-      country.includes(searchQuery.value)
+      country.name.includes(searchQuery.value)
     );
   }
   return filtered;
@@ -190,6 +127,15 @@ function filterCountries() {
 function selectCategory(category) {
   selectedCategory.value = category;
   searchQuery.value = ''; // 새로운 카테고리를 선택하면 검색어를 초기화합니다.
+}
+
+function updateSelectedCountries(countryName) {
+  const index = selectedCountries.value.indexOf(countryName);
+  if (index === -1) {
+    selectedCountries.value.push(countryName);
+  } else {
+    selectedCountries.value.splice(index, 1);
+  }
 }
 </script>
 
@@ -207,7 +153,7 @@ function selectCategory(category) {
 }
 
 .search-container {
-  margin-top: 10px; /* 여기에 원하는 값을 설정하여 거리를 조절 */
+  margin-top: 10px;
 }
 
 .kindTripBox {
@@ -223,7 +169,7 @@ function selectCategory(category) {
 }
 
 .whiteBox {
-  height: 1160px;
+  height: 180px;
   width: 1080px;
   background-color: var(--grey-0);
   margin: 0;
@@ -233,6 +179,7 @@ function selectCategory(category) {
 .kindTripBox ul {
   display: flex;
   overflow-x: auto; /* 수평스크롤 활성화 */
+  overflow-y: hidden; /* 수직스크롤 비활성화 */
   gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
   list-style: none; /* 기본 리스트 스타일 제거 */
   padding: 0; /* 기본 패딩 제거 */
@@ -273,5 +220,13 @@ function selectCategory(category) {
 
 .tripCategoryCount {
   font-size: 22px; /* 글자 크기를 더 키움 */
+}
+
+.country-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
 }
 </style>
