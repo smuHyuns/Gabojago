@@ -7,6 +7,7 @@
     <h3><router-link to="/gun">gun 이동</router-link></h3>
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
+    <h3><router-link to="/addPayment">addPayment 이동</router-link></h3>
     <hr />
 
     &nbsp;
@@ -25,6 +26,10 @@
   margin: 0px auto;
   padding: 0px;
   font-family: 'Pretendard-Regular';
+}
+
+#app {
+  margin: 0;
 }
 
 @font-face {
