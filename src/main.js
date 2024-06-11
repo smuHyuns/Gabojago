@@ -13,12 +13,12 @@ app.use(router);
 
 app.mount('#app');
 
-import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
+// import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+// import 'v-calendar/style.css';
 
-// Use plugin defaults (optional)
-app.use(setupCalendar, {});
+// // Use plugin defaults (optional)
+// app.use(setupCalendar, {});
 
-// Use the components
-app.component('VCalendar', Calendar);
-app.component('VDatePicker', DatePicker);
+// // Use the components
+// app.component('VCalendar', Calendar);
+// app.component('VDatePicker', DatePicker);
