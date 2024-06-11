@@ -1,7 +1,6 @@
 <template>
   <div class="box">
     <div class="header-input">
-      <div class="header">{{ headerInput }}</div>
       <input class="inputBox" :placeholder="TextInput" />
     </div>
   </div>
@@ -48,21 +47,8 @@ const props = defineProps({
   height: 184px;
 }
 
-.header {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 52px;
-  line-height: 1;
-  text-align: left;
-  color: #353b43;
-  margin-right: 10px;
-  width: 90px;
-  height: 52px;
-}
-
 .inputBox {
-  width: 737px;
+  width: 965px;
   height: 138px;
   background: #f5f6f7;
   border-radius: 28.8px;

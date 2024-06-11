@@ -4,6 +4,7 @@ import Isu from '@/pages/Isu.vue';
 import Hyunsoo from '@/pages/Hyunsoo.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
+import TravleName from '@/pages/TravleName.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/siwan',
       name: 'siwan',
       component: Siwan,
+    },
+    {
+      path: '/TravleName',
+      name: 'TravleName',
+      component: TravleName,
     },
   ],
 });
