@@ -18,7 +18,7 @@ function addSomething() {
 
 <style scoped>
 .cta-bar {
-  width: 375px;
+  width: 975px;
   height: 77px;
   padding: 12px 16px;
   background: #3e444e;

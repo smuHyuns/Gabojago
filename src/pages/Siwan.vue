@@ -36,22 +36,24 @@ const limitInput = (event) => {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 20vh;
+  padding-top: 20vh;
 }
 .top {
   font-family: Pretendard;
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 50px;
   line-height: 1.4;
-  text-align: center;
+  text-align: left;
+  width: 965px;
+  margin: 0 auto;
   color: #353b43;
 }
 .middle {
-  width: 300px;
-  height: 60px;
-  padding: 18px 20px;
+  width: 965px;
+  height: 152px;
+  padding: 46px 12px;
   margin-top: 20px;
   background: #f5f6f7;
   border-radius: 16px;
