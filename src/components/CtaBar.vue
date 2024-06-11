@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps } from 'vue';
 
 const props = defineProps({
   inputname: String,
@@ -18,38 +18,34 @@ function addSomething() {
 
 <style scoped>
 .container {
-  display: flex; /* Flexbox 사용 */
-  justify-content: center; /* 가로 방향으로 중앙 정렬 */
-  align-items: flex-end; /* 세로 방향으로 아래 정렬 */
-  height: 100vh; /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100vh;
 }
 
 .down {
-  width: 375px;
-  height: 77px;
-  padding: 12px 16px;
-
-  background: #3e444e;
-
-  border-radius: 10px;
-
-  /* 다음으로 (text) */
+  width: 965px;
+  height: 152px;
+  padding: 46.08px 11.52px;
+  background: #eaecef;
+  border-radius: 28.8px;
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 46px;
   line-height: 1.3;
-  text-align: center; /* 수평으로 중앙 정렬 */
+  text-align: center; /* Center align the text */
+  color: #8892a0;
+  border: none;
 
-  /* 아래는 수직으로 중앙 정렬을 위한 코드 */
+  display: flex; /* Use flexbox to center text vertically */
+  align-items: center; /* Center text vertically */
+  justify-content: center; /* Center text horizontally */
+
   position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #3e444e;
-  color: #ffffff;
-  padding: 30px;
-  border: none;
-  border-radius: 10px;
 }
 </style>

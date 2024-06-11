@@ -32,9 +32,7 @@
       </ul>
     </div>
     <div class="planListBox">
-      <div class="noneBox">
-        여행 중인 곳이 없습니다<br />여행을 등록해주세요
-      </div>
+      <div class="noneBox">여행 중인 곳이 없어요<br />여행을 등록해주세요</div>
     </div>
     <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
   </div>
