@@ -2,18 +2,24 @@
   <div class="page-container">
     <div class="container">
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
-      <input type="text" placeholder="10자 이내로 입력해주세요." class="middle" v-model="inputname" @input="limitInput" />
+      <input
+        type="text"
+        placeholder="10자 이내로 입력해주세요."
+        class="middle"
+        v-model="inputname"
+        @input="limitInput"
+      />
     </div>
-    
+
     <CtaBarBlack class="down" inputname="여행자 등록하기" />
   </div>
 </template>
 
 <script setup>
-import CtaBarBlack from '@/components/CtaBarBlack.vue';
-import { ref } from 'vue';
+import CtaBarBlack from "@/components/CtaBarBlack.vue";
+import { ref } from "vue";
 
-let inputname = ref(''); // 데이터 바인딩을 위한 변수
+let inputname = ref(""); // 데이터 바인딩을 위한 변수
 
 // 입력 제한 함수
 const limitInput = (event) => {
@@ -38,7 +44,7 @@ const limitInput = (event) => {
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 50px;
+  font-size: 75px;
   line-height: 1.4;
   text-align: left;
   width: 965px;
@@ -51,15 +57,22 @@ const limitInput = (event) => {
   padding: 12px 16px;
   margin-top: 20px;
   background: #f5f6f7;
-  border-radius: 16px;
+  border-radius: 46px;
+
   font-family: Pretendard;
   font-style: normal;
   font-weight: 500;
   font-size: 50px;
   line-height: 1.3;
-  text-align: center;
-  color: #000;
+  text-align: left;
+  color: #353b43;
+  border: none;
+  outline: none; /* 클릭 시 파란 테두리 제거 */
 }
+.middle::placeholder {
+  color: #caced4;
+}
+
 .page-container {
   width: 1080px;
   height: 2340px;
@@ -75,7 +88,7 @@ const limitInput = (event) => {
 
 .down {
   position: absolute;
-  bottom: 30px;
+  bottom: 133px;
   left: 50%;
   transform: translateX(-50%);
 }
