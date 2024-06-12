@@ -126,6 +126,7 @@ import InfoBox from '@/components/InfoBox.vue';
   height: 430px;
   bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
+
   margin: 0;
   background: linear-gradient(
     180deg,
