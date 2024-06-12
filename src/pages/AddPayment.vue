@@ -54,10 +54,17 @@
           <img class="category-box-img" src="../assets/비행기토끼.png"></img>
           <div class="category-box-txt">여행</div>
         </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
       </div>
     </div>
 
-    <CtaBar inputname="등록하기" />
+    <div class="ctabar">
+      <CtaBar inputname="등록하기" />
+    </div>
+
     <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
   </div>
 </template>
@@ -264,6 +271,8 @@ import CtaBar from '@/components/CtaBar.vue';
   display: flex;
   justify-content: space-between;
   gap: 30px;
+  overflow-x: scroll; /* 수평 스크롤 비활성화 */
+  overflow-y: hidden; /* 수직 스크롤 활성화 */
 }
 
 .category-box-component {
@@ -274,6 +283,7 @@ import CtaBar from '@/components/CtaBar.vue';
   align-items: center;
   gap: 10px;
   display: flex;
+  flex-shrink: 0;
   margin: 0;
 }
 
@@ -291,5 +301,13 @@ import CtaBar from '@/components/CtaBar.vue';
   font-weight: 700;
   line-height: 40.32px;
   word-wrap: break-word;
+}
+
+.ctabar{
+  height: 221.28px;
+  margin-top: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
