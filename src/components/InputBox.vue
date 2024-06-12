@@ -31,18 +31,21 @@ const props = defineProps({
 .box {
   width: 1080px;
   max-height: 700px;
+  text-align: center;
+  color: white;
   margin: auto; /* 가운데 정렬 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: 30px;
   text-align: center;
 }
 
 .header-input {
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 1080px;
   height: 184px;
 }
 
@@ -51,7 +54,6 @@ const props = defineProps({
   height: 173px;
   background: #f5f6f7;
   border-radius: 46px;
-  font-family: Pretendard;
   font-style: normal;
   font-weight: 400;
   font-size: 52px;
