@@ -3,13 +3,23 @@
     <TopbarXSign titleText="여행 검색" />
 
     <div class="search-container">
-      <CountrySearch v-model="searchQuery" @search="filterCountries" placeholder="찾으시는 국가명을 입력해주세요" />
+      <CountrySearch
+        v-model="searchQuery"
+        @search="filterCountries"
+        placeholder="찾으시는 국가명을 입력해주세요"
+      />
     </div>
 
     <div class="whiteBox">
       <div class="kindTripBox">
         <ul>
-          <li v-for="(category, index) in categories" :key="index" class="tripCategory" :class="{ selected: selectedCategory === category }" @click="selectCategory(category)">
+          <li
+            v-for="(category, index) in categories"
+            :key="index"
+            class="tripCategory"
+            :class="{ selected: selectedCategory === category }"
+            @click="selectCategory(category)"
+          >
             <div class="tripCategoryName">{{ category }}</div>
           </li>
         </ul>
@@ -27,12 +37,10 @@
         />
       </div>
       <div class="country-button" @click="toggleSelected">
-        <img :src="flagSrc" alt="flag" class="flag-image" />
+        <img :src="flagSrc" />
         <span class="country-name">{{ countryName }}</span>
       </div>
     </div>
-  </div>
-  <div class="CtaBarCenter">
     <CtaBar inputname="다음으로" :on="isblack" />
   </div>
 </template>
@@ -49,7 +57,15 @@ const selectedCategory = ref('전체');
 const selectedCountries = ref([]);
 const isblack = ref(false);
 
-const categories = ['전체', '아시아', '유럽', '북아메리카', '남아메리카', '아프리카', '오세아니아'];
+const categories = [
+  '전체',
+  '아시아',
+  '유럽',
+  '북아메리카',
+  '남아메리카',
+  '아프리카',
+  '오세아니아',
+];
 
 const countries = {
   전체: [
@@ -84,7 +100,7 @@ const countries = {
     { name: '필리핀', flag: 'philippines.png' },
     { name: '인도', flag: 'india.png' },
     { name: '인도네시아', flag: 'indonesia.png' },
-    { name: '싱가포르', flag: 'singapole.png' },
+    { name: '싱가포르', flag: 'singapore.png' },
     { name: '라오스', flag: 'laos.png' },
 
     // ... 나머지 아시아 국가들
@@ -124,7 +140,9 @@ function getFlagSrc(flag) {
 const filteredCountries = computed(() => {
   let filtered = countries[selectedCategory.value];
   if (searchQuery.value) {
-    filtered = filtered.filter((country) => country.name.includes(searchQuery.value));
+    filtered = filtered.filter((country) =>
+      country.name.includes(searchQuery.value)
+    );
   }
   return filtered;
 });
@@ -179,7 +197,7 @@ function updateSelectedCountries(countryName) {
 }
 
 .whiteBox {
-  height: 180px;
+  height: 130px;
   width: 1080px;
   background-color: var(--grey-0);
   margin: 0;
@@ -236,7 +254,7 @@ function updateSelectedCountries(countryName) {
   width: 1080px;
   height: 1350.72px;
   overflow-y: scroll;
-  padding-bottom: 20px;
+  padding-bottom: 70px;
 }
 
 .country-buttons {

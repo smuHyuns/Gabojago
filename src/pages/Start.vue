@@ -1,13 +1,16 @@
 <template>
   <div class="viewport">
     <div class="textbox">
-      <div class="error-message">앗! 오류가 발생했어요..</div>
-      <div class="retry-message">잠시 후에 다시 시도해주세요</div>
+      <div class="start-msg">
+        반가워요! 간편하게 <br />
+        돈 관리를 시작해볼까요?
+      </div>
+      <div class="start-sub-msg">여행에만 집중할 수 있도록 도와드릴게요</div>
     </div>
     <video class="video" autoplay muted playsinline loop>
-      <source src="../assets/.webm" type="video/webm" />
+      <source src="../assets/slide_final.webm" type="video/webm" />
     </video>
-    <CtaBarBlack inputname="재시도" class="bottom-bar" />
+    <CtaBarBlack inputname="다음으로" class="bottom-bar" />
   </div>
 </template>
 <script setup>
@@ -29,14 +32,16 @@ import CtaBarBlack from '@/components/CtaBarBlack.vue';
 .textbox {
   text-align: center;
 }
-.error-message {
-  font-weight: 700; /* 두꺼운 글꼴 설정 */
-  font-size: 75px;
+.start-msg {
+  padding-top: 400px;
+  font-weight: bold; /* 두꺼운 글꼴 설정 */
+  font-size: 80px;
   line-height: 1.4;
   text-align: center;
   color: #353b43;
 }
-.retry-message {
+.start-sub-msg {
+  padding-bottom: 280px;
   font-weight: 400;
   font-size: 52px;
   line-height: 1.5;
