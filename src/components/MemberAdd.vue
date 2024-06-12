@@ -1,75 +1,83 @@
 <template>
   <div class="box">
     <div class="Member-add">
-      <input class="MemberBox" :placeholder="TextInput" />
+      <!-- 왼쪽 아이콘과 입력 상자 오른쪽 아이콘을 div로 묶음 -->
+      <div class="icon-container">
+        <!-- 왼쪽 아이콘 -->
+        <div class="icon-left" @click="decrement">
+          <img src="../assets/minus.png" alt="minus-icon" />
+        </div>
+        <!-- 값이 표시될 박스 -->
+        <div class="value-box">{{ displayValue }}</div>
+        <!-- 오른쪽 아이콘 -->
+        <div class="icon-right" @click="increment">
+          <img src="../assets/plus.png" alt="plus-icon" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-const props = defineProps({
-  headerInput: String,
-  TextInput: String,
+import { ref, computed } from 'vue';
+
+// 상태 변수로 변경
+const value = ref(0);
+
+const increment = () => {
+  // 상태 변수 값 증가
+  value.value++;
+};
+
+const decrement = () => {
+  // 최소값이 0이 되도록 설정
+  if (value.value > 0) {
+    value.value--;
+  }
+};
+
+// 값이 0일 때 "혼자" 표시
+const displayValue = computed(() => {
+  return value.value === 0 ? '혼자' : value.value;
 });
 </script>
 
 <style scoped>
-:root {
-  --grey-0: #ffffff;
-  --grey-100: #fbfbfc;
-  --grey-200: #f5f6f7;
-  --grey-300: #eaecef;
-  --grey-400: #caced4;
-  --grey-600: #8892a0;
-  --grey-700: #616b79;
-  --grey-800: #3e444e;
-  --grey-900: #353b43;
-  --grey-950: #16181c;
-}
+/* 나머지 스타일은 생략 */
 
-.box {
-  width: 1080px;
-  max-height: 700px;
-  text-align: center;
-  color: white;
+.icon-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 30px;
+  align-items: center; /* 아이콘과 입력 상자를 세로 중앙 정렬 */
 }
 
-.header-input {
-  display: flex;
-  align-items: center;
-  width: 1080px;
-  height: 184px;
+.icon-left,
+.icon-right {
+  width: 69px;
+  height: 69px;
+  padding: 35px; /* 아이콘과 입력 상자 사이 간격 조정 */
 }
 
-.MemberBox {
-  width: 965px;
-  height: 138px;
-  background: #f5f6f7;
-  border-radius: 28.8px;
+.icon-left img,
+.icon-right img {
+  width: 100%;
+  height: auto;
+}
+
+.value-box {
+  width: 755px;
+  height: 144px;
   font-family: Pretendard;
   font-style: normal;
-  font-weight: 400;
-  font-size: 46px;
-  line-height: 1.3;
-  text-align: left;
-  color: #caced4; /* 기본 상태 색상 */
-  padding: 0 20px;
-  border: none; /* Remove border when not focused */
-  border: 2px solid transparent; /* 선택 시 라인을 표시하기 위한 투명한 테두리 추가 */
-}
-
-.MemberBox::placeholder {
-  color: #caced4; /* 플레이스홀더 색상 */
-}
-
-.MemberBox:focus {
-  outline: none;
-  color: #353b43; /* 포커스 상태 색상 */
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #353b43;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f6f7;
+  border-radius: 30px;
 }
 </style>
