@@ -1,13 +1,20 @@
 <template>
   <div class="viewport">
     <Topbar titleText="인원 선택" class="top-bar" />
+    <div class="content">
+      <div class="spacer"></div>
+      <!-- Spacer 추가 -->
+      <MemberAdd class="Member-add" />
+    </div>
     <div class="spacer"></div>
+    <!-- Spacer 추가 -->
     <CtaBar inputname="다음으로" class="bottom-bar" />
   </div>
 </template>
 
 <script setup>
 import Topbar from '@/components/Topbar.vue';
+import MemberAdd from '@/components/MemberAdd.vue';
 import CtaBar from '@/components/CtaBar.vue';
 </script>
 
@@ -26,6 +33,10 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .content {
   flex: 1; /* Topbar와 CtaBar 사이의 공간을 채우기 위해 사용 */
+}
+
+.spacer {
+  height: 58px; /* Spacer 높이 추가 */
 }
 
 /* Ensure that the body and html take up the full height of the viewport */
