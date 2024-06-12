@@ -1,16 +1,13 @@
 <template>
   <div class="viewport">
-    <Topbar titleText="여행 제목" />
-    <div class="content">
-      <InputBox TextInput="제목을 입력해 주세요" />
-    </div>
-    <CtaBar inputname="여행 등록하기" />
+    <Topbar titleText="인원 선택" class="top-bar" />
+    <div class="spacer"></div>
+    <CtaBar inputname="다음으로" class="bottom-bar" />
   </div>
 </template>
 
 <script setup>
 import Topbar from '@/components/Topbar.vue';
-import InputBox from '@/components/InputBox.vue';
 import CtaBar from '@/components/CtaBar.vue';
 </script>
 
