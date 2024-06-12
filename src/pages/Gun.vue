@@ -26,9 +26,15 @@
           @update:isSelected="updateSelectedCountries(country.name)"
         />
       </div>
+      <div class="country-button" @click="toggleSelected">
+        <img :src="flagSrc" alt="flag" class="flag-image" />
+        <span class="country-name">{{ countryName }}</span>
+      </div>
     </div>
   </div>
-  <CtaBar inputname="다음으로" />
+  <div class="CtaBarCenter">
+    <CtaBar inputname="다음으로" :on="isblack" />
+  </div>
 </template>
 
 <script setup>
@@ -41,6 +47,7 @@ import CtaBar from '@/components/CtaBar.vue';
 const searchQuery = ref('');
 const selectedCategory = ref('전체');
 const selectedCountries = ref([]);
+const isblack = ref(false);
 
 const categories = ['전체', '아시아', '유럽', '북아메리카', '남아메리카', '아프리카', '오세아니아'];
 
@@ -49,23 +56,37 @@ const countries = {
     { name: '대한민국', flag: 'korea.png' },
     { name: '일본', flag: 'japan.png' },
     { name: '중국', flag: 'china.png' },
-    { name: '인도', flag: 'india.png' },
     { name: '베트남', flag: 'vietnam.png' },
     { name: '태국', flag: 'thailand.png' },
-    { name: '말레이시아', flag: 'malaysia.png' },
     { name: '필리핀', flag: 'philippines.png' },
+    { name: '인도', flag: 'india.png' },
     { name: '프랑스', flag: 'france.png' },
     { name: '독일', flag: 'germany.png' },
-    { name: '프랑스', flag: 'france.png' },
-    { name: '독일', flag: 'germany.png' },
-    { name: '프랑스', flag: 'france.png' },
-    { name: '독일', flag: 'germany.png' },
+    { name: '미국', flag: 'usa.png' },
+    { name: '캐나다', flag: 'canada.png' },
+    { name: '브라질', flag: 'brazil.png' },
+    { name: '아르헨티나', flag: 'argentina.png' },
+    { name: '이집트', flag: 'egypt.png' },
+    { name: '남아프리카 공화국', flag: 'southafrica.png' },
+    { name: '호주', flag: 'australia.png' },
+    { name: '뉴질랜드', flag: 'newzealand.png' },
+    { name: '인도네시아', flag: 'indonesia.png' },
+    { name: '싱가포르', flag: 'singapore.png' },
+    { name: '라오스', flag: 'laos.png' },
     // ... 다른 국가들 추가
   ],
   아시아: [
     { name: '대한민국', flag: 'korea.png' },
     { name: '일본', flag: 'japan.png' },
     { name: '중국', flag: 'china.png' },
+    { name: '베트남', flag: 'vietnam.png' },
+    { name: '태국', flag: 'thailand.png' },
+    { name: '필리핀', flag: 'philippines.png' },
+    { name: '인도', flag: 'india.png' },
+    { name: '인도네시아', flag: 'indonesia.png' },
+    { name: '싱가포르', flag: 'singapole.png' },
+    { name: '라오스', flag: 'laos.png' },
+
     // ... 나머지 아시아 국가들
   ],
   유럽: [
@@ -84,8 +105,9 @@ const countries = {
     // ... 나머지 남아메리카 국가들
   ],
   아프리카: [
-    { name: '남아프리카 공화국', flag: 'southafrica.png' },
     { name: '이집트', flag: 'egypt.png' },
+    { name: '남아프리카 공화국', flag: 'southafrica.png' },
+
     // ... 나머지 아프리카 국가들
   ],
   오세아니아: [
@@ -123,6 +145,8 @@ function updateSelectedCountries(countryName) {
   } else {
     selectedCountries.value.splice(index, 1);
   }
+  isblack.value = selectedCountries.value.length >= 1;
+  console.log(isblack.value);
 }
 </script>
 
@@ -138,7 +162,6 @@ function updateSelectedCountries(countryName) {
   margin: 0 auto;
   background-color: #fff;
 }
-
 .search-container {
   margin-top: 10px;
 }

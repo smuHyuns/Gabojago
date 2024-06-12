@@ -15,6 +15,7 @@
     <h3><router-link to="/Err">Err 이동</router-link></h3>
     <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
     <h3><router-link to="/modal">modal-test</router-link></h3>
+    <h3><router-link to="/Start">시작페이지</router-link></h3>
     <hr />
 
     &nbsp;
