@@ -4,13 +4,19 @@
     <div class="imgContainer">
       <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
-    <InfoBox class="infoBox" firstInput="돈 관리는 저희가 도와드릴게요" secondInput="어디로 떠나시나요?" thirdInput="여행 등록하기 >" />
+    <InfoBox
+      class="infoBox"
+      firstInput="돈 관리는 저희가 도와드릴게요"
+      secondInput="어디로 떠나시나요?"
+      thirdInput="여행 등록하기 >"
+    />
   </div>
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
         <li class="tripCategory selected">
           <div class="tripCategoryName">전체</div>
+          <div class="tripCategoryCount">0</div>
         </li>
         <li class="tripCategory">
           <div class="tripCategoryName">여행 중</div>
@@ -27,7 +33,46 @@
       </ul>
     </div>
     <div class="planListBox">
-      <div class="noneBox">여행 중인 곳이 없어요<br />여행을 등록해주세요</div>
+      <div class="useBox">
+        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+        <div class="useBox-txt">
+          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
+          <span class="useBox-txt-sub">D-3</span>
+        </div>
+        <div class="useBox-detail">
+          <img src="../assets/chevron-left.png" />
+        </div>
+      </div>
+      <div class="useBox">
+        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+        <div class="useBox-txt">
+          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
+          <span class="useBox-txt-sub">D-3</span>
+        </div>
+        <div class="useBox-detail">
+          <img src="../assets/chevron-left.png" />
+        </div>
+      </div>
+      <div class="useBox">
+        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+        <div class="useBox-txt">
+          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
+          <span class="useBox-txt-sub">D-3</span>
+        </div>
+        <div class="useBox-detail">
+          <img src="../assets/chevron-left.png" />
+        </div>
+      </div>
+      <div class="useBox">
+        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+        <div class="useBox-txt">
+          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
+          <span class="useBox-txt-sub">D-3</span>
+        </div>
+        <div class="useBox-detail">
+          <img src="../assets/chevron-left.png" />
+        </div>
+      </div>
     </div>
     <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
   </div>
@@ -81,8 +126,14 @@ import InfoBox from '@/components/InfoBox.vue';
   height: 430px;
   bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
+
   margin: 0;
-  background: linear-gradient(180deg, rgba(123, 160, 255, 0) 0%, #749bff 36%, #5d8bff 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(123, 160, 255, 0) 0%,
+    #749bff 36%,
+    #5d8bff 100%
+  );
 }
 
 .whiteBox {
@@ -148,19 +199,79 @@ import InfoBox from '@/components/InfoBox.vue';
   background-color: var(--grey-700); /* 선택된 배경 색상 */
   color: white !important; /* 선택된 글자 색상 */
 }
-
-.planListBox {
+/* .planListBox {
   width: 900px;
   height: 900px;
   display: flex;
   justify-content: center;
   align-items: center;
+} */
+
+.planListBox {
+  width: 900px;
+  height: 1157.76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+  gap: 20px;
+  overflow-y: scroll; /* 수직 스크롤 활성화 */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
+.planListBox::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
 .noneBox {
   font-size: 40px;
   text-align: center;
   color: var(--grey-400);
+}
+
+.useBox {
+  width: 100%;
+  height: 259.2px;
+  background: #f5f6f7;
+  border-radius: 28.8px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap:100px;
+}
+
+.useBox-txt {
+  margin: 0;
+  padding: 0;
+}
+
+.useBox-img {
+  width: 144px;
+  height: 144px;
+  object-fit: cover;
+  background: #d9d9d9;
+  border-radius: 9999px;
+}
+
+.useBox-txt-main {
+  color: #3e444e;
+  font-size: 46.08px;
+  font-weight: 600;
+  line-height: 46.08px;
+  word-wrap: break-word;
+  padding: 10px;
+}
+
+.useBox-txt-sub {
+  color: #8892a0;
+  font-size: 34.56px;
+  font-weight: 400;
+  line-height: 34.56px;
+  word-wrap: break-word;
+  padding: 10px;
 }
 
 .addPlanBtn {

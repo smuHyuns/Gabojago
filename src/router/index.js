@@ -5,9 +5,11 @@ import Hyunsoo from '@/pages/Hyunsoo.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
 import TravleName from '@/pages/TravleName.vue';
+import AddPayment from '@/pages/AddPayment.vue';
+import Calendar from '@/pages/Calendar.vue';
+import Modal from '@/components/Modal.vue';
 import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -37,11 +39,6 @@ const router = createRouter({
       component: Siwan,
     },
     {
-      path: '/travleName',
-      name: 'travleName',
-      component: TravleName,
-    },
-    {
       path: '/member',
       name: 'member',
       component: Member,
@@ -50,6 +47,24 @@ const router = createRouter({
       path: '/err',
       name: 'err',
       component: Err,
+      path: '/modal',
+      name: 'modal',
+      component: Modal,
+    },
+    {
+      path: '/TravleName',
+      name: 'TravleName',
+      component: TravleName,
+    },
+    {
+      path: '/addpayment',
+      name: 'AddPayment',
+      component: AddPayment,
+    },
+    {
+      path: '/calendar',
+      name: 'Calendar',
+      component: Calendar,
     },
   ],
 });

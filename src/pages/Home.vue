@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import Topbar from '@/components/Topbar.vue';
 </script>
 
