@@ -6,6 +6,7 @@
     <h3><router-link to="/isu">isu 이동</router-link></h3>
     <h3><router-link to="/gun">gun 이동</router-link></h3>
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
+    <h3><router-link to="/siwan_test">siwan_test 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
 
     <h3><router-link to="/addPayment">addPayment 이동</router-link></h3>
@@ -33,7 +34,7 @@
 * {
   margin: 0px auto;
   padding: 0px;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
 }
 
 #app {
@@ -41,8 +42,9 @@
 }
 
 @font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
   font-weight: 400;
   font-style: normal;
 }
