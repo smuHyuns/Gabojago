@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="mainContainer">
+      <div class="container">
+        <RouterView></RouterView>
+      </div>
+    </div>
+    &nbsp;
     <h1>App화면</h1>
     <hr />
     <h3><router-link to="/">home 이동</router-link></h3>
@@ -15,14 +21,8 @@
     <h3><router-link to="/Err">Err 이동</router-link></h3>
     <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
     <h3><router-link to="/modal">modal-test</router-link></h3>
+    <h3><router-link to="/Start">시작페이지</router-link></h3>
     <hr />
-
-    &nbsp;
-    <div class="mainContainer">
-      <div class="container">
-        <RouterView></RouterView>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -32,7 +32,7 @@
 * {
   margin: 0px auto;
   padding: 0px;
-  font-family: "Pretendard-Regular";
+  font-family: 'Pretendard-Regular';
 }
 
 #app {
@@ -40,9 +40,9 @@
 }
 
 @font-face {
-  font-family: "Pretendard-Regular";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
   font-weight: 400;
   font-style: normal;
 }

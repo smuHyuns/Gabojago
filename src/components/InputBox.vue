@@ -28,6 +28,10 @@ const props = defineProps({
   --grey-950: #16181c;
 }
 
+.inputBox:focus::placeholder {
+  color: transparent; /* 포커스 시 placeholder 숨김 */
+}
+
 .box {
   width: 1080px;
   max-height: 700px;
@@ -50,18 +54,20 @@ const props = defineProps({
 }
 
 .inputBox {
-  width: 965px;
-  height: 173px;
+  width: 910px;
+  height: 152px;
+  padding: 12px 16px;
+  padding-left: 50px; /* 왼쪽 마진 */
+  margin-top: 20px;
   background: #f5f6f7;
   border-radius: 46px;
   font-style: normal;
-  font-weight: 400;
-  font-size: 52px;
+  font-weight: 500;
+  font-size: 50px;
   line-height: 1.3;
-  text-align: left;
-  color: #caced4; /* 기본 상태 색상 */
-  padding: 0 20px;
-  border: none; /* Remove border when not focused */
+  color: #353b43;
+  border: none;
+  outline: none;
 }
 
 .inputBox::placeholder {
