@@ -18,28 +18,32 @@
 import Topbar from '@/components/Topbar.vue';
 import Cal from '@/components/Cal.vue';
 import CtaBar from '@/components/CtaBar.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 
 const router = useRouter();
+const route = useRoute();
 
-const navigateToMember = () => {
-  router.push({
-    path: '/Member',
-    query: { selectedDates: selectedDates.value },
-  });
-};
-
-const isblack = ref(false); // isblack 상태를 저장할 변수
 const selectedDates = ref([]);
-// Cal 컴포넌트에서 선택한 날짜를 수신하는 이벤트 핸들러
+const isblack = ref(false);
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+
 const handleDateSelected = (dates) => {
-  // 선택한 날짜가 있는지 확인하고 isblack 상태를 업데이트합니다.
   isblack.value = dates.length > 0;
   selectedDates.value = dates;
 };
 
-// 반응형 변수 선언
+const navigateToMember = () => {
+  router.push({
+    path: '/Member',
+    query: {
+      selectedDates: JSON.stringify(selectedDates.value),
+      countries: selectedCountries.value.join(','),
+    },
+  });
+};
 </script>
 
 <style scoped>

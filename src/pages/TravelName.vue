@@ -2,7 +2,7 @@
   <div class="viewport">
     <Topbar titleText="여행 제목" />
     <div class="content">
-      <InputBox TextInput="제목을 입력해 주세요" />
+      <InputBox v-model="travelTitle" TextInput="제목을 입력해 주세요" />
     </div>
     <CtaBar inputname="여행 등록하기" @click="navigateToAddPayment" />
   </div>
@@ -12,12 +12,33 @@
 import Topbar from '@/components/Topbar.vue';
 import InputBox from '@/components/InputBox.vue';
 import CtaBar from '@/components/CtaBar.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
 
 const router = useRouter();
+const route = useRoute();
+
+const travelTitle = ref('');
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+const selectedDates = ref(
+  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
+);
+const memberCount = ref(
+  route.query.memberCount ? parseInt(route.query.memberCount) : 0
+);
 
 const navigateToAddPayment = () => {
-  router.push('/addPayment');
+  router.push({
+    path: '/addPayment',
+    query: {
+      countries: selectedCountries.value.join(','),
+      selectedDates: JSON.stringify(selectedDates.value),
+      memberCount: memberCount.value,
+      travelTitle: travelTitle.value,
+    },
+  });
 };
 </script>
 
@@ -25,29 +46,28 @@ const navigateToAddPayment = () => {
 .viewport {
   width: 1080px;
   height: 2340px;
-  overflow: hidden; /* Prevent scrolling if content exceeds the fixed size */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* 요소들을 위아래로 균등하게 분배 */
-  margin: 0 auto; /* Center the viewport if there is additional space */
-  background-color: #fff; /* Optional: Set a background color */
+  justify-content: space-between;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
 .content {
-  flex: 1; /* Topbar와 CtaBar 사이의 공간을 채우기 위해 사용 */
+  flex: 1;
   display: flex;
-  flex-direction: column; /* 요소들을 세로로 정렬 */
-  align-items: center; /* 요소들을 가로로 중앙 정렬 */
-  width: 100%; /* content를 부모 요소의 너비에 맞추기 위해 사용 */
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
-/* Ensure that the body and html take up the full height of the viewport */
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Prevent scrolling on the body */
+  overflow: hidden;
 }
 </style>
