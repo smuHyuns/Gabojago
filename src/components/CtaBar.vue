@@ -25,6 +25,7 @@ const isblack = computed(() => (props.on ? 'cta-bar-black' : 'cta-bar'));
   height: 152px;
   margin-bottom: 133px;
   background: #eaecef;
+  font-size: 46px;
   color: #8892a0;
   border-radius: 30px;
   border: none;
