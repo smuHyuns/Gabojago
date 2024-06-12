@@ -1,7 +1,7 @@
 <template>
   <div class="box">
-    <div class="header-input">
-      <input class="inputBox" :placeholder="TextInput" />
+    <div class="Member-add">
+      <input class="MemberBox" :placeholder="TextInput" />
     </div>
   </div>
 </template>
@@ -33,13 +33,11 @@ const props = defineProps({
   max-height: 700px;
   text-align: center;
   color: white;
-  margin: auto; /* 가운데 정렬 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 30px;
-  text-align: center;
 }
 
 .header-input {
@@ -49,26 +47,28 @@ const props = defineProps({
   height: 184px;
 }
 
-.inputBox {
+.MemberBox {
   width: 965px;
-  height: 173px;
+  height: 138px;
   background: #f5f6f7;
-  border-radius: 46px;
+  border-radius: 28.8px;
+  font-family: Pretendard;
   font-style: normal;
   font-weight: 400;
-  font-size: 52px;
+  font-size: 46px;
   line-height: 1.3;
   text-align: left;
   color: #caced4; /* 기본 상태 색상 */
   padding: 0 20px;
   border: none; /* Remove border when not focused */
+  border: 2px solid transparent; /* 선택 시 라인을 표시하기 위한 투명한 테두리 추가 */
 }
 
-.inputBox::placeholder {
+.MemberBox::placeholder {
   color: #caced4; /* 플레이스홀더 색상 */
 }
 
-.inputBox:focus {
+.MemberBox:focus {
   outline: none;
   color: #353b43; /* 포커스 상태 색상 */
 }

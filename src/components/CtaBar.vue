@@ -20,10 +20,11 @@ function addSomething() {
 .cta-bar {
   width: 965px;
   height: 152px;
-  /* padding: 46px 11px; */
-  background: #3e444e;
-  color: #ffffff;
+  margin-bottom: 133px;
+  background: #eaecef;
+  color: #8892a0;
   border-radius: 30px;
+  border: none;
   /* 글자 관련 CSS 속성 */
   font-family: Pretendard;
   font-style: normal;

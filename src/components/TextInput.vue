@@ -1,6 +1,7 @@
 <template>
   <div class="box">
     <div class="header-input">
+      <div class="header">{{ headerInput }}</div>
       <input class="inputBox" :placeholder="TextInput" />
     </div>
   </div>
@@ -33,13 +34,11 @@ const props = defineProps({
   max-height: 700px;
   text-align: center;
   color: white;
-  margin: auto; /* 가운데 정렬 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 30px;
-  text-align: center;
 }
 
 .header-input {
@@ -49,14 +48,28 @@ const props = defineProps({
   height: 184px;
 }
 
+.header {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 1;
+  text-align: left;
+  color: #353b43;
+  margin-right: 10px;
+  width: 90px;
+  height: 52px;
+}
+
 .inputBox {
-  width: 965px;
-  height: 173px;
+  width: 737px;
+  height: 138px;
   background: #f5f6f7;
-  border-radius: 46px;
+  border-radius: 28.8px;
+  font-family: Pretendard;
   font-style: normal;
   font-weight: 400;
-  font-size: 52px;
+  font-size: 46px;
   line-height: 1.3;
   text-align: left;
   color: #caced4; /* 기본 상태 색상 */

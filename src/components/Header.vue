@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="logoBox"></div>
+    <img class="logoBox" src="../assets/logo.png" />
     <div class="icon-container">
       <img class="infoIcon" src="../assets/userInfoIcon.png" />
     </div>
@@ -19,13 +19,11 @@
 }
 
 .logoBox {
-  width: 200px;
-  height: 100px;
-  border: 1px solid black;
+  max-width: 240px;
+  max-height: 140px;
   margin-left: 75px;
-  background-image: url('https://www.logoyogo.com/web/wp-content/uploads/edd/2021/02/logoyogo-1-78.jpg');
-  background-size: cover;
-  background-position: center;
+  transform: scale(1.1);
+  transform-origin: center left; /* 확장 중심을 왼쪽으로 설정 */
 }
 
 .icon-container {
