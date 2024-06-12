@@ -110,7 +110,7 @@ import TopSelect from '@/components/TopSelect.vue';
 .price-box {
   margin: 50px;
   width: 965px;
-  height: 250px;
+  height: 288px;
   background-color: #f5f6f7;
   /* border: 1px solid black; */
   border-radius: 20px;
@@ -126,30 +126,31 @@ import TopSelect from '@/components/TopSelect.vue';
   align-items: center;
   gap: 10px;
   color: #8892a0;
-  margin-left: 30px;
+  margin-left: 75px;
 }
 
 .print-big-price {
-  font-size: 80.64px;
+  font-size: 80px;
   font-weight: 700;
-  line-height: 80.64px;
+  line-height: 80px;
 }
 
 .type-of-money {
   color: #8892a0;
-  font-size: 34.56px;
+  font-size: 35px;
   font-weight: 600;
-  line-height: 34.56px;
+  line-height: 35px;
   word-wrap: break-word;
 }
 
 .print-small-price {
   color: #8892a0;
-  font-size: 46.08px;
+  font-size: 46px;
   font-weight: 600;
-  line-height: 46.08px;
+  line-height: 46px;
   word-wrap: break-word;
-  margin-left: 30px;
+  margin-top: 23px;
+  margin-left: 75px;
 }
 
 .price-box-content {
@@ -170,8 +171,8 @@ import TopSelect from '@/components/TopSelect.vue';
 }
 
 .payType {
-  width: 964.8px;
-  height: 184.32px;
+  width: 965px;
+  height: 184px;
   border-radius: 20px;
   font-size: 40px;
   /* gap: 20px; */
@@ -184,10 +185,10 @@ import TopSelect from '@/components/TopSelect.vue';
 
 .title {
   margin: 0;
-  font-weight: bold;
-  font-size: 46.08px;
-  font-weight: 500;
-  line-height: 59.9px;
+  font-weight: 800;
+  font-size: 52px;
+  line-height: 60px;
+  color: #353b43;
 }
 
 .payType-box {
