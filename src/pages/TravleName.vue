@@ -29,6 +29,10 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .content {
   flex: 1; /* Topbar와 CtaBar 사이의 공간을 채우기 위해 사용 */
+  display: flex;
+  flex-direction: column; /* 요소들을 세로로 정렬 */
+  align-items: center; /* 요소들을 가로로 중앙 정렬 */
+  width: 100%; /* content를 부모 요소의 너비에 맞추기 위해 사용 */
 }
 
 /* Ensure that the body and html take up the full height of the viewport */
