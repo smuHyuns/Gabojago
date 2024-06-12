@@ -61,7 +61,10 @@
       </div>
     </div>
 
-    <CtaBar inputname="등록하기" />
+    <div class="ctabar">
+      <CtaBar inputname="등록하기" />
+    </div>
+
     <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
   </div>
 </template>
@@ -298,5 +301,13 @@ import CtaBar from '@/components/CtaBar.vue';
   font-weight: 700;
   line-height: 40.32px;
   word-wrap: break-word;
+}
+
+.ctabar{
+  height: 221.28px;
+  margin-top: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

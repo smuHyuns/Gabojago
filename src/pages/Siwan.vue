@@ -4,7 +4,7 @@
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
       <input type="text" placeholder="10자 이내로 입력해주세요." class="middle" v-model="inputname" @input="limitInput" />
     </div>
-
+    
     <CtaBarBlack class="down" inputname="여행자 등록하기" />
   </div>
 </template>
