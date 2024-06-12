@@ -1,72 +1,85 @@
 <template>
   <div class="page-container">
-    <div class="top">여행자님의<br />닉네임을 알려주세요!</div>
-    <input
-      type="text"
-      placeholder="10자 이내로 입력해주세요."
-      class="middle"
-      v-model="inputname"
-    />
+    <div class="container">
+      <div class="top">여행자의<br />닉네임을 적어주세요!</div>
+      <input
+        type="text"
+        placeholder="10자 이내로 입력해주세요."
+        class="middle"
+        v-model="inputname"
+        @input="limitInput"
+      />
+    </div>
 
-    <CtaBar class="down" inputname="click me!" />
+    <CtaBarBlack class="down" inputname="여행자 등록하기" />
   </div>
 </template>
 
 <script setup>
-import CtaBar from "@/components/CtaBarBlack.vue";
+import CtaBarBlack from "@/components/CtaBarBlack.vue";
+import { ref } from "vue";
+
+let inputname = ref(""); // 데이터 바인딩을 위한 변수
+
+// 입력 제한 함수
+const limitInput = (event) => {
+  if (event.target.value.length > 10) {
+    event.target.value = event.target.value.slice(0, 10); // 10자 이후의 문자열을 제거
+  }
+  inputname = event.target.value; // 데이터 업데이트
+};
 </script>
 
 <style scoped>
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 20vh;
+}
 .top {
   font-family: Pretendard;
-  /* 여행자님의 닉네임 알려주세요! (text) */
-  width: 194px;
-  height: 72px;
-
-  font-family: Pretendard;
+  width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 26px;
+  font-size: 50px;
   line-height: 1.4;
   text-align: left;
-  transform: translateX(-50%);
-  position: relative;
-  left: 50%;
-
+  width: 965px;
+  margin: 0 auto;
   color: #353b43;
 }
 .middle {
-  width: 300px;
-  height: 60px;
-  padding: 18px 20px;
-
+  width: 965px;
+  height: 152px;
+  padding: 12px 16px;
+  margin-top: 20px;
   background: #f5f6f7;
-
   border-radius: 16px;
-
-  /* 10자 이내로 입력해주세요 (text) */
-  width: 184px;
-  height: 23px;
-
   font-family: Pretendard;
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 50px;
   line-height: 1.3;
   text-align: center;
-  left: 50%;
-  position: relative;
-  transform: translateX(-50%);
-
   color: #000;
 }
 .page-container {
-  height: inherit;
+  width: 1080px;
+  height: 2340px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #fff;
   position: relative;
 }
 
 .down {
-  /* 아래는 수직으로 중앙 정렬을 위한 코드 */
   position: absolute;
   bottom: 30px;
   left: 50%;
