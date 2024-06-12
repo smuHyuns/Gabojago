@@ -26,7 +26,6 @@ function addSomething() {
   border-radius: 30px;
   border: none;
   /* 글자 관련 CSS 속성 */
-  font-family: Pretendard;
   font-style: normal;
   font-weight: 500;
   font-size: 46px;
