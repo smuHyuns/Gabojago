@@ -29,6 +29,8 @@ const isblack = computed(() => (props.on ? 'cta-bar-black' : 'cta-bar'));
   border-radius: 30px;
   border: none;
   /* 글자 관련 CSS 속성 */
+}
+
 .cta-bar-black {
   width: 965px;
   height: 152px;
