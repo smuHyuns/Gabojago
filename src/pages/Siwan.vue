@@ -2,6 +2,7 @@
   <div class="page-container">
     <div class="container">
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
+
       <input
         type="text"
         placeholder="10자 이내로 입력해주세요."
@@ -11,22 +12,24 @@
       />
     </div>
 
-    <CtaBarBlack class="down" inputname="여행자 등록하기" />
+    <CtaBar class="down" inputname="여행자 등록하기" :on="isblack" />
   </div>
 </template>
 
 <script setup>
-import CtaBarBlack from "@/components/CtaBarBlack.vue";
-import { ref } from "vue";
+import CtaBar from '@/components/CtaBar.vue';
+import { ref, computed } from 'vue';
 
-let inputname = ref(""); // 데이터 바인딩을 위한 변수
+const isblack = ref(false);
+let inputname = ref(''); // 데이터 바인딩을 위한 변수
 
 // 입력 제한 함수
 const limitInput = (event) => {
   if (event.target.value.length > 10) {
-    event.target.value = event.target.value.slice(0, 10); // 10자 이후의 문자열을 제거
+    inputname.value = event.target.value.slice(0, 10); // 10자 이후의 문자열을 제거
   }
-  inputname = event.target.value; // 데이터 업데이트
+  isblack.value = inputname.value.length >= 1;
+  console.log(isblack.value);
 };
 </script>
 
@@ -37,14 +40,13 @@ const limitInput = (event) => {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-top: 20vh;
+  padding-top: 400px;
 }
 .top {
-  font-family: Pretendard;
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 75px;
+  font-size: 90px;
   line-height: 1.4;
   text-align: left;
   width: 965px;
@@ -52,25 +54,26 @@ const limitInput = (event) => {
   color: #353b43;
 }
 .middle {
-  width: 965px;
+  width: 910px;
   height: 152px;
   padding: 12px 16px;
+  padding-left: 50px; /* 왼쪽 마진 */
   margin-top: 20px;
   background: #f5f6f7;
   border-radius: 46px;
-
-  font-family: Pretendard;
   font-style: normal;
   font-weight: 500;
   font-size: 50px;
   line-height: 1.3;
-  text-align: left;
   color: #353b43;
   border: none;
   outline: none; /* 클릭 시 파란 테두리 제거 */
 }
 .middle::placeholder {
   color: #caced4;
+}
+.middle:focus::placeholder {
+  color: transparent; /* 포커스 시 placeholder 숨김 */
 }
 
 .page-container {
@@ -84,12 +87,5 @@ const limitInput = (event) => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-}
-
-.down {
-  position: absolute;
-  bottom: 133px;
-  left: 50%;
-  transform: translateX(-50%);
 }
 </style>
