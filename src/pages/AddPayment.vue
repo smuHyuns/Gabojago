@@ -1,10 +1,7 @@
 <template>
   <div class="payment-box">
-    <Topbar class="topbar" titleText="공동 경비" />
-    <div class="tab-bar">
-      <div class="box">지출 추가</div>
-      <div class="box selected">경비 추가</div>
-    </div>
+    <Topbar class="topbar" titleText="경비" />
+    <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
     <div class="price-box">
       <div class="price-details">
         <div class="print-big-price">0JPY<span class="type-of-money">(일본 엔)</span></div>
@@ -72,30 +69,24 @@
 <script setup>
 import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
+import TopSelect from '@/components/TopSelect.vue';
 </script>
 
 <style scoped>
 .payment-box {
   width: 1080px;
   height: 2340px;
-  max-width: 1080px;
-  margin: 0;
-  padding: 0;
+  overflow: hidden; /* 콘텐츠가 고정된 크기를 초과할 경우 스크롤을 방지 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* 상단에 배치하기 위해 flex-start로 설정 */
+  margin: 0 auto; /* 여유 공간이 있을 경우 뷰포트를 중앙에 배치 */
+  background-color: #fff; /* 선택 사항: 배경색 설정 */
 }
 
 .topbar {
   margin-bottom: 20px;
-}
-
-.payment-box .tab-bar {
-  width: 964.8px;
-  display: flex;
-  padding: 15px;
-  border-radius: 20px;
-  justify-content: center;
-  gap: 20px;
-  background-color: #f5f6f7;
-  margin: 0 auto;
 }
 
 .box {
@@ -118,8 +109,7 @@ import CtaBar from '@/components/CtaBar.vue';
 
 .price-box {
   margin: 50px;
-  width: 964.8px;
-  padding: 15px;
+  width: 965px;
   height: 250px;
   background-color: #f5f6f7;
   /* border: 1px solid black; */
