@@ -1,16 +1,13 @@
 <template>
   <div>
-    <Topbar titleText="여행지 제목" class="topbar" />
-    <CalendarTopbar titleText="2024년 5월" class="calendarTopbar" />
-    <div class="calendar-container">
-      <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
-    </div>
+    <CtaBar inputname="안녕하세요" />
   </div>
 </template>
 
 <script setup>
+import CtaBar from '@/components/CtaBar.vue';
 import { ref } from 'vue';
-import Topbar from '@/components/Topbar.vue';
+CtaBar;
 </script>
 
 <style scoped>
