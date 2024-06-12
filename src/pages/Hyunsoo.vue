@@ -192,7 +192,7 @@ import InfoBox from '@/components/InfoBox.vue';
   color: white !important; /* 선택된 글자 색상 */
   transition-duration: 0.8s;
 }
-
+/* 고쳐야함 */
 .tripCategoryName,
 .tripCategoryCount {
   font-weight: 600;
