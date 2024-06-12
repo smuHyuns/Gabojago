@@ -10,12 +10,21 @@
     <video class="video" autoplay muted playsinline loop>
       <source src="../assets/slide_final.webm" type="video/webm" />
     </video>
-    <CtaBarBlack inputname="다음으로" class="bottom-bar" />
+    <CtaBarBlack inputname="다음으로" class="bottom-bar" @click="navigateToSiwan" />
   </div>
 </template>
+
 <script setup>
+import { useRouter } from 'vue-router'; // useRouter 훅 가져오기
 import CtaBarBlack from '@/components/CtaBarBlack.vue';
+
+const router = useRouter(); // useRouter 훅 사용
+
+const navigateToSiwan = () => {
+  router.push('/siwan'); // Siwan.vue로 이동
+};
 </script>
+
 <style scoped>
 .viewport {
   width: 1080px;
