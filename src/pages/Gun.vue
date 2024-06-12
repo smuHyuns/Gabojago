@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="viewport">
     <TopbarXSign titleText="여행 검색" />
 
     <div class="search-container">

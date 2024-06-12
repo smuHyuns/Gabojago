@@ -5,7 +5,7 @@
 
       <input
         type="text"
-        placeholder="10자 이내로 입력해주세요."
+        placeholder="10자 이내로 입력해주세요"
         class="middle"
         v-model="inputname"
         @input="limitInput"
@@ -63,7 +63,7 @@ const limitInput = (event) => {
   border-radius: 46px;
   font-style: normal;
   font-weight: 500;
-  font-size: 50px;
+  font-size: 60px;
   line-height: 1.3;
   color: #353b43;
   border: none;
