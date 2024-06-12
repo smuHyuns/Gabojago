@@ -9,14 +9,14 @@
       <p class="modal-subtitle">계속해서 등록하시겠어요?</p>
       <div class="modal-buttons">
         <button
-          class="modal-button"
+          class="modal-button-no"
           :class="{ faded: !isNoSelected }"
           @click="selectNo"
         >
           안할래요
         </button>
         <button
-          class="modal-button"
+          class="modal-button-yes"
           :class="{ faded: !isYesSelected }"
           @click="selectYes"
         >
@@ -102,15 +102,17 @@ function closeModal(value) {
   gap: 30px;
 }
 
-.modal-button:hover {
-  background: #2e3240; /* hover 시 배경색 변경 */
-  color: white; /* hover 시 글자색 변경 */
-}
+/* .modal-button:hover {
+  background: #2e3240; hover 시 배경색 변경
+  color: white; hover 시 글자색 변경
+} */
+/* 2024.06.12 호버삭제 */
 
-.modal-button {
+.modal-button-no {
   font-style: normal;
-  font-weight: 520;
+  font-weight: 600;
   font-size: 40px;
+  color: #8892a0;
   width: 350px;
   padding: 35px;
   border: none;
@@ -119,12 +121,21 @@ function closeModal(value) {
   transition: background 0.3s, color 0.3s;
 }
 
-.faded {
-  background: lightgray;
-  color: darkgray;
+.modal-button-yes {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 40px;
+  color: white;
+  width: 350px;
+  padding: 35px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  background: #3e444e;
+  transition: background 0.3s, color 0.3s;
 }
 
-.modal-button:not(.faded) {
+.modal-button-no:not(.faded) {
   background: #3e444e;
   color: white;
 }
