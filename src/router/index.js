@@ -5,6 +5,8 @@ import Hyunsoo from '@/pages/Hyunsoo.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
 import TravleName from '@/pages/TravleName.vue';
+import Member from '@/pages/Member.vue';
+import Err from '@/pages/Err.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,9 +37,19 @@ const router = createRouter({
       component: Siwan,
     },
     {
-      path: '/TravleName',
-      name: 'TravleName',
+      path: '/travleName',
+      name: 'travleName',
       component: TravleName,
+    },
+    {
+      path: '/member',
+      name: 'member',
+      component: Member,
+    },
+    {
+      path: '/err',
+      name: 'err',
+      component: Err,
     },
   ],
 });

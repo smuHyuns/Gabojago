@@ -8,6 +8,8 @@
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
     <h3><router-link to="/TravleName">TravleName 이동</router-link></h3>
+    <h3><router-link to="/Member">Member 이동</router-link></h3>
+    <h3><router-link to="/Err">Err 이동</router-link></h3>
     <hr />
 
     &nbsp;
