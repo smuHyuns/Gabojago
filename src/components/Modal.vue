@@ -103,10 +103,14 @@ function closeModal(value) {
 }
 
 /* .modal-button:hover {
-  background: #2e3240; hover 시 배경색 변경
-  color: white; hover 시 글자색 변경
+  background: #2e3240;
+/* color: white;
 } */
 /* 2024.06.12 호버삭제 */
+
+/* .modal-button-no:not(.faded) {
+  background: #3e444e;
+  color: white;} */
 
 .modal-button-no {
   font-style: normal;
@@ -133,10 +137,5 @@ function closeModal(value) {
   cursor: pointer;
   background: #3e444e;
   transition: background 0.3s, color 0.3s;
-}
-
-.modal-button-no:not(.faded) {
-  background: #3e444e;
-  color: white;
 }
 </style>
