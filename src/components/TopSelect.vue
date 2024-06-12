@@ -16,6 +16,8 @@
         >
           {{ twotitle }}
         </div>
+        <!-- 강조선을 titles 클래스의 하위 요소로 이동 -->
+        <div class="highlight" :style="{ left: highlightPosition }"></div>
       </div>
     </div>
     <div class="content" v-if="activeTitle === 'onetitle'">
@@ -39,31 +41,33 @@ const props = defineProps({
   secondInput: String,
 });
 
-// 초기 activeTitle 값을 'onetitle'로 설정
 const activeTitle = ref('onetitle');
-//아
+const highlightPosition = ref('0px');
+
 const toggle = (title) => {
-  // activeTitle 값이 변경될 때 항상 하나의 타이틀이 선택되도록 설정
   if (activeTitle.value !== title) {
     activeTitle.value = title;
+    highlightPosition.value = title === 'twotitle' ? '50px' : '0px';
   }
 };
 </script>
 
 <style scoped>
 .titlebox {
+  position: relative;
   width: 965px;
   height: 150px;
-  /* padding: 17.28px; */
   background: #f5f6f7;
-  border-radius: 28.8px;
+  border-radius: 30px;
   display: flex;
-  justify-content: center; /* 그룹을 중앙 정렬 */
-  align-items: center; /* 수직으로 중앙 정렬 */
+  justify-content: center;
+  align-items: center;
 }
 
 .titles {
   display: flex;
+  position: relative;
+  overflow: hidden;
 }
 
 .onetitle,
