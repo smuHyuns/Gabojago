@@ -41,7 +41,7 @@ const props = defineProps({
 
 // 초기 activeTitle 값을 'onetitle'로 설정
 const activeTitle = ref('onetitle');
-
+//아
 const toggle = (title) => {
   // activeTitle 값이 변경될 때 항상 하나의 타이틀이 선택되도록 설정
   if (activeTitle.value !== title) {
