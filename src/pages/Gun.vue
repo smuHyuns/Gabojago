@@ -100,7 +100,6 @@ const countries = {
     { name: '인도네시아', flag: 'indonesia.png' },
     { name: '싱가포르', flag: 'singapore.png' },
     { name: '라오스', flag: 'laos.png' },
-
     // ... 나머지 아시아 국가들
   ],
   유럽: [
@@ -121,7 +120,6 @@ const countries = {
   아프리카: [
     { name: '이집트', flag: 'egypt.png' },
     { name: '남아프리카 공화국', flag: 'southafrica.png' },
-
     // ... 나머지 아프리카 국가들
   ],
   오세아니아: [

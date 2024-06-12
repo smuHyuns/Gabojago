@@ -1,4 +1,3 @@
-<!-- Cal.vue -->
 <template>
   <div class="calendar-container">
     <h1 style="color: black">{{ selectedDateValue }}</h1>
@@ -56,9 +55,11 @@ const selectedDates = ref([]);
 const highlightDates = ref([]);
 const selectedDateValue = ref('');
 const emit = defineEmits(['dateSelected']);
+
 function handleDateSelect(date) {
   emit('dateSelected', date); // 선택한 날짜를 부모 컴포넌트로 전달
 }
+
 function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1);
   const daysInMonth = new Date(
