@@ -10,7 +10,11 @@
     <video class="video" autoplay muted playsinline loop>
       <source src="../assets/slide_final.webm" type="video/webm" />
     </video>
-    <CtaBarBlack inputname="다음으로" class="bottom-bar" @click="navigateToSiwan" />
+    <CtaBarBlack
+      inputname="다음으로"
+      class="bottom-bar"
+      @click="navigateToSiwan"
+    />
   </div>
 </template>
 
@@ -64,5 +68,7 @@ const navigateToSiwan = () => {
 
 .bottom-bar {
   margin-bottom: 133px; /* 하단에서 약간의 공간 추가 */
+  cursor: pointer;
+  z-index: 8888;
 }
 </style>

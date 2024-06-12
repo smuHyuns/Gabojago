@@ -59,7 +59,7 @@
     </div>
 
     <div class="ctabar">
-      <CtaBar inputname="등록하기" />
+      <CtaBar inputname="등록하기" @click="navigateToHyunsoo"/>
     </div>
 
     <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
@@ -70,6 +70,15 @@
 import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import TopSelect from '@/components/TopSelect.vue';
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const navigateToHyunsoo = () => {
+  router.push({
+    path: '/hyunsoo',
+  });
+};
 </script>
 
 <style scoped>
@@ -83,6 +92,7 @@ import TopSelect from '@/components/TopSelect.vue';
   justify-content: flex-start; /* 상단에 배치하기 위해 flex-start로 설정 */
   margin: 0 auto; /* 여유 공간이 있을 경우 뷰포트를 중앙에 배치 */
   background-color: #fff; /* 선택 사항: 배경색 설정 */
+  
 }
 
 .topbar {

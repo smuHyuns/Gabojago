@@ -4,7 +4,7 @@
     <div class="content">
       <InputBox TextInput="제목을 입력해 주세요" />
     </div>
-    <CtaBar inputname="여행 등록하기" />
+    <CtaBar inputname="여행 등록하기" @click="navigateToAddPayment" />
   </div>
 </template>
 
@@ -12,6 +12,13 @@
 import Topbar from '@/components/Topbar.vue';
 import InputBox from '@/components/InputBox.vue';
 import CtaBar from '@/components/CtaBar.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigateToAddPayment = () => {
+  router.push('/addPayment');
+};
 </script>
 
 <style scoped>

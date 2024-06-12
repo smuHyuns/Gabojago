@@ -1,6 +1,6 @@
 <template>
   <div class="BlueBox">
-    <Header class="header" />
+    <Header class="header" style="z-index: 9999;"/>
     <div class="imgContainer">
       <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
@@ -14,70 +14,42 @@
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
-        <li class="tripCategory selected">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '전체' }" @click="selectCategory('전체')">
           <div class="tripCategoryName">전체</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ totalTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '여행 중' }" @click="selectCategory('여행 중')">
           <div class="tripCategoryName">여행 중</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ ongoingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '다가오는 여행' }" @click="selectCategory('다가오는 여행')">
           <div class="tripCategoryName">다가오는 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ upcomingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '완료' }" @click="selectCategory('완료')">
           <div class="tripCategoryName">지난 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ completedTrips }}</div>
         </li>
       </ul>
     </div>
     <div class="planListBox">
-      <div class="useBox">
+      <div 
+        class="useBox" 
+        v-for="(trip, index) in filteredTrips" 
+        :key="index"
+        :class="{ faded: trip.daysUntilTrip === 0 }"
+      >
         <img class="useBox-img" src="../assets/비행기토끼.png"></img>
         <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
+          <span class="useBox-txt-main">{{ trip.describe }}</span><br />
+          <span class="useBox-txt-sub">
+            <template v-if="trip.daysUntilTrip > 0">
+              {{ trip.country }} · D-{{ trip.daysUntilTrip }}
+            </template>
+            <template v-else>
+              {{ formatPeriod(trip.startPeriod, trip.endPeriod) }}
+            </template>
+          </span>
         </div>
         <div class="useBox-detail">
           <img src="../assets/chevron-left.png" />
@@ -91,9 +63,63 @@
 <script setup>
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
+import { ref, computed, onMounted } from 'vue';
+
+const totalTrips = ref(0);
+const ongoingTrips = ref(0);
+const upcomingTrips = ref(0);
+const completedTrips = ref(0);
+const trips = ref([]);
+const selectedCategory = ref('전체');
+
+const formatPeriod = (start, end) => {
+  const formatDate = (date) => {
+    const [year, month, day] = date.split('-');
+    return `${year.slice(2)}.${month}.${day}`;
+  };
+  const startDate = formatDate(start);
+  const endDate = formatDate(end);
+  return `${startDate} ~ ${endDate}`;
+};
+
+const selectCategory = (category) => {
+  selectedCategory.value = category;
+};
+
+const filteredTrips = computed(() => {
+  if (selectedCategory.value === '전체') {
+    return trips.value;
+  }
+  return trips.value.filter(trip => trip.travelComplete === selectedCategory.value);
+});
+
+onMounted(async () => {
+  try {
+    const response = await fetch('/db.json'); // JSON 파일 경로 확인
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    const userTrips = data.users[0].trips;
+
+    trips.value = userTrips;
+    totalTrips.value = userTrips.length;
+    ongoingTrips.value = userTrips.filter(trip => trip.travelComplete === '여행 중').length;
+    upcomingTrips.value = userTrips.filter(trip => trip.travelComplete === '다가오는 여행').length;
+    completedTrips.value = userTrips.filter(trip => trip.travelComplete === '완료').length;
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+  }
+});
 </script>
 
+
+
 <style scoped>
+.faded {
+  opacity: 0.7;
+}
+
 .BlueBox {
   height: 1170px;
   width: 1080px;
