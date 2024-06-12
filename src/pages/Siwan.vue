@@ -11,14 +11,15 @@
       />
     </div>
 
-    <CtaBar class="down" inputname="click me!" />
+    <CtaBarBlack class="down" inputname="여행자 등록하기" />
   </div>
 </template>
 
 <script setup>
-import CtaBar from "@/components/CtaBarBlack.vue";
+import CtaBarBlack from "@/components/CtaBarBlack.vue";
+import { ref } from "vue";
 
-let inputname = ""; // 데이터 바인딩을 위한 변수
+let inputname = ref(""); // 데이터 바인딩을 위한 변수
 
 // 입력 제한 함수
 const limitInput = (event) => {
@@ -53,14 +54,14 @@ const limitInput = (event) => {
 .middle {
   width: 965px;
   height: 152px;
-  padding: 46px 12px;
+  padding: 12px 16px;
   margin-top: 20px;
   background: #f5f6f7;
   border-radius: 16px;
   font-family: Pretendard;
   font-style: normal;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 50px;
   line-height: 1.3;
   text-align: center;
   color: #000;
@@ -75,6 +76,7 @@ const limitInput = (event) => {
   justify-content: center;
   margin: 0 auto;
   background-color: #fff;
+  position: relative;
 }
 
 .down {
