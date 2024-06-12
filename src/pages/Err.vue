@@ -1,7 +1,7 @@
 <template>
   <div class="viewport">
     <div class="img">
-      <img src="../assets/토끼울음.png" />
+      <img src="../assets/토끼울음.png" />
     </div>
     <div class="textbox">
       <div class="error-message">앗! 오류가 발생했어요..</div>
@@ -50,10 +50,6 @@ import CtaBarBlack from '@/components/CtaBarBlack.vue';
   text-align: center;
   color: #8892a0;
   margin-top: 16px; /* 텍스트 사이의 여백 설정 */
-}
-
-.spacer {
-  flex-grow: 1; /* Spacer element to push the button to the bottom */
 }
 
 .img img {
