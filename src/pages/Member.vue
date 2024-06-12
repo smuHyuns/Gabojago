@@ -8,7 +8,7 @@
     </div>
     <div class="spacer"></div>
     <!-- Spacer 추가 -->
-    <CtaBar inputname="다음으로" class="bottom-bar" />
+    <CtaBar inputname="다음으로" />
   </div>
 </template>
 

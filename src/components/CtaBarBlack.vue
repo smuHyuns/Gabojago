@@ -19,7 +19,7 @@ function addSomething() {
 <style scoped>
 .cta-bar {
   position: absolute;
-  bottom: 110px; /* 바닥으로부터 45px 위에 고정 */
+  bottom: 150px; /* 바닥으로부터 45px 위에 고정 */
   left: 50%;
   transform: translateX(-50%);
   width: 965px;
