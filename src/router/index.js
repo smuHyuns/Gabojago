@@ -47,6 +47,8 @@ const router = createRouter({
       path: '/err',
       name: 'err',
       component: Err,
+    },
+    {
       path: '/modal',
       name: 'modal',
       component: Modal,

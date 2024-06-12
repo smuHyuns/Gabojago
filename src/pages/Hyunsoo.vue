@@ -73,6 +73,16 @@
           <img src="../assets/chevron-left.png" />
         </div>
       </div>
+      <div class="useBox">
+        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+        <div class="useBox-txt">
+          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
+          <span class="useBox-txt-sub">D-3</span>
+        </div>
+        <div class="useBox-detail">
+          <img src="../assets/chevron-left.png" />
+        </div>
+      </div>
     </div>
     <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
   </div>
@@ -126,7 +136,6 @@ import InfoBox from '@/components/InfoBox.vue';
   height: 430px;
   bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
-
   margin: 0;
   background: linear-gradient(
     180deg,
@@ -199,31 +208,20 @@ import InfoBox from '@/components/InfoBox.vue';
   background-color: var(--grey-700); /* 선택된 배경 색상 */
   color: white !important; /* 선택된 글자 색상 */
 }
-/* .planListBox {
-  width: 900px;
-  height: 900px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
 
 .planListBox {
   width: 900px;
-  height: 1157.76px;
+  max-height: 950px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
   gap: 20px;
+  overflow-x: hidden; /* 수평 스크롤 비활성화 */
   overflow-y: scroll; /* 수직 스크롤 활성화 */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
-.planListBox::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
 .noneBox {
   font-size: 40px;
   text-align: center;
@@ -238,9 +236,10 @@ import InfoBox from '@/components/InfoBox.vue';
   margin: 0;
   padding: 0;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  gap:100px;
+  gap: 100px;
 }
 
 .useBox-txt {

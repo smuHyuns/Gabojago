@@ -3,23 +3,13 @@
     <TopbarXSign titleText="여행 검색" />
 
     <div class="search-container">
-      <CountrySearch
-        v-model="searchQuery"
-        @search="filterCountries"
-        placeholder="찾으시는 국가명을 입력해주세요"
-      />
+      <CountrySearch v-model="searchQuery" @search="filterCountries" placeholder="찾으시는 국가명을 입력해주세요" />
     </div>
 
     <div class="whiteBox">
       <div class="kindTripBox">
         <ul>
-          <li
-            v-for="(category, index) in categories"
-            :key="index"
-            class="tripCategory"
-            :class="{ selected: selectedCategory === category }"
-            @click="selectCategory(category)"
-          >
+          <li v-for="(category, index) in categories" :key="index" class="tripCategory" :class="{ selected: selectedCategory === category }" @click="selectCategory(category)">
             <div class="tripCategoryName">{{ category }}</div>
           </li>
         </ul>
@@ -52,15 +42,7 @@ const searchQuery = ref('');
 const selectedCategory = ref('전체');
 const selectedCountries = ref([]);
 
-const categories = [
-  '전체',
-  '아시아',
-  '유럽',
-  '북아메리카',
-  '남아메리카',
-  '아프리카',
-  '오세아니아',
-];
+const categories = ['전체', '아시아', '유럽', '북아메리카', '남아메리카', '아프리카', '오세아니아'];
 
 const countries = {
   전체: [
@@ -120,9 +102,7 @@ function getFlagSrc(flag) {
 const filteredCountries = computed(() => {
   let filtered = countries[selectedCategory.value];
   if (searchQuery.value) {
-    filtered = filtered.filter((country) =>
-      country.name.includes(searchQuery.value)
-    );
+    filtered = filtered.filter((country) => country.name.includes(searchQuery.value));
   }
   return filtered;
 });
