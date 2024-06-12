@@ -32,7 +32,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1000px%;
+  height: 1000px;
   margin-top: 70px;
   border: 1px solid black;
 }

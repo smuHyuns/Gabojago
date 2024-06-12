@@ -7,6 +7,10 @@
     <h3><router-link to="/gun">gun 이동</router-link></h3>
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
+
+    <h3><router-link to="/addPayment">addPayment 이동</router-link></h3>
+    <h3><router-link to="/TravleName">TravleName 이동</router-link></h3>
+    <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
     <h3><router-link to="/modal">modal-test</router-link></h3>
     <hr />
 
@@ -26,6 +30,10 @@
   margin: 0px auto;
   padding: 0px;
   font-family: 'Pretendard-Regular';
+}
+
+#app {
+  margin: 0;
 }
 
 @font-face {

@@ -4,8 +4,10 @@ import Isu from '@/pages/Isu.vue';
 import Hyunsoo from '@/pages/Hyunsoo.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
+import TravleName from '@/pages/TravleName.vue';
+import AddPayment from '@/pages/AddPayment.vue';
+import Calendar from '@/pages/Calendar.vue';
 import Modal from '@/components/Modal.vue';
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +40,21 @@ const router = createRouter({
       path: '/modal',
       name: 'modal',
       component: Modal,
+    },
+    {
+      path: '/TravleName',
+      name: 'TravleName',
+      component: TravleName,
+    },
+    {
+      path: '/addpayment',
+      name: 'AddPayment',
+      component: AddPayment,
+    },
+    {
+      path: '/calendar',
+      name: 'Calendar',
+      component: Calendar,
     },
   ],
 });

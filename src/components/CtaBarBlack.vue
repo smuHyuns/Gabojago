@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps } from 'vue';
 
 const props = defineProps({
   inputname: String,
@@ -18,8 +18,8 @@ function addSomething() {
 
 <style scoped>
 .cta-bar {
-  width: 375px;
-  height: 77px;
+  width: 965px;
+  height: 152px;
   padding: 12px 16px;
   background: #3e444e;
   border-radius: 10px;
