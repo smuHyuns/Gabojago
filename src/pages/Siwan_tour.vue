@@ -1,6 +1,10 @@
 <template>
-  <div>테스트</div>
-  <div><HistoryListItem list="관광" /></div>
+  <div></div>
+  <div>
+    <HistoryListItem list="관광" number="-5,109" number2="-580" />
+
+    <HistoryListItem list="현금" number="+1,000,000" number2="+11,392.77" />
+  </div>
 </template>
 
 <script setup>
