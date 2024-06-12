@@ -7,6 +7,7 @@ import Siwan from '@/pages/Siwan.vue';
 import TravleName from '@/pages/TravleName.vue';
 import AddPayment from '@/pages/AddPayment.vue';
 import Calendar from '@/pages/Calendar.vue';
+import Modal from '@/components/Modal.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/siwan',
       name: 'siwan',
       component: Siwan,
+    },
+    {
+      path: '/modal',
+      name: 'modal',
+      component: Modal,
     },
     {
       path: '/TravleName',
