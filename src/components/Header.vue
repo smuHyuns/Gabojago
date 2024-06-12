@@ -1,14 +1,29 @@
 <template>
   <div class="header">
-    <img class="logoBox" src="../assets/logo.png" />
+    <img class="logoBox" src="../assets/logo.png" @click="navigateToHyunsoo" />
     <div class="icon-container">
-      <img class="infoIcon" src="../assets/userInfoIcon.png" />
+      <img
+        class="infoIcon"
+        src="../assets/userInfoIcon.png"
+        @click="navigateToIsu"
+      />
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+
+const navigateToIsu = () => {
+  router.push('/isu');
+};
+
+const navigateToHyunsoo = () => {
+  router.push('/hyunsoo');
+};
+</script>
 <style scoped>
 .header {
   display: flex;
@@ -24,6 +39,7 @@
   margin-left: 75px;
   transform: scale(1.1);
   transform-origin: center left; /* 확장 중심을 왼쪽으로 설정 */
+  cursor: pointer;
 }
 
 .icon-container {
@@ -36,5 +52,6 @@
   margin-right: 75px;
   height: 70px;
   object-fit: cover;
+  cursor: pointer; /* 아이콘에 커서 포인터 추가 */
 }
 </style>

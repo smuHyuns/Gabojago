@@ -8,7 +8,7 @@
     </div>
     <div class="spacer"></div>
     <!-- Spacer 추가 -->
-    <CtaBar inputname="다음으로" />
+    <CtaBar inputname="다음으로" @click="navigateToTravelName" />
   </div>
 </template>
 
@@ -16,6 +16,13 @@
 import Topbar from '@/components/Topbar.vue';
 import MemberAdd from '@/components/MemberAdd.vue';
 import CtaBar from '@/components/CtaBar.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigateToTravelName = () => {
+  router.push('/TravelName');
+};
 </script>
 
 <style scoped>

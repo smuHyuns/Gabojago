@@ -2,12 +2,18 @@
   <div class="box">
     <div class="firstBox">{{ firstInput }}</div>
     <div class="secondBox">{{ secondInput }}</div>
-    <div class="thirdBox">{{ thirdInput }}</div>
+    <div class="thirdBox" @click="navigateToGun">{{ thirdInput }}</div>
   </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const navigateToGun = () => {
+  router.push('/gun');
+};
 
 const props = defineProps({
   firstInput: String,
@@ -63,6 +69,7 @@ const props = defineProps({
 }
 
 .thirdBox {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   padding: 36px 38px 36px 36px;
