@@ -25,18 +25,20 @@
         </ul>
       </div>
     </div>
-
-    <div class="country-buttons">
-      <CountryButton
-        v-for="country in filteredCountries"
-        :key="country.name"
-        :countryName="country.name"
-        :flagSrc="getFlagSrc(country.flag)"
-        :isSelected="selectedCountries.includes(country.name)"
-        @update:isSelected="updateSelectedCountries(country.name)"
-      />
+    <div class="country-buttons-box">
+      <div class="country-buttons">
+        <CountryButton
+          v-for="country in filteredCountries"
+          :key="country.name"
+          :countryName="country.name"
+          :flagSrc="getFlagSrc(country.flag)"
+          :isSelected="selectedCountries.includes(country.name)"
+          @update:isSelected="updateSelectedCountries(country.name)"
+        />
+      </div>
     </div>
   </div>
+  <CtaBar inputname="다음으로" />
 </template>
 
 <script setup>
@@ -44,6 +46,7 @@ import { ref, computed } from 'vue';
 import TopbarXSign from '@/components/TopbarXSign.vue';
 import CountrySearch from '@/components/CountrySearch.vue';
 import CountryButton from '@/components/CountryButton.vue';
+import CtaBar from '@/components/CtaBar.vue';
 
 const searchQuery = ref('');
 const selectedCategory = ref('전체');
@@ -69,6 +72,10 @@ const countries = {
     { name: '태국', flag: 'thailand.png' },
     { name: '말레이시아', flag: 'malaysia.png' },
     { name: '필리핀', flag: 'philippines.png' },
+    { name: '프랑스', flag: 'france.png' },
+    { name: '독일', flag: 'germany.png' },
+    { name: '프랑스', flag: 'france.png' },
+    { name: '독일', flag: 'germany.png' },
     { name: '프랑스', flag: 'france.png' },
     { name: '독일', flag: 'germany.png' },
     // ... 다른 국가들 추가
@@ -220,6 +227,13 @@ function updateSelectedCountries(countryName) {
 
 .tripCategoryCount {
   font-size: 22px; /* 글자 크기를 더 키움 */
+}
+
+.country-buttons-box {
+  width: 1080px;
+  height: 1350.72px;
+  overflow-y: scroll;
+  padding-bottom: 20px;
 }
 
 .country-buttons {
