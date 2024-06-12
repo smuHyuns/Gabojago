@@ -7,34 +7,36 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+// 스크립트 블록 내용이 필요한 경우 작성합니다.
+</script>
 
 <style scoped>
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 1080px; /* 전체 너비를 1080px로 지정 */
+  height: 184px; /* 전체 높이를 184px로 지정 */
   padding: 0;
 }
 
 .logoBox {
-  max-width: 240px;
+  width: 243px; /* 가로를 243px로 설정 */
   max-height: 140px;
   margin-left: 75px;
-  transform: scale(1.1);
-  transform-origin: center left; /* 확장 중심을 왼쪽으로 설정 */
 }
 
 .icon-container {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start; /* 왼쪽 정렬로 변경 */
   flex-grow: 1;
 }
 
 .infoIcon {
-  margin-right: 75px;
+  width: 69px; /* 가로를 69px로 설정 */
   height: 70px;
   object-fit: cover;
+  margin-right: 75px; /* 오른쪽 마진을 추가하여 오른쪽으로 밀어냄 */
 }
 </style>
