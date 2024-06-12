@@ -6,7 +6,7 @@
       </div>
     </div>
     &nbsp;
-    <h1>App화면</h1>
+    <h1>App화면1</h1>
     <hr />
     <h3><router-link to="/">home 이동</router-link></h3>
     <h3><router-link to="/isu">isu 이동</router-link></h3>
