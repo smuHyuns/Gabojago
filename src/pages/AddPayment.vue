@@ -54,6 +54,10 @@
           <img class="category-box-img" src="../assets/비행기토끼.png"></img>
           <div class="category-box-txt">여행</div>
         </div>
+        <div class="category-box-component">
+          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
+          <div class="category-box-txt">여행</div>
+        </div>
       </div>
     </div>
 
@@ -264,6 +268,8 @@ import CtaBar from '@/components/CtaBar.vue';
   display: flex;
   justify-content: space-between;
   gap: 30px;
+  overflow-x: scroll; /* 수평 스크롤 비활성화 */
+  overflow-y: hidden; /* 수직 스크롤 활성화 */
 }
 
 .category-box-component {
@@ -274,6 +280,7 @@ import CtaBar from '@/components/CtaBar.vue';
   align-items: center;
   gap: 10px;
   display: flex;
+  flex-shrink: 0;
   margin: 0;
 }
 
