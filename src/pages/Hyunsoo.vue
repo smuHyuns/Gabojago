@@ -2,13 +2,13 @@
   <div class="BlueBox">
     <Header class="header" style="z-index: 9999;"/>
     <div class="imgContainer">
-      <img src="../assets/비행기토끼.png" class="rabbitImg" />
+    <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
     <InfoBox
       class="infoBox"
       firstInput="돈 관리는 저희가 도와드릴게요"
       secondInput="어디로 떠나시나요?"
-      thirdInput="여행 등록하기 >"
+      thirdInput="여행 등록하기"
     />
   </div>
   <div class="whiteBox">
@@ -39,7 +39,7 @@
         :key="index"
         :class="{ faded: trip.daysUntilTrip === 0 }"
       >
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
           <span class="useBox-txt-main">{{ trip.describe }}</span><br />
           <span class="useBox-txt-sub">
@@ -52,7 +52,7 @@
           </span>
         </div>
         <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
+                  <img src="../assets/userBox-left.png" />
         </div>
       </div>
     </div>
@@ -123,7 +123,7 @@ onMounted(async () => {
 }
 
 .BlueBox {
-  height: 1170px;
+  height: 1180px;
   width: 1080px;
   margin: 0;
   background-color: var(--blue-200);
@@ -136,6 +136,7 @@ onMounted(async () => {
   padding-bottom: 0;
 }
 
+
 .imgContainer {
   display: flex;
   justify-content: center;
@@ -144,26 +145,23 @@ onMounted(async () => {
   position: relative;
 }
 
-.rabbitImg {
-  max-width: 100%;
-  max-height: calc(100% - 220px);
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  transform: scale(1.1);
-  margin-top: 20px;
-}
-
 .header {
   position: relative;
-  top: 170px;
+  top: 126px; /* 기존에는 170px이었음 */
+}
+
+.rabbitImg {
+  width: 604px;
+  height: auto;
+  object-fit: contain;
+  margin-top: 92px; /* 헤더와의 간격을 조정 */
 }
 
 .infoBox {
   position: absolute;
-  height: 430px;
-  bottom: 0;
-  width: 100%;
+  height: 476px;
+  bottom: 0; 
+  width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
   margin: 0;
   background: linear-gradient(
     180deg,
@@ -174,23 +172,25 @@ onMounted(async () => {
 }
 
 .whiteBox {
-  height: 1160px;
+  height: 1115px;
   width: 1080px;
-  background-color: var(--grey-0);
-  margin: 0;
-  position: relative;
+  background-color: #fff;
+  /* margin: 0; */
+  position: relative; /* 버튼 위치 설정을 위한 기준 요소 */
 }
+
+/* 카테고리 css start*/
 
 .kindTripBox {
   max-width: 1080px;
-  height: 100px;
+  height: 184px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
-  overflow-x: auto;
-  justify-content: flex-start;
-  margin: 30px;
+  padding: 0;
+  overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
+  justify-content: flex-start; /* 좌측 정렬 */
+  margin: 0 58px;
 }
 
 .kindTripBox ul {
@@ -202,51 +202,62 @@ onMounted(async () => {
 }
 
 .tripCategory {
-  height: 60px;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  display: inline-flex;
-  background: var(--grey-200);
-  border-radius: 40px;
-  padding: 20px 25px;
-  font-size: 30px;
-  color: var(--grey-700);
+  height: 94px; 
+  padding: 0 34px;
+  gap: 15px; 
+  display: flex; /* 가로 정렬을 위해 flex로 설정 */
+  align-items: center; /* 텍스트를 수직 가운데 정렬 */
+  background: #F5F6F7; 
+  border-radius: 57px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #8892A0; 
 }
+
 
 .tripCategory:hover {
-  background-color: var(--grey-700);
-  color: white !important;
-  transition-duration: 0.8s;
+  background-color: #616B79; 
+  color: #FFFFFF !important;
+  transition-duration: 0.5s;
 }
-/* 고쳐야함 */
-.tripCategoryName,
-.tripCategoryCount {
-  font-weight: 600;
-  word-wrap: break-word;
+
+.tripCategoryName {
+  font-weight: 500;
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호로 표시 */
   color: inherit;
+  white-space: nowrap; /* 한 줄로만 표시되도록 설정 */
 }
 
 .tripCategoryCount {
-  font-size: 22px;
+  font-weight: 500;
+  word-wrap: break-word;
+  color: inherit; 
 }
+
+.tripCategoryCount {
+  font-size: 40px; 
+}
+
 
 .selected {
-  background-color: var(--grey-700);
-  color: white !important;
+  background-color: #616B79; 
+  color: #FFFFFF !important; 
 }
 
+/* 카테고리 css end*/
+
 .planListBox {
-  width: 900px;
+  width: 964px;
   max-height: 950px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
-  gap: 20px;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  gap: 35px;
+  overflow-x: hidden; /* 수평 스크롤 비활성화 */
+  overflow-y: scroll; /* 수직 스크롤 활성화 */
 }
 
 .noneBox {
@@ -259,18 +270,17 @@ onMounted(async () => {
   width: 100%;
   height: 259.2px;
   background: #f5f6f7;
-  border-radius: 28.8px;
+  border-radius: 29px;
   margin: 0;
   padding: 0;
   display: flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  gap: 100px;
 }
 
 .useBox-txt {
-  margin: 0;
+  margin: 0; /* 이전에 있던 여백 제거 */
   padding: 0;
 }
 
@@ -278,35 +288,47 @@ onMounted(async () => {
   width: 144px;
   height: 144px;
   object-fit: cover;
-  background: #d9d9d9;
-  border-radius: 9999px;
+  margin-right: 27px; /* 이미지 오른쪽 여백 조정 */
+  margin-left: 48px; /* 왼쪽 여백 추가 */
 }
+
+
+.useBox-detail img {
+  width: 69px;
+  height: auto;
+  margin-right: auto; /* 이미지를 왼쪽으로 붙임 */
+}
+
 
 .useBox-txt-main {
   color: #3e444e;
-  font-size: 46.08px;
-  font-weight: 600;
-  line-height: 46.08px;
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 46px;
   word-wrap: break-word;
-  padding: 10px;
+  display: block;
+  padding-bottom: 20px; /* 간격 조정 */
 }
 
 .useBox-txt-sub {
   color: #8892a0;
-  font-size: 34.56px;
-  font-weight: 400;
-  line-height: 34.56px;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 34px;
   word-wrap: break-word;
-  padding: 10px;
+  display: block;
 }
 
+
 .addPlanBtn {
-  width: 200px;
-  height: 200px;
+  width: 161px;
+  height: 161x;
   position: absolute;
-  right: 50px;
-  bottom: 100px;
+  border-radius: 100%;
+  right: 59px; /* 오른쪽 50px 위치 */
+  bottom: 108px; /* 아래쪽 100px 위치 */
   border: none;
   cursor: pointer;
+  box-shadow: 0px 0px 28px rgba(0, 0, 0, 0.15);
 }
 </style>
