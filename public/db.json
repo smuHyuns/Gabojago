@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "nickname": "가보자고",
+      "nickname": "ㅇㅇㅇ",
       "trips": [
         {
           "daysUntilTrip": 0,
@@ -199,6 +199,174 @@
           ],
           "totalBudget": -2134.37,
           "usedBudget": 2134.37,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-10",
+          "endPeriod": "2024-06-14",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "여행 중",
+          "describe": "가보자고~",
+          "headcount": 2,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 1000,
+              "convertedAmount": 8750
+            }
+          ],
+          "totalBudget": -8750,
+          "usedBudget": 8750,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 5,
+          "startPeriod": "2024-06-18",
+          "endPeriod": "2024-06-20",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "가보는거야!",
+          "headcount": 2,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "",
+              "category": "",
+              "amount": null,
+              "convertedAmount": 0
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 14,
+          "startPeriod": "2024-06-27",
+          "endPeriod": "2024-06-29",
+          "category": "쇼핑",
+          "country": "중국",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "야호",
+          "headcount": 2,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "나는달라",
+              "category": "쇼핑",
+              "amount": 613,
+              "convertedAmount": 5362.16
+            }
+          ],
+          "totalBudget": -5362.16,
+          "usedBudget": 5362.16,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 40,
+          "startPeriod": "2024-07-23",
+          "endPeriod": "2024-07-26",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "가보자고",
+          "headcount": 2,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 1000,
+              "convertedAmount": 8750
+            }
+          ],
+          "totalBudget": -8750,
+          "usedBudget": 8750,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 4,
+          "startPeriod": "2024-06-17",
+          "endPeriod": "2024-06-21",
+          "category": "",
+          "country": "베트남",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "ㅇㅇ",
+          "headcount": 2,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 0,
+              "convertedAmount": 0
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 3,
+          "startPeriod": "2024-06-16",
+          "endPeriod": "2024-06-21",
+          "category": "쇼핑",
+          "country": "중국",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "건우형하이",
+          "headcount": 3,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "건우형하이",
+              "category": "쇼핑",
+              "amount": 333,
+              "convertedAmount": 2912.88
+            }
+          ],
+          "totalBudget": -2912.88,
+          "usedBudget": 2912.88,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 32,
+          "startPeriod": "2024-07-15",
+          "endPeriod": "2024-07-19",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "야이샛기야!!",
+          "headcount": 3,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 0,
+              "convertedAmount": 0
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
           "remainingBudget": 0
         }
       ],

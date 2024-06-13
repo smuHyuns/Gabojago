@@ -1,5 +1,6 @@
 <template>
   <div class="payment-box">
+    <Modal @close="handleModalClose" @confirm="handleModalConfirm" />
     <Topbar class="topbar" titleText="경비" />
     <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
     <div class="price-box">
@@ -42,6 +43,7 @@ import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import TopSelect from '@/components/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
+import Modal from '@/components/Modal.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -49,8 +51,8 @@ const route = useRoute();
 const amountJPY = ref(0);
 const displayAmountJPY = ref('');
 const conversionResult = ref({ KRW: 0 });
-const expenseType = ref('지출'); // 초기값을 '지출'로 설정
-const paymentMethod = ref('현금'); // 초기값을 '현금'으로 설정
+const expenseType = ref('지출');
+const paymentMethod = ref('현금');
 const expenseDetail = ref('');
 const selectedCategory = ref('');
 
@@ -60,6 +62,83 @@ const memberCount = ref(route.query.memberCount ? parseInt(route.query.memberCou
 const travelTitle = ref(route.query.travelTitle || '');
 
 const categories = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
+
+const handleModalClose = (confirm) => {
+  if (confirm) {
+    registerDefaultData().then(() => {
+      router.push({ path: '/hyunsoo' });
+    });
+  }
+};
+
+const handleModalConfirm = () => {
+  console.log('Modal confirmed');
+};
+
+const registerDefaultData = async () => {
+  const expense = {
+    type: expenseType.value,
+    paymentMethod: paymentMethod.value,
+    description: '기본 등록',
+    category: '기타',
+    amount: 0,
+    convertedAmount: 0,
+  };
+
+  const currentDate = new Date();
+  const startDate = new Date(selectedDates.value[0]);
+  const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
+
+  let daysUntilTrip = Math.ceil((startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntilTrip < 0) daysUntilTrip = 0;
+
+  let travelComplete = '다가오는 여행';
+  if (currentDate >= startDate && currentDate <= endDate) {
+    travelComplete = '여행 중';
+  } else if (currentDate > endDate) {
+    travelComplete = '완료';
+  }
+
+  const userId = '08ac';
+  try {
+    const response = await axios.get(`http://localhost:3000/users/${userId}`);
+    const user = response.data;
+
+    let totalBudget = 0;
+    let usedBudget = 0;
+    let remainingBudget = 0;
+    if (expenseType.value === '추가') {
+      totalBudget += expense.convertedAmount;
+      remainingBudget += expense.convertedAmount;
+    } else {
+      totalBudget -= expense.convertedAmount;
+      usedBudget += expense.convertedAmount;
+    }
+
+    const newTrip = {
+      daysUntilTrip,
+      startPeriod: selectedDates.value[0],
+      endPeriod: selectedDates.value[selectedDates.value.length - 1],
+      category: selectedCategory.value,
+      country: selectedCountries.value.join(','),
+      type: expenseType.value,
+      travelComplete,
+      describe: travelTitle.value,
+      headcount: memberCount.value,
+      expenses: [expense],
+      totalBudget,
+      usedBudget,
+      remainingBudget,
+    };
+
+    user.trips.push(newTrip);
+
+    await axios.put(`http://localhost:3000/users/${userId}`, user);
+    console.log('Default data registered successfully');
+  } catch (error) {
+    console.error('Failed to register default data:', error);
+  }
+};
 
 const navigateToHyunsoo = async () => {
   const expense = {
@@ -85,7 +164,7 @@ const navigateToHyunsoo = async () => {
     travelComplete = '완료';
   }
 
-  const userId = '08ac'; // 사용자 ID를 하드코딩함, 실제 사용 시에는 동적으로 받아야 함
+  const userId = '08ac';
   try {
     const response = await axios.get(`http://localhost:3000/users/${userId}`);
     const user = response.data;
@@ -180,9 +259,9 @@ function selectCategory(category) {
 
 function getCategoryImage(category) {
   try {
-    return `/src/assets/${category}.png`;
+    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
   } catch (e) {
-    return `/src/assets/default.png`;
+    return new URL(`/src/assets/default.png`, import.meta.url).href;
   }
 }
 </script>
