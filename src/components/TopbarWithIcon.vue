@@ -1,7 +1,7 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" />
+      <img class="icon" src="../assets/chevron-right.png" @click="navigateToHyunsoo" />
       <div class="title">{{ titleText }}</div>
       <button class="Changeicon">
         <img src="../assets/리포트2.png" alt="Icon" class="icon2" />
@@ -18,6 +18,14 @@ defineProps({
     required: true,
   },
 });
+
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigateToHyunsoo = () => {
+  router.push('/hyunsoo');
+};
 </script>
 
 <style scoped>

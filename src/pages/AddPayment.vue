@@ -63,6 +63,10 @@ const travelTitle = ref(route.query.travelTitle || '');
 
 const categories = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
 
+const generateUniqueId = () => {
+  return Date.now() + Math.floor(Math.random() * 1000);
+};
+
 const handleModalClose = (confirm) => {
   if (confirm) {
     registerDefaultData().then(() => {
@@ -77,6 +81,7 @@ const handleModalConfirm = () => {
 
 const registerDefaultData = async () => {
   const expense = {
+    id: generateUniqueId(),
     type: expenseType.value,
     paymentMethod: paymentMethod.value,
     description: '기본 등록',
@@ -116,6 +121,7 @@ const registerDefaultData = async () => {
     }
 
     const newTrip = {
+      id: generateUniqueId(),
       daysUntilTrip,
       startPeriod: selectedDates.value[0],
       endPeriod: selectedDates.value[selectedDates.value.length - 1],
@@ -142,6 +148,7 @@ const registerDefaultData = async () => {
 
 const navigateToHyunsoo = async () => {
   const expense = {
+    id: generateUniqueId(),
     type: expenseType.value,
     paymentMethod: paymentMethod.value,
     description: expenseDetail.value,
@@ -181,6 +188,7 @@ const navigateToHyunsoo = async () => {
     }
 
     const newTrip = {
+      id: generateUniqueId(),
       daysUntilTrip,
       startPeriod: selectedDates.value[0],
       endPeriod: selectedDates.value[selectedDates.value.length - 1],

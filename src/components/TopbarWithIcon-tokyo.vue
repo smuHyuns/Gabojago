@@ -1,10 +1,10 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" />
+      <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
       <button class="Changeicon">
-        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
+        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
       </button>
       <!-- ChangeIcon은 변경하세요~~ -->
     </div>
@@ -12,12 +12,20 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 defineProps({
   titleText: {
     type: String,
     required: true,
   },
 });
+
+function goBack() {
+  router.back();
+}
 </script>
 
 <style scoped>
@@ -46,6 +54,7 @@ defineProps({
   height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
   object-fit: contain;
   overflow: visible;
+  cursor: pointer;
 }
 
 .title {
@@ -64,6 +73,7 @@ defineProps({
   align-items: center;
   display: inline-flex; /* 여기서 아이콘 크기 변경하세요~~~*/
 }
+
 .Changeicon {
   left: 400px; /* 여기서 left로 부터 멀어지는 값 볼 수 잇어요~~ */
   background: none;

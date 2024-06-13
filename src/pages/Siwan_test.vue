@@ -1,76 +1,88 @@
 <template>
   <div>
-    <TopbarWithIcontokyo titleText="일주일 도쿄여행" class="topbar" />
-  </div>
-  <div class="date">2024. 06. 20</div>
-  <div>
-    <HistoryListItemNoCheck
-      list="관광"
-      number="- 5,109"
-      number2="- 580"
-      img="/src/assets/관광.png"
-    />
-
-    <HistoryListItemNoCheck
-      list="현금"
-      number="+ 100,000"
-      number2="+ 11,392.77"
-      img="/src/assets/현금.png"
-    />
-    <HistoryListItemNoCheck
-      list="현금"
-      number="+ 100,000"
-      number2="+ 11,392.77"
-      img="/src/assets/현금.png"
-    />
-    <HistoryListItemNoCheck
-      list="현금"
-      number="+ 100,000"
-      number2="+ 11,392.77"
-      img="/src/assets/현금.png"
-    />
+    <TopbarWithIcontokyo :titleText="trip?.describe || '지출 내역'" class="topbar" />
+    <div class="date">{{ selectedDate }}</div>
+    <div v-for="expense in expenses" :key="expense.id">
+      <HistoryListItemNoCheck
+        :list="expense.description"
+        :number="formatAmount(expense.amount)"
+        :number2="formatAmount(expense.convertedAmount)"
+        :img="getCategoryImage(expense.category)"
+      />
+    </div>
     <div class="result-box">
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
-        <div class="spent-money-amount">30,900</div>
+        <div class="spent-money-amount">{{ formatAmount(totalSpent.value) }}</div>
       </div>
     </div>
-  </div>
-  <div>
-    <CtaBarBlackSiwan inputname="추가하기" />
+    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
   </div>
 </template>
 
 <script setup>
-import TopbarWithIcontokyo from "@/components/TopbarWithIcon-tokyo.vue";
-import HistoryListItemNoCheck from "@/components/HistoryListItemNoCheck.vue";
-import CtaBarSiwan from "@/components/CtaBar-siwan.vue";
-import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import TopbarWithIcontokyo from '@/components/TopbarWithIcon-tokyo.vue';
+import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
+import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+
+const route = useRoute();
+const selectedDate = route.params.date;
+const tripId = route.params.tripId;
+const trip = ref(null);
+const expenses = ref([]);
+const totalSpent = ref(0);
+
+onMounted(async () => {
+  const response = await fetch('/db.json'); // JSON 파일 경로 확인
+  if (!response.ok) {
+    console.error(`HTTP error! status: ${response.status}`);
+    return;
+  }
+  const data = await response.json();
+  const userTrips = data.users[0].trips;
+  trip.value = userTrips.find((trip) => trip.id === parseInt(tripId));
+  if (trip.value) {
+    expenses.value = trip.value.expenses.filter((expense) => expense.date === selectedDate);
+    totalSpent.value = expenses.value.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+  }
+});
+
+function formatAmount(amount) {
+  return amount ? `${amount.toLocaleString()}` : '0';
+}
+
+function getCategoryImage(category) {
+  try {
+    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
+  } catch (e) {
+    return new URL(`/src/assets/default.png`, import.meta.url).href;
+  }
+}
 </script>
 
 <style scoped>
 .date {
   box-sizing: border-box;
-  width: 1080px;
+  width: 100%;
   height: 96px;
   background: #f5f6f7;
-
   color: #8892a0;
   font-size: 40px;
-
   font-weight: 500;
-  line-height: 40px;
   padding-left: 1.5em;
-  line-height: 96px;
-
-  text-align: left;
+  display: flex;
+  align-items: center;
 }
 .result-box {
   width: 100%;
   height: 220px;
   display: flex;
   background-color: #eff4fe;
-  margin-top: 660px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
 }
 .spent-money {
   display: flex;
@@ -81,12 +93,9 @@ import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
 .spent-money-title {
   text-align: center;
   color: #8892a0;
-
   font-size: 40px;
-
   font-weight: 400;
   line-height: 52px;
-  word-wrap: break-word;
 }
 
 .spent-money-amount {
