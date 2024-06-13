@@ -39,7 +39,7 @@
         :key="index"
         :class="{ faded: trip.daysUntilTrip === 0 }"
       >
-     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
+        <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
           <span class="useBox-txt-main">{{ trip.describe }}</span><br />
           <span class="useBox-txt-sub">
@@ -52,7 +52,7 @@
           </span>
         </div>
         <div class="useBox-detail">
-                  <img src="../assets/userBox-left.png" />
+          <img src="../assets/userBox-left.png" />
         </div>
       </div>
     </div>
@@ -61,7 +61,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
@@ -142,7 +141,7 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  position: relative;
+  position: absolute;
 }
 
 .header {
@@ -154,7 +153,7 @@ onMounted(async () => {
   width: 604px;
   height: auto;
   object-fit: contain;
-  margin-top: 92px; /* 헤더와의 간격을 조정 */
+  margin-top: 300px; /* 헤더와의 간격을 조정 */
 }
 
 .infoBox {
@@ -282,6 +281,7 @@ onMounted(async () => {
 .useBox-txt {
   margin: 0; /* 이전에 있던 여백 제거 */
   padding: 0;
+  flex-grow: 1;
 }
 
 .useBox-img {
@@ -289,14 +289,20 @@ onMounted(async () => {
   height: 144px;
   object-fit: cover;
   margin-right: 27px; /* 이미지 오른쪽 여백 조정 */
-  margin-left: 48px; /* 왼쪽 여백 추가 */
+  margin-left: 48px; /* 왼쪽 여백 추가 */    
 }
 
+.useBox-detail {
+  flex-grow: 0;
+  padding-right: 3em
+}
 
 .useBox-detail img {
   width: 69px;
-  height: auto;
-  margin-right: auto; /* 이미지를 왼쪽으로 붙임 */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  
 }
 
 

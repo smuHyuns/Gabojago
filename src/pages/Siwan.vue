@@ -3,10 +3,21 @@
     <div class="container">
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
 
-      <input type="text" placeholder="10자 이내로 입력해주세요" class="middle" v-model="inputname" @input="limitInput" />
+      <input
+        type="text"
+        placeholder="10자 이내로 입력해주세요"
+        class="middle"
+        v-model="inputname"
+        @input="limitInput"
+      />
     </div>
 
-    <CtaBar class="down" inputname="여행자 등록하기" :on="isblack" @submit="updateNickname" />
+    <CtaBar
+      class="down"
+      inputname="여행자 등록하기"
+      :on="isblack"
+      @submit="updateNickname"
+    />
   </div>
 </template>
 
@@ -65,7 +76,7 @@ const updateNickname = async () => {
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 90px;
+  font-size: 75px;
   line-height: 1.4;
   text-align: left;
   width: 965px;
@@ -77,12 +88,12 @@ const updateNickname = async () => {
   height: 152px;
   padding: 12px 16px;
   padding-left: 50px; /* 왼쪽 마진 */
-  margin-top: 20px;
+  margin-top: 30px;
   background: #f5f6f7;
   border-radius: 46px;
   font-style: normal;
-  font-weight: 500;
-  font-size: 60px;
+  font-weight: 400;
+  font-size: 52px;
   line-height: 1.3;
   color: #353b43;
   border: none;
