@@ -16,23 +16,20 @@
         >
           {{ twotitle }}
         </div>
-        <!-- 강조선을 titles 클래스의 하위의 요소로 이동 -->
         <div class="highlight" :style="{ left: highlightPosition }"></div>
       </div>
     </div>
     <div class="content" v-if="activeTitle === 'onetitle'">
-      <!-- onetitle에 대한 내용 -->
       <p>{{ firstInput }}</p>
     </div>
     <div class="content" v-if="activeTitle === 'twotitle'">
-      <!-- twotitle에 대한 내용 -->
       <p>{{ secondInput }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   onetitle: String,
@@ -44,12 +41,18 @@ const props = defineProps({
 const activeTitle = ref('onetitle');
 const highlightPosition = ref('0px');
 
+const emit = defineEmits(['updateType']);
+
 const toggle = (title) => {
   if (activeTitle.value !== title) {
     activeTitle.value = title;
     highlightPosition.value = title === 'twotitle' ? '50px' : '0px';
+    emit('updateType', title === 'twotitle' ? '추가' : '지출');
   }
 };
+
+// 초기 상태에 따라 업데이트
+emit('updateType', activeTitle.value === 'twotitle' ? '추가' : '지출');
 </script>
 
 <style scoped>

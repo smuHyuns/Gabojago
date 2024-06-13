@@ -2,7 +2,12 @@
   <div class="payment-box">
     <Modal @close="handleModalClose" @confirm="handleModalConfirm" />
     <Topbar class="topbar" titleText="경비" />
-    <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
+    <TopSelect
+      class="top-select"
+      onetitle="지출 추가"
+      twotitle="경비 추가"
+      @updateType="updateExpenseType"
+    />
     <div class="price-box">
       <div class="price-details">
         <input
@@ -316,6 +321,10 @@ function getCategoryImage(category) {
   } catch (e) {
     return new URL(`/src/assets/default.png`, import.meta.url).href;
   }
+}
+
+function updateExpenseType(type) {
+  expenseType.value = type;
 }
 </script>
 
