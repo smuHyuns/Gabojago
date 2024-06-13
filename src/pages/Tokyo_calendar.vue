@@ -1,29 +1,52 @@
 <template>
-  <div>
-    <TopbarWithIcon titleText="일주일 도쿄여행" class="topbar" />
+  <div v-if="trip">
+    <TopbarWithIcon :titleText="trip.describe || '여행 정보 없음'" class="topbar" />
     <div class="calendar-box">
-      <Cal />
+      <CalTokyo :startPeriod="trip.startPeriod" :endPeriod="trip.endPeriod" :tripId="trip.id" />
     </div>
     <div class="result-box">
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
-        <div class="spent-money-amount">30,900</div>
+        <div class="spent-money-amount">{{ trip.usedBudget?.toLocaleString() || '0' }}</div>
       </div>
       <div class="remain-money">
         <div class="remain-money-title">남은 금액</div>
-        <div class="remain-money-amount">100,000</div>
+        <div class="remain-money-amount">{{ trip.remainingBudget?.toLocaleString() || '0' }}</div>
       </div>
     </div>
     <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
   </div>
+  <div v-else>
+    <p>Loading...</p>
+  </div>
 </template>
 
 <script setup>
-import TopbarWithIcon from "@/components/TopbarWithIcon.vue";
-import Cal from "@/components/Cal.vue";
-import CtaBarSiwan from "@/components/CtaBar-siwan.vue";
-import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
-// 반응형 변수 선언
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import TopbarWithIcon from '@/components/TopbarWithIcon.vue';
+import CalTokyo from '@/components/CalTokyo.vue';
+import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+
+const route = useRoute();
+const trip = ref(null);
+
+onMounted(async () => {
+  const tripId = route.params.tripId;
+  try {
+    const response = await fetch('/db.json'); // JSON 파일 경로 확인
+    if (!response.ok) {
+      console.error(`HTTP error! status: ${response.status}`);
+      return;
+    }
+    const data = await response.json();
+    const userTrips = data.users[0].trips;
+
+    trip.value = userTrips.find((trip) => trip.id === parseInt(tripId)) || null;
+  } catch (error) {
+    console.error('Error fetching trip data:', error);
+  }
+});
 </script>
 
 <style scoped>
@@ -72,9 +95,7 @@ import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
 .spent-money-title {
   text-align: center;
   color: #8892a0;
-
   font-size: 40px;
-
   font-weight: 400;
   line-height: 52px;
   word-wrap: break-word;
@@ -96,7 +117,6 @@ import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
   text-align: center;
   color: #8892a0;
   font-size: 40px;
-
   font-weight: 400;
   line-height: 52px;
   word-wrap: break-word;
@@ -106,9 +126,7 @@ import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
   text-align: center;
   color: #7c91ff;
   font-size: 60px;
-
   font-weight: 700;
-
   word-wrap: break-word;
 }
 </style>

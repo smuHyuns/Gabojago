@@ -71,18 +71,14 @@ const countries = {
 const filteredCountries = computed(() => {
   let filtered = countries[selectedCategory.value];
   if (searchQuery.value) {
-    filtered = filtered.filter((country) =>
-      country.list.includes(searchQuery.value)
-    );
+    filtered = filtered.filter((country) => country.list.includes(searchQuery.value));
   }
   return filtered;
 });
 
 function updateSelectedCountries(countryName) {
   if (selectedCountries.value.includes(countryName)) {
-    selectedCountries.value = selectedCountries.value.filter(
-      (name) => name !== countryName
-    );
+    selectedCountries.value = selectedCountries.value.filter((name) => name !== countryName);
   } else {
     selectedCountries.value = [countryName];
   }

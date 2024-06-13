@@ -1,8 +1,8 @@
 <template>
   <div class="BlueBox">
-    <Header class="header" style="z-index: 9999;"/>
+    <Header class="header" style="z-index: 9999;" />
     <div class="imgContainer">
-    <img src="../assets/비행기토끼.png" class="rabbitImg" />
+      <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
     <InfoBox
       class="infoBox"
@@ -38,8 +38,9 @@
         v-for="(trip, index) in filteredTrips" 
         :key="index"
         :class="{ faded: trip.daysUntilTrip === 0 }"
+        @click="goToAccountCalendar(trip.id)"
       >
-     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
+        <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
           <span class="useBox-txt-main">{{ trip.describe }}</span><br />
           <span class="useBox-txt-sub">
@@ -52,7 +53,7 @@
           </span>
         </div>
         <div class="useBox-detail">
-                  <img src="../assets/userBox-left.png" />
+          <img src="../assets/userBox-left.png" />
         </div>
       </div>
     </div>
@@ -61,11 +62,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 const totalTrips = ref(0);
 const ongoingTrips = ref(0);
@@ -73,6 +74,7 @@ const upcomingTrips = ref(0);
 const completedTrips = ref(0);
 const trips = ref([]);
 const selectedCategory = ref('전체');
+const router = useRouter();
 
 const formatPeriod = (start, end) => {
   const formatDate = (date) => {
@@ -95,6 +97,10 @@ const filteredTrips = computed(() => {
   return trips.value.filter(trip => trip.travelComplete === selectedCategory.value);
 });
 
+const goToAccountCalendar = (tripId) => {
+  router.push({ name: 'Tokyo_calendar', params: { tripId } });
+};
+
 onMounted(async () => {
   try {
     const response = await fetch('/db.json'); // JSON 파일 경로 확인
@@ -115,8 +121,6 @@ onMounted(async () => {
 });
 </script>
 
-
-
 <style scoped>
 .faded {
   opacity: 0.7;
@@ -135,7 +139,6 @@ onMounted(async () => {
   margin-bottom: 0;
   padding-bottom: 0;
 }
-
 
 .imgContainer {
   display: flex;
@@ -214,7 +217,6 @@ onMounted(async () => {
   color: #8892A0; 
 }
 
-
 .tripCategory:hover {
   background-color: #616B79; 
   color: #FFFFFF !important;
@@ -238,7 +240,6 @@ onMounted(async () => {
 .tripCategoryCount {
   font-size: 40px; 
 }
-
 
 .selected {
   background-color: #616B79; 
@@ -292,13 +293,11 @@ onMounted(async () => {
   margin-left: 48px; /* 왼쪽 여백 추가 */
 }
 
-
 .useBox-detail img {
   width: 69px;
   height: auto;
   margin-right: auto; /* 이미지를 왼쪽으로 붙임 */
 }
-
 
 .useBox-txt-main {
   color: #3e444e;
@@ -318,7 +317,6 @@ onMounted(async () => {
   word-wrap: break-word;
   display: block;
 }
-
 
 .addPlanBtn {
   width: 161px;
