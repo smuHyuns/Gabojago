@@ -1,11 +1,7 @@
 <template>
   <div class="history-list-container">
     <div class="history-img-box">
-      <img
-        class="history-check-icon"
-        src="../assets/관광.png"
-        alt="Selected Icon"
-      />
+      <img class="history-check-icon" v-bind:src="img" alt="Selected Icon" />
     </div>
     <div class="histroy-list">{{ list }}</div>
     <div class="history-money">
@@ -30,6 +26,7 @@ const props = defineProps({
   list: String,
   number: Number,
   number2: Number,
+  img: String,
 });
 </script>
 

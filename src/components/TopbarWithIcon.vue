@@ -3,6 +3,10 @@
     <div class="imgbox">
       <img class="icon" src="../assets/chevron-right.png" />
       <div class="title">{{ titleText }}</div>
+      <button class="Changeicon">
+        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
+      </button>
+      <!-- ChangeIcon은 변경하세요~~ -->
     </div>
   </div>
 </template>
@@ -18,53 +22,40 @@ defineProps({
 
 <style scoped>
 .topbarBox {
-  width: 1080px;
-  height: 184px;
-  padding: 0 40px;
+  margin-top: 10%;
+  width: 100%;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  padding-left: 50px;
+  padding-right: 237px;
   display: flex;
   align-items: center; /* 수직 정렬 */
-  margin-top: 127px; /* 항상 top 부분을 127px 띄움 */
-}
-
-.Changeicon {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
-
-.Changeicon .icon2 {
-  display: block;
-  position: absolute;
-  left: 0px;
 }
 
 .imgbox {
   display: flex;
   align-items: center;
-  gap: 11px; /* 아이콘과 타이틀 간격 조정 */
-  margin-left: 0; /* 좌측 벽과의 거리 */
+  gap: 10px; /* 아이콘과 제목 사이의 거리 */
+  margin-left: 20px; /* 좌측 벽과의 거리 */
+  height: 91px; /* 아이콘과 제목의 높이를 동일하게 설정 (70px * 1.3) */
+  overflow: hidden; /* 내용이 넘치는 경우 자르기 */
 }
 
 .icon {
-  width: 69px;
-  height: 69px;
+  height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
+  object-fit: contain;
+  overflow: visible;
 }
 
 .title {
-  height: 75px;
-
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 58px;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  text-align: left;
-
   color: #353b43;
+  font-size: 58px; /* 폰트 크기를 1.3배 증가 (24px * 1.3) */
+  font-weight: 700;
+  line-height: 91px; /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
+  word-wrap: break-word;
+}
+.Changeicon {
+  width: 50px;
+  margin-left: 450px;
 }
 </style>
