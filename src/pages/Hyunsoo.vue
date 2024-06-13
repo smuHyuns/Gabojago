@@ -16,68 +16,28 @@
       <ul>
         <li class="tripCategory selected">
           <div class="tripCategoryName">전체</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ totalTrips }}</div>
         </li>
         <li class="tripCategory">
           <div class="tripCategoryName">여행 중</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ ongoingTrips }}</div>
         </li>
         <li class="tripCategory">
           <div class="tripCategoryName">다가오는 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ upcomingTrips }}</div>
         </li>
         <li class="tripCategory">
           <div class="tripCategoryName">지난 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ pastTrips }}</div>
         </li>
       </ul>
     </div>
     <div class="planListBox">
-      <div class="useBox">
+      <div class="useBox" v-for="trip in trips" :key="trip.startPeriod">
         <img class="useBox-img" src="../assets/비행기토끼.png"></img>
         <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
+          <span class="useBox-txt-main">{{ trip.description }}</span><br />
+          <span class="useBox-txt-sub">D-{{ trip.daysUntilTrip }}</span>
         </div>
         <div class="useBox-detail">
           <img src="../assets/chevron-left.png" />
@@ -89,8 +49,62 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
+
+// 상태 관리 변수
+const totalTrips = ref(0);
+const ongoingTrips = ref(0);
+const upcomingTrips = ref(0);
+const pastTrips = ref(0);
+const trips = ref([]);
+
+// 데이터 가져오기 및 처리 함수
+const fetchData = async () => {
+  try {
+    const response = await axios.get('/path/to/db.json');
+    const data = response.data;
+
+    let total = 0;
+    let ongoing = 0;
+    let upcoming = 0;
+    let past = 0;
+    const today = new Date();
+
+    data.users.forEach(user => {
+      user.trips.forEach(trip => {
+        total++;
+        const startDate = new Date(trip.startPeriod);
+        const endDate = new Date(trip.endPeriod);
+
+        if (startDate <= today && endDate >= today) {
+          ongoing++;
+        } else if (startDate > today) {
+          upcoming++;
+        } else if (endDate < today) {
+          past++;
+        }
+
+        // trips 배열에 추가
+        trips.value.push({
+          description: trip.description,
+          daysUntilTrip: trip.daysUntilTrip,
+        });
+      });
+    });
+
+    totalTrips.value = total;
+    ongoingTrips.value = ongoing;
+    upcomingTrips.value = upcoming;
+    pastTrips.value = past;
+  } catch (error) {
+    console.error('데이터를 가져오는 중 오류 발생:', error);
+  }
+};
+
+onMounted(fetchData);
 </script>
 
 <style scoped>
@@ -103,9 +117,9 @@ import InfoBox from '@/components/InfoBox.vue';
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden; /* 이미지가 박스를 넘지 않도록 설정 */
-  margin-bottom: 0; /* 잔여 공간이 없도록 설정 */
-  padding-bottom: 0; /* 추가된 여백 제거 */
+  overflow: hidden;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .imgContainer {
@@ -118,11 +132,11 @@ import InfoBox from '@/components/InfoBox.vue';
 
 .rabbitImg {
   max-width: 100%;
-  max-height: calc(100% - 220px); /* 헤더와의 거리 포함 */
+  max-height: calc(100% - 220px);
   width: auto;
   height: auto;
-  object-fit: contain; /* 비율을 유지하면서 이미지가 커지거나 작아지도록 함 */
-  transform: scale(1.1); /* 이미지 크기를 1.1배로 확대 */
+  object-fit: contain;
+  transform: scale(1.1);
   margin-top: 20px;
 }
 
@@ -134,8 +148,8 @@ import InfoBox from '@/components/InfoBox.vue';
 .infoBox {
   position: absolute;
   height: 430px;
-  bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
-  width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
+  bottom: 0;
+  width: 100%;
   margin: 0;
   background: linear-gradient(
     180deg,
@@ -150,7 +164,7 @@ import InfoBox from '@/components/InfoBox.vue';
   width: 1080px;
   background-color: var(--grey-0);
   margin: 0;
-  position: relative; /* 버튼 위치 설정을 위한 기준 요소 */
+  position: relative;
 }
 
 .kindTripBox {
@@ -160,36 +174,35 @@ import InfoBox from '@/components/InfoBox.vue';
   align-items: center;
   gap: 10px;
   padding: 10px;
-  overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
-  justify-content: flex-start; /* 좌측 정렬 */
+  overflow-x: auto;
+  justify-content: flex-start;
   margin: 30px;
 }
 
 .kindTripBox ul {
   display: flex;
-  gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding: 0; /* 기본 패딩 제거 */
-  margin: 0; /* 기본 마진 제거 */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* trip category */
 .tripCategory {
-  height: 60px; /* 높이를 더 키움 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 중앙 정렬 */
-  gap: 15px; /* 간격을 더 키움 */
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
   display: inline-flex;
-  background: var(--grey-200); /* 기본 배경 색상 */
+  background: var(--grey-200);
   border-radius: 40px;
-  padding: 20px 25px; /* 패딩을 더 키움 */
-  font-size: 30px; /* 글자 크기를 더 키움 */
-  color: var(--grey-700); /* 기본 글자 색상 */
+  padding: 20px 25px;
+  font-size: 30px;
+  color: var(--grey-700);
 }
 
 .tripCategory:hover {
-  background-color: var(--grey-700); /* 선택된 배경 색상 */
-  color: white !important; /* 선택된 글자 색상 */
+  background-color: var(--grey-700);
+  color: white !important;
   transition-duration: 0.8s;
 }
 
@@ -197,16 +210,16 @@ import InfoBox from '@/components/InfoBox.vue';
 .tripCategoryCount {
   font-weight: 600;
   word-wrap: break-word;
-  color: inherit; /* 부모 요소의 글자 색상 상속 */
+  color: inherit;
 }
 
 .tripCategoryCount {
-  font-size: 22px; /* 글자 크기를 더 키움 */
+  font-size: 22px;
 }
 
 .selected {
-  background-color: var(--grey-700); /* 선택된 배경 색상 */
-  color: white !important; /* 선택된 글자 색상 */
+  background-color: var(--grey-700);
+  color: white !important;
 }
 
 .planListBox {
@@ -218,8 +231,8 @@ import InfoBox from '@/components/InfoBox.vue';
   align-items: center;
   align-content: flex-start;
   gap: 20px;
-  overflow-x: hidden; /* 수평 스크롤 비활성화 */
-  overflow-y: scroll; /* 수직 스크롤 활성화 */
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .noneBox {
@@ -277,8 +290,8 @@ import InfoBox from '@/components/InfoBox.vue';
   width: 200px;
   height: 200px;
   position: absolute;
-  right: 50px; /* 오른쪽 50px 위치 */
-  bottom: 100px; /* 아래쪽 100px 위치 */
+  right: 50px;
+  bottom: 100px;
   border: none;
   cursor: pointer;
 }
