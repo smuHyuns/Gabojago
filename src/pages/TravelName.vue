@@ -19,15 +19,9 @@ const router = useRouter();
 const route = useRoute();
 
 const travelTitle = ref('');
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
-const selectedDates = ref(
-  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
-);
-const memberCount = ref(
-  route.query.memberCount ? parseInt(route.query.memberCount) : 0
-);
+const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
+const selectedDates = ref(route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []);
+const memberCount = ref(route.query.memberCount ? parseInt(route.query.memberCount) : 0);
 
 const navigateToAddPayment = () => {
   router.push({

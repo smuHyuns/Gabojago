@@ -2,17 +2,29 @@
   <div class="box">
     <div class="header-input">
       <div class="header">{{ headerInput }}</div>
-      <input class="inputBox" :placeholder="TextInput" />
+      <input class="inputBox" :placeholder="placeholder" v-model="inputValue" @input="$emit('update:modelValue', inputValue)" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref, watch } from 'vue';
+
 const props = defineProps({
   headerInput: String,
-  TextInput: String,
+  modelValue: String,
+  placeholder: String,
 });
+
+const inputValue = ref(props.modelValue || '');
+
+// modelValue prop이 변경될 때 inputValue도 업데이트
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    inputValue.value = newValue;
+  }
+);
 </script>
 
 <style scoped>

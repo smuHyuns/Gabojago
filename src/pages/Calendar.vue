@@ -4,13 +4,7 @@
     <div class="calendar-box">
       <Cal @dateSelected="handleDateSelected" />
     </div>
-    <CtaBar
-      class="ctabar"
-      inputname="다음으로"
-      :on="isblack"
-      @click="navigateToMember"
-      :style="{ cursor: isblack ? 'pointer' : 'auto' }"
-    />
+    <CtaBar class="ctabar" inputname="다음으로" :on="isblack" @click="navigateToMember" :style="{ cursor: isblack ? 'pointer' : 'auto' }" />
   </div>
 </template>
 
@@ -26,9 +20,7 @@ const route = useRoute();
 
 const selectedDates = ref([]);
 const isblack = ref(false);
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
+const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
 
 const handleDateSelected = (dates) => {
   isblack.value = dates.length > 0;

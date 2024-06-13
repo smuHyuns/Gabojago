@@ -3,21 +3,10 @@
     <div class="container">
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
 
-      <input
-        type="text"
-        placeholder="10자 이내로 입력해주세요"
-        class="middle"
-        v-model="inputname"
-        @input="limitInput"
-      />
+      <input type="text" placeholder="10자 이내로 입력해주세요" class="middle" v-model="inputname" @input="limitInput" />
     </div>
 
-    <CtaBar
-      class="down"
-      inputname="여행자 닉네임 변경"
-      :on="isblack"
-      @submit="updateNickname"
-    />
+    <CtaBar class="down" inputname="여행자 등록하기" :on="isblack" @submit="updateNickname" />
   </div>
 </template>
 
@@ -36,7 +25,6 @@ const limitInput = (event) => {
     inputname.value = event.target.value.slice(0, 10);
   }
   isblack.value = inputname.value.length >= 1;
-  console.log(isblack.value);
 };
 
 const updateNickname = async () => {
@@ -53,13 +41,13 @@ const updateNickname = async () => {
 
     await axios.put(`http://localhost:3000/users/${user.id}`, updatedUser);
 
-    alert('닉네임이 성공적으로 변경되었습니다.');
+    alert('닉네임이 성공적으로 등록되었습니다.');
     inputname.value = '';
     isblack.value = false;
     router.push('/hyunsoo');
   } catch (error) {
     console.error('닉네임 변경 오류:', error);
-    alert('닉네임 변경 중 오류가 발생했습니다.');
+    alert('닉네임 등록 중 오류가 발생했습니다.');
   }
 };
 </script>

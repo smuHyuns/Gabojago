@@ -39,7 +39,7 @@
         :key="index"
         :class="{ faded: trip.daysUntilTrip === 0 }"
       >
-     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
+     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
           <span class="useBox-txt-main">{{ trip.describe }}</span><br />
           <span class="useBox-txt-sub">
@@ -61,6 +61,8 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
 import { ref, computed, onMounted } from 'vue';
@@ -129,9 +131,9 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden; /* 이미지가 박스를 넘지 않도록 설정 */
-  margin-bottom: 0; /* 잔여 공간이 없도록 설정 */
-  padding-bottom: 0; /* 추가된 여백 제거 */
+  overflow: hidden;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 
@@ -193,10 +195,10 @@ onMounted(async () => {
 
 .kindTripBox ul {
   display: flex;
-  gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding: 0; /* 기본 패딩 제거 */
-  margin: 0; /* 기본 마진 제거 */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .tripCategory {

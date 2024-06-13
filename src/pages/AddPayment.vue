@@ -1,98 +1,287 @@
 <template>
   <div class="payment-box">
+    <Modal @close="handleModalClose" @confirm="handleModalConfirm" />
     <Topbar class="topbar" titleText="경비" />
     <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
     <div class="price-box">
       <div class="price-details">
-        <div class="print-big-price">0JPY<span class="type-of-money">(일본 엔)</span></div>
-        <!-- <div class="type-of-money">(일본 엔)</div> -->
+        <input v-model="displayAmountJPY" @input="updateAmountJPY" type="text" class="print-big-price" placeholder="0 JPY" />
       </div>
-      <div class="print-small-price">=0원</div>
+      <div class="type-of-money" style="margin-left: 75px">(일본 엔)</div>
+      <div class="print-small-price">={{ conversionResult.KRW }} 원</div>
     </div>
     <div class="payType">
       <span class="title">지출 형태</span>
       <div class="payType-box">
-        <div class="payType-list selected">현금</div>
-        <div class="payType-list">카드</div>
+        <div class="payType-list" :class="{ selected: paymentMethod === '현금' }" @click="selectPaymentMethod('현금')">현금</div>
+        <div class="payType-list" :class="{ selected: paymentMethod === '카드' }" @click="selectPaymentMethod('카드')">카드</div>
       </div>
     </div>
     <div class="payDetail">
       <span class="title">지출 내용</span>
-      <input
-        type="text"
-        class="payDetail-input"
-        placeholder=" 내용을 입력해 주세요"
-      />
+      <input v-model="expenseDetail" type="text" class="payDetail-input" placeholder="내용을 입력해 주세요" />
     </div>
     <div class="category">
       <span class="title">카테고리</span>
       <div class="category-box">
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
-        </div>
-        <div class="category-box-component">
-          <img class="category-box-img" src="../assets/비행기토끼.png"></img>
-          <div class="category-box-txt">여행</div>
+        <div class="category-box-component" v-for="category in categories" :key="category" @click="selectCategory(category)" :class="{ selected: selectedCategory === category }">
+          <img class="category-box-img" :src="getCategoryImage(category)" style="object-fit: cover" />
+          <div class="category-box-txt">{{ category }}</div>
         </div>
       </div>
     </div>
-
     <div class="ctabar">
-      <CtaBar inputname="등록하기" @click="navigateToHyunsoo"/>
+      <CtaBar inputname="등록하기" @click="navigateToHyunsoo" />
     </div>
-
-    <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import axios from 'axios';
 import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import TopSelect from '@/components/TopSelect.vue';
+import { useRouter, useRoute } from 'vue-router';
+import Modal from '@/components/Modal.vue';
 
-import { useRouter } from 'vue-router';
 const router = useRouter();
+const route = useRoute();
 
-const navigateToHyunsoo = () => {
+const amountJPY = ref(0);
+const displayAmountJPY = ref('');
+const conversionResult = ref({ KRW: 0 });
+const expenseType = ref('지출');
+const paymentMethod = ref('현금');
+const expenseDetail = ref('');
+const selectedCategory = ref('');
+
+const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
+const selectedDates = ref(route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []);
+const memberCount = ref(route.query.memberCount ? parseInt(route.query.memberCount) : 0);
+const travelTitle = ref(route.query.travelTitle || '');
+
+const categories = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
+
+const handleModalClose = (confirm) => {
+  if (confirm) {
+    registerDefaultData().then(() => {
+      router.push({ path: '/hyunsoo' });
+    });
+  }
+};
+
+const handleModalConfirm = () => {
+  console.log('Modal confirmed');
+};
+
+const registerDefaultData = async () => {
+  const expense = {
+    type: expenseType.value,
+    paymentMethod: paymentMethod.value,
+    description: '기본 등록',
+    category: '기타',
+    amount: 0,
+    convertedAmount: 0,
+  };
+
+  const currentDate = new Date();
+  const startDate = new Date(selectedDates.value[0]);
+  const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
+
+  let daysUntilTrip = Math.ceil((startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntilTrip < 0) daysUntilTrip = 0;
+
+  let travelComplete = '다가오는 여행';
+  if (currentDate >= startDate && currentDate <= endDate) {
+    travelComplete = '여행 중';
+  } else if (currentDate > endDate) {
+    travelComplete = '완료';
+  }
+
+  const userId = '08ac';
+  try {
+    const response = await axios.get(`http://localhost:3000/users/${userId}`);
+    const user = response.data;
+
+    let totalBudget = 0;
+    let usedBudget = 0;
+    let remainingBudget = 0;
+    if (expenseType.value === '추가') {
+      totalBudget += expense.convertedAmount;
+      remainingBudget += expense.convertedAmount;
+    } else {
+      totalBudget -= expense.convertedAmount;
+      usedBudget += expense.convertedAmount;
+    }
+
+    const newTrip = {
+      daysUntilTrip,
+      startPeriod: selectedDates.value[0],
+      endPeriod: selectedDates.value[selectedDates.value.length - 1],
+      category: selectedCategory.value,
+      country: selectedCountries.value.join(','),
+      type: expenseType.value,
+      travelComplete,
+      describe: travelTitle.value,
+      headcount: memberCount.value,
+      expenses: [expense],
+      totalBudget,
+      usedBudget,
+      remainingBudget,
+    };
+
+    user.trips.push(newTrip);
+
+    await axios.put(`http://localhost:3000/users/${userId}`, user);
+    console.log('Default data registered successfully');
+  } catch (error) {
+    console.error('Failed to register default data:', error);
+  }
+};
+
+const navigateToHyunsoo = async () => {
+  const expense = {
+    type: expenseType.value,
+    paymentMethod: paymentMethod.value,
+    description: expenseDetail.value,
+    category: selectedCategory.value,
+    amount: parseFloat(displayAmountJPY.value.replace(' JPY', '')),
+    convertedAmount: parseFloat(conversionResult.value.KRW),
+  };
+
+  const currentDate = new Date();
+  const startDate = new Date(selectedDates.value[0]);
+  const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
+
+  let daysUntilTrip = Math.ceil((startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntilTrip < 0) daysUntilTrip = 0;
+
+  let travelComplete = '다가오는 여행';
+  if (currentDate >= startDate && currentDate <= endDate) {
+    travelComplete = '여행 중';
+  } else if (currentDate > endDate) {
+    travelComplete = '완료';
+  }
+
+  const userId = '08ac';
+  try {
+    const response = await axios.get(`http://localhost:3000/users/${userId}`);
+    const user = response.data;
+
+    let totalBudget = 0;
+    let usedBudget = 0;
+    let remainingBudget = 0;
+    if (expenseType.value === '추가') {
+      totalBudget += expense.convertedAmount;
+      remainingBudget += expense.convertedAmount;
+    } else {
+      totalBudget -= expense.convertedAmount;
+      usedBudget += expense.convertedAmount;
+    }
+
+    const newTrip = {
+      daysUntilTrip,
+      startPeriod: selectedDates.value[0],
+      endPeriod: selectedDates.value[selectedDates.value.length - 1],
+      category: selectedCategory.value,
+      country: selectedCountries.value.join(','),
+      type: expenseType.value,
+      travelComplete,
+      describe: travelTitle.value,
+      headcount: memberCount.value,
+      expenses: [expense],
+      totalBudget,
+      usedBudget,
+      remainingBudget,
+    };
+
+    user.trips.push(newTrip);
+
+    await axios.put(`http://localhost:3000/users/${userId}`, user);
+    console.log('Trip added successfully');
+  } catch (error) {
+    console.error('Failed to add trip:', error);
+  }
+
   router.push({
     path: '/hyunsoo',
   });
 };
+
+async function fetchExchangeRate(from, to) {
+  try {
+    const apiKey = 'ffb7b54e74ef452e0961d9d9';
+    const proxyUrl = 'https://api.allorigins.win/get?url=';
+    const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${from}/${to}`;
+    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+    const data = await response.json();
+    const parsedData = JSON.parse(data.contents);
+    if (parsedData.result === 'success') {
+      return parsedData.conversion_rate;
+    } else {
+      console.error(`Failed to fetch exchange rate for ${from} to ${to}: ${parsedData['error-type']}`);
+      return 0;
+    }
+  } catch (error) {
+    console.error(`Failed to fetch exchange rate for ${from} to ${to}:`, error);
+    return 0;
+  }
+}
+
+async function convertCurrency() {
+  if (amountJPY.value > 0) {
+    const JPYtoKRW = await fetchExchangeRate('JPY', 'KRW');
+    conversionResult.value.KRW = (amountJPY.value * JPYtoKRW).toFixed(2);
+  } else {
+    conversionResult.value.KRW = 0;
+  }
+}
+
+function updateAmountJPY(event) {
+  const value = event.target.value.replace(/\D/g, '');
+  amountJPY.value = value ? parseFloat(value) : 0;
+  displayAmountJPY.value = value ? `${value} JPY` : '';
+  convertCurrency();
+}
+
+function selectExpenseType(type) {
+  expenseType.value = type;
+}
+
+function selectPaymentMethod(method) {
+  paymentMethod.value = method;
+}
+
+function selectCategory(category) {
+  selectedCategory.value = category;
+}
+
+function getCategoryImage(category) {
+  try {
+    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
+  } catch (e) {
+    return new URL(`/src/assets/default.png`, import.meta.url).href;
+  }
+}
 </script>
 
 <style scoped>
+.category-box .selected {
+  /* background-color: var(--blue-200); 선택된 항목의 배경색 */
+  filter: hue-rotate(350deg) brightness(1) saturate(7);
+  color: white; /* 선택된 항목의 글자색 */
+}
 .payment-box {
   width: 1080px;
   height: 2340px;
-  overflow: hidden; /* 콘텐츠가 고정된 크기를 초과할 경우 스크롤을 방지 */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* 상단에 배치하기 위해 flex-start로 설정 */
-  margin: 0 auto; /* 여유 공간이 있을 경우 뷰포트를 중앙에 배치 */
-  background-color: #fff; /* 선택 사항: 배경색 설정 */
-  
+  justify-content: flex-start;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
 .topbar {
@@ -110,7 +299,6 @@ const navigateToHyunsoo = () => {
   align-items: center;
   border-radius: 20px;
   font-size: 35px;
-  /* background-color: var(--grey-0); */
 }
 
 .selected {
@@ -118,16 +306,16 @@ const navigateToHyunsoo = () => {
 }
 
 .price-box {
-  margin: 50px;
+  margin-top: 58px;
+  margin-bottom: 28px;
   width: 965px;
   height: 288px;
   background-color: #f5f6f7;
-  /* border: 1px solid black; */
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start; /* This centers the box itself */
+  align-items: flex-start;
 }
 
 .price-details {
@@ -140,8 +328,11 @@ const navigateToHyunsoo = () => {
 }
 
 .print-big-price {
+  width: 500px;
+  background-color: transparent;
+  border: transparent;
   font-size: 80px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 80px;
 }
 
@@ -166,7 +357,7 @@ const navigateToHyunsoo = () => {
 .price-box-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* This aligns the content to the left */
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -184,9 +375,7 @@ const navigateToHyunsoo = () => {
   width: 965px;
   height: 184px;
   border-radius: 20px;
-  font-size: 40px;
-  /* gap: 20px; */
-  /* border: 1px solid black; */
+  font-size: 52px;
   padding-bottom: 23.04px;
   display: flex;
   justify-content: space-between;
@@ -195,30 +384,30 @@ const navigateToHyunsoo = () => {
 
 .title {
   margin: 0;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 52px;
   line-height: 60px;
-  color: #353b43;
+  color: #353b 43;
 }
 
 .payType-box {
   margin: 0;
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 
 .payType-list {
-  width: 259.2px;
-  height: 126.72px;
-  border-radius: 20px;
-  font-weight: 600;
+  width: 259px;
+  height: 127px;
+  border-radius: 30px;
+  font-weight: 500;
   line-height: 46.08px;
   color: black;
   background-color: #f5f6f7;
   word-wrap: break-word;
-  display: flex; /* 추가 */
-  align-items: center; /* 추가 */
-  justify-content: center; /* 추가 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .payType .selected {
@@ -227,13 +416,10 @@ const navigateToHyunsoo = () => {
 }
 
 .payDetail {
-  width: 964.8px;
-  padding: 15px;
+  width: 965px;
   border-radius: 20px;
   font-size: 40px;
   gap: 20px;
-  /* border: 1px solid black; */
-  margin: 25px auto;
   justify-content: space-between;
   display: flex;
   align-items: center;
@@ -241,44 +427,61 @@ const navigateToHyunsoo = () => {
 
 .payDetail-input {
   margin: 0;
-  width: 737.28px;
-  height: 138.24px;
+  width: 650px;
+  height: 138px;
+  padding: 0 40px; /* 텍스트 왼쪽 여백 추가 */
   background-color: #f5f6f7;
   font-size: 20px;
-  border-radius: 28.8px;
+  border-radius: 30px;
   border: transparent;
-  color: #caced4;
-  font-size: 46.08px;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.3;
   font-weight: 500;
-  line-height: 59.9px;
+  text-align: left;
+  color: #caced4;
+}
+
+.payDetail-input:focus {
+  color: #353b43; /* 입력 필드가 선택되었을 때의 색상 */
+  outline: none; /* 포커스 상태에서 라인 없애기 */
+}
+.payDetail-input::placeholder {
+  margin: 0;
+  width: 737px;
+  height: 138px;
+  background-color: #f5f6f7;
+  font-size: 20px;
+  border-radius: 30px;
+  border: transparent;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: left;
+  color: #caced4;
 }
 
 .category {
-  width: 964.8px;
-  padding: 15px;
-  border-radius: 20px;
+  width: 965px;
   font-size: 40px;
   gap: 20px;
-  /* border: 1px solid black; */
-  margin: 25px auto;
+  margin-top: 85px;
   display: flex;
   flex-direction: column;
 }
 
 .category-box {
   width: 100%;
-  /* align-self: stretch; */
-  /* border: 1px solid black; */
   display: flex;
   justify-content: space-between;
-  gap: 30px;
+  gap: 35px;
   overflow-x: scroll; /* 수평 스크롤 비활성화 */
   overflow-y: hidden; /* 수직 스크롤 활성화 */
 }
 
 .category-box-component {
-  width: 138.24px;
-  height: 195.84px;
+  width: 138px;
+  height: 196px;
   flex-direction: column;
   justify-content: flex-start; /* 변경 */
   align-items: center;
@@ -289,22 +492,20 @@ const navigateToHyunsoo = () => {
 }
 
 .category-box-img {
-  width: 138.24px;
-  height: 138.24px;
+  width: 138px;
+  height: 138px;
   object-fit: cover;
-  border: 1px solid black;
 }
 
 .category-box-txt {
   text-align: center;
   color: #caced4;
-  font-size: 40.32px;
-  font-weight: 700;
-  line-height: 40.32px;
+  font-size: 40px;
+  font-weight: 500;
   word-wrap: break-word;
 }
 
-.ctabar{
+.ctabar {
   height: 221.28px;
   margin-top: 500px;
   display: flex;

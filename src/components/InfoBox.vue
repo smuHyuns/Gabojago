@@ -3,7 +3,7 @@
     <div class="firstBox">{{ firstInput }}</div>
     <div class="secondBox">{{ secondInput }}</div>
     <div class="thirdBox">
-      <span class="content">{{ thirdInput }}</span>
+      <span class="content" @click="navigateToGun">{{ thirdInput }}</span>
       <img src="../assets/chevron-left.png" alt="Icon" />
     </div>
   </div>
