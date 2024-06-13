@@ -39,7 +39,7 @@
         :key="index"
         :class="{ faded: trip.daysUntilTrip === 0 }"
       >
-     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
+     <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
           <span class="useBox-txt-main">{{ trip.describe }}</span><br />
           <span class="useBox-txt-sub">

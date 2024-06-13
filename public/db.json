@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "nickname": "세리니",
+      "nickname": "가보자고",
       "trips": [
         {
           "daysUntilTrip": 0,
@@ -18,18 +18,20 @@
               "type": "지출",
               "paymentMethod": "카드",
               "description": "지하철 티켓",
-              "amount": 50000
+              "amount": 500,
+              "convertedAmount": 4375
             },
             {
               "type": "추가",
               "paymentMethod": "현금",
               "description": "추가 예산",
-              "amount": 100000
+              "amount": 1000,
+              "convertedAmount": 8750
             }
           ],
-          "totalBudget": 1000000,
-          "usedBudget": 500000,
-          "remainingBudget": 500000
+          "totalBudget": 10000,
+          "usedBudget": 5000,
+          "remainingBudget": 5000
         },
         {
           "daysUntilTrip": 20,
@@ -46,18 +48,20 @@
               "type": "지출",
               "paymentMethod": "카드",
               "description": "호텔 숙박비",
-              "amount": 300000
+              "amount": 3000,
+              "convertedAmount": 26250
             },
             {
               "type": "지출",
               "paymentMethod": "현금",
               "description": "식사비",
-              "amount": 100000
+              "amount": 1000,
+              "convertedAmount": 8750
             }
           ],
-          "totalBudget": 2000000,
-          "usedBudget": 1200000,
-          "remainingBudget": 800000
+          "totalBudget": 20000,
+          "usedBudget": 12000,
+          "remainingBudget": 8000
         },
         {
           "daysUntilTrip": 25,
@@ -74,18 +78,20 @@
               "type": "지출",
               "paymentMethod": "카드",
               "description": "와인 투어",
-              "amount": 200000
+              "amount": 2000,
+              "convertedAmount": 17500
             },
             {
               "type": "추가",
               "paymentMethod": "현금",
               "description": "긴급 현금",
-              "amount": 50000
+              "amount": 500,
+              "convertedAmount": 4375
             }
           ],
-          "totalBudget": 3000000,
-          "usedBudget": 1500000,
-          "remainingBudget": 1500000
+          "totalBudget": 30000,
+          "usedBudget": 15000,
+          "remainingBudget": 15000
         },
         {
           "daysUntilTrip": 0,
@@ -102,18 +108,20 @@
               "type": "지출",
               "paymentMethod": "카드",
               "description": "지하철 티켓",
-              "amount": 50000
+              "amount": 500,
+              "convertedAmount": 4375
             },
             {
               "type": "추가",
               "paymentMethod": "현금",
               "description": "추가 예산",
-              "amount": 100000
+              "amount": 1000,
+              "convertedAmount": 8750
             }
           ],
-          "totalBudget": 1000000,
-          "usedBudget": 500000,
-          "remainingBudget": 500000
+          "totalBudget": 10000,
+          "usedBudget": 5000,
+          "remainingBudget": 5000
         },
         {
           "daysUntilTrip": 20,
@@ -130,18 +138,68 @@
               "type": "지출",
               "paymentMethod": "카드",
               "description": "호텔 숙박비",
-              "amount": 300000
+              "amount": 3000,
+              "convertedAmount": 26250
             },
             {
               "type": "지출",
               "paymentMethod": "현금",
               "description": "식사비",
-              "amount": 100000
+              "amount": 1000,
+              "convertedAmount": 8750
             }
           ],
-          "totalBudget": 2000000,
-          "usedBudget": 1200000,
-          "remainingBudget": 800000
+          "totalBudget": 20000,
+          "usedBudget": 12000,
+          "remainingBudget": 8000
+        },
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-11",
+          "endPeriod": "2024-06-13",
+          "category": "숙박",
+          "country": "태국",
+          "type": "지출",
+          "travelComplete": "완료",
+          "describe": "테스트드가자",
+          "headcount": 3,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "테스트",
+              "category": "숙박",
+              "amount": 333,
+              "convertedAmount": 2912.88
+            }
+          ],
+          "totalBudget": -2912.88,
+          "usedBudget": 2912.88,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-11",
+          "endPeriod": "2024-06-14",
+          "category": "숙박",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "여행 중",
+          "describe": "지켜보고계셔",
+          "headcount": 3,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "해보자고",
+              "category": "숙박",
+              "amount": 244,
+              "convertedAmount": 2134.37
+            }
+          ],
+          "totalBudget": -2134.37,
+          "usedBudget": 2134.37,
+          "remainingBudget": 0
         }
       ],
       "id": "08ac"
