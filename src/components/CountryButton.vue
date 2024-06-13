@@ -6,6 +6,7 @@
   >
     <img class="flag" :src="flagSrc" :alt="countryName" />
     <span class="country-name">{{ countryName }}</span>
+
     <img
       class="check-icon"
       :class="{ visible: isSelected }"

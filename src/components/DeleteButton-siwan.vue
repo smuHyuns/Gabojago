@@ -1,30 +1,69 @@
 <template>
-  <div
+  <!-- <div :class="{ selected: isSelected }" @click="toggleSelection">
+    <img
+      class="history-check-icon"
+      src="../assets/관광.png"
+      alt="Selected Icon"
+    />
+
+    <span class="histroy-list">{{ countryName }}</span>
+    <div class="history-money">
+      <span class="history-money-won">{{ number }}원</span>
+      <span class="history-money-local">{{ number2 }}JPY</span>
+
+      <img
+        class="check-icon"
+        :class="{ visible: isSelected }"
+        src="../assets/check-circle.png"
+        alt="Selected Icon"
+      />
+    </div>
+  </div> -->
+  <div class="history-list-container" @click="toggleSelection">
+    <div class="history-img-box">
+      <img class="history-icon" v-bind:src="flagSrc" alt="Selected Icon" />
+    </div>
+    <div class="histroy-list">{{ countryName }}</div>
+    <div class="history-money">
+      <div class="history-money-won">{{ number }}원</div>
+      <div class="history-money-local">{{ number2 }}JPY</div>
+    </div>
+    <div class="history-check-box">
+      <img
+        class="history-check-icon"
+        :class="{ visible: isSelected, selected: isSelected }"
+        src="../assets/check-circle.png"
+        alt="Selected Icon"
+      />
+    </div>
+  </div>
+
+  <!-- <div
     class="country-button"
     :class="{ selected: isSelected }"
     @click="toggleSelection"
   >
     <img class="flag" :src="flagSrc" :alt="countryName" />
-    <div class="histroy-list">{{ list }}</div>
-    <div class="history-money">
-      <div class="history-money-won">{{ number }}원</div>
-      <div class="history-money-local">{{ number2 }}JPY</div>
+    <span class="country-name">{{ countryName }}</span>
+
     <img
       class="check-icon"
       :class="{ visible: isSelected }"
       src="../assets/check-circle.png"
       alt="Selected Icon"
     />
-  </div>
+  </div> -->
 </template>
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
-  countryName: String,
-  flagSrc: String,
   isSelected: Boolean,
+  countryName: String,
+  number: Number,
+  number2: Number,
+  flagSrc: String,
 });
 
 const emit = defineEmits(['update:isSelected']);
@@ -35,43 +74,72 @@ function toggleSelection() {
 </script>
 
 <style scoped>
-.country-button {
-  width: 960px;
-  height: 100px;
+.history-list-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 216px;
+  margin: 0;
+  padding: 0 em 0 4em;
+  gap: 2em;
+}
+
+.history-img-box {
+  margin: 0;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1em;
+  padding-left: 30px;
+}
+
+.histroy-list {
+  margin: 0;
+  font-size: 3em;
+  flex-grow: 1;
+}
+
+.history-money {
+  margin: 0;
+  width: 300px;
+}
+
+.history-money-won {
+  text-align: right;
+  font-size: 3em;
+}
+
+.history-money-local {
+  text-align: right;
+  font-size: 1.5em;
+  color: #999;
+}
+
+.history-check-box {
+  margin: 0;
+  width: 100px;
+  height: 140px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  border-radius: 50px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  background-color: transparent; /* 배경 색상을 투명으로 설정 */
+  justify-content: center;
 }
 
-.flag {
-  margin-left: 15px;
-  margin-right: 25px;
-  width: 80px;
-  height: 60px;
+.history-icon {
+  width: 100px;
+  height: 100px;
+  padding-right: 30px;
 }
 
-.country-name {
-  flex: 1;
-  margin: 0 20px;
-  font-size: 40px;
-  font-weight: bold;
-}
-
-.check-icon {
-  margin-left: 15px;
-  margin-right: 15px;
+.history-check-icon {
   width: 60px;
   height: 60px;
-  opacity: 0.3; /* 기본 상태에서 흐리게 설정 */
-  transition: opacity 0.3s;
+  opacity: 0.5;
+  padding-right: 30px;
 }
 
-.check-icon.visible {
+.history-check-icon.visible {
   opacity: 1; /* 선택된 상태에서 선명하게 설정 */
 }
 
