@@ -1,6 +1,6 @@
 <template>
   <div class="BlueBox">
-    <Header class="header" />
+    <Header class="header" style="z-index: 9999;"/>
     <div class="imgContainer">
       <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
@@ -14,30 +14,42 @@
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
-        <li class="tripCategory selected">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '전체' }" @click="selectCategory('전체')">
           <div class="tripCategoryName">전체</div>
           <div class="tripCategoryCount">{{ totalTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '여행 중' }" @click="selectCategory('여행 중')">
           <div class="tripCategoryName">여행 중</div>
           <div class="tripCategoryCount">{{ ongoingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '다가오는 여행' }" @click="selectCategory('다가오는 여행')">
           <div class="tripCategoryName">다가오는 여행</div>
           <div class="tripCategoryCount">{{ upcomingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '완료' }" @click="selectCategory('완료')">
           <div class="tripCategoryName">지난 여행</div>
-          <div class="tripCategoryCount">{{ pastTrips }}</div>
+          <div class="tripCategoryCount">{{ completedTrips }}</div>
         </li>
       </ul>
     </div>
     <div class="planListBox">
-      <div class="useBox" v-for="trip in trips" :key="trip.startPeriod">
+      <div 
+        class="useBox" 
+        v-for="(trip, index) in filteredTrips" 
+        :key="index"
+        :class="{ faded: trip.daysUntilTrip === 0 }"
+      >
         <img class="useBox-img" src="../assets/비행기토끼.png"></img>
         <div class="useBox-txt">
-          <span class="useBox-txt-main">{{ trip.description }}</span><br />
-          <span class="useBox-txt-sub">D-{{ trip.daysUntilTrip }}</span>
+          <span class="useBox-txt-main">{{ trip.describe }}</span><br />
+          <span class="useBox-txt-sub">
+            <template v-if="trip.daysUntilTrip > 0">
+              {{ trip.country }} · D-{{ trip.daysUntilTrip }}
+            </template>
+            <template v-else>
+              {{ formatPeriod(trip.startPeriod, trip.endPeriod) }}
+            </template>
+          </span>
         </div>
         <div class="useBox-detail">
           <img src="../assets/chevron-left.png" />
@@ -53,61 +65,63 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
+import { ref, computed, onMounted } from 'vue';
 
-// 상태 관리 변수
 const totalTrips = ref(0);
 const ongoingTrips = ref(0);
 const upcomingTrips = ref(0);
-const pastTrips = ref(0);
+const completedTrips = ref(0);
 const trips = ref([]);
+const selectedCategory = ref('전체');
 
-// 데이터 가져오기 및 처리 함수
-const fetchData = async () => {
-  try {
-    const response = await axios.get('/path/to/db.json');
-    const data = response.data;
-
-    let total = 0;
-    let ongoing = 0;
-    let upcoming = 0;
-    let past = 0;
-    const today = new Date();
-
-    data.users.forEach(user => {
-      user.trips.forEach(trip => {
-        total++;
-        const startDate = new Date(trip.startPeriod);
-        const endDate = new Date(trip.endPeriod);
-
-        if (startDate <= today && endDate >= today) {
-          ongoing++;
-        } else if (startDate > today) {
-          upcoming++;
-        } else if (endDate < today) {
-          past++;
-        }
-
-        // trips 배열에 추가
-        trips.value.push({
-          description: trip.description,
-          daysUntilTrip: trip.daysUntilTrip,
-        });
-      });
-    });
-
-    totalTrips.value = total;
-    ongoingTrips.value = ongoing;
-    upcomingTrips.value = upcoming;
-    pastTrips.value = past;
-  } catch (error) {
-    console.error('데이터를 가져오는 중 오류 발생:', error);
-  }
+const formatPeriod = (start, end) => {
+  const formatDate = (date) => {
+    const [year, month, day] = date.split('-');
+    return `${year.slice(2)}.${month}.${day}`;
+  };
+  const startDate = formatDate(start);
+  const endDate = formatDate(end);
+  return `${startDate} ~ ${endDate}`;
 };
 
-onMounted(fetchData);
+const selectCategory = (category) => {
+  selectedCategory.value = category;
+};
+
+const filteredTrips = computed(() => {
+  if (selectedCategory.value === '전체') {
+    return trips.value;
+  }
+  return trips.value.filter(trip => trip.travelComplete === selectedCategory.value);
+});
+
+onMounted(async () => {
+  try {
+    const response = await fetch('/db.json'); // JSON 파일 경로 확인
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    const userTrips = data.users[0].trips;
+
+    trips.value = userTrips;
+    totalTrips.value = userTrips.length;
+    ongoingTrips.value = userTrips.filter(trip => trip.travelComplete === '여행 중').length;
+    upcomingTrips.value = userTrips.filter(trip => trip.travelComplete === '다가오는 여행').length;
+    completedTrips.value = userTrips.filter(trip => trip.travelComplete === '완료').length;
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+  }
+});
 </script>
 
+
+
 <style scoped>
+.faded {
+  opacity: 0.7;
+}
+
 .BlueBox {
   height: 1170px;
   width: 1080px;
@@ -205,7 +219,7 @@ onMounted(fetchData);
   color: white !important;
   transition-duration: 0.8s;
 }
-
+/* 고쳐야함 */
 .tripCategoryName,
 .tripCategoryCount {
   font-weight: 600;
