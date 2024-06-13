@@ -1,9 +1,20 @@
 <template>
   <div class="viewport">
     <Topbar titleText="마이페이지" />
-    <TextInput headerInput="이름" placeholder="변경할 이름을 입력해 주세요" v-model="inputname" @input="limitInput" />
+    <TextInput
+      class="textname"
+      headerInput="이름"
+      placeholder="변경할 이름을 입력해 주세요"
+      v-model="inputname"
+      @input="limitInput"
+    />
     <div class="spacer"></div>
-    <CtaBar class="bottom-bar" inputname="닉네임 등록하기" :on="isblack" @submit="updateNickname" />
+    <CtaBar
+      class="bottom-bar"
+      inputname="이름 등록하기"
+      :on="isblack"
+      @submit="updateNickname"
+    />
   </div>
 </template>
 
@@ -33,7 +44,7 @@ const fetchUserNickname = async () => {
     inputname.value = user.nickname;
     isblack.value = inputname.value.length >= 1;
   } catch (error) {
-    console.error('유저 닉네임 불러오기 오류:', error);
+    console.error('유저 정보 불러오기 오류:', error);
     alert('유저 정보를 불러오는 중 오류가 발생했습니다.');
   }
 };
@@ -44,7 +55,7 @@ onMounted(() => {
 
 const updateNickname = async () => {
   if (inputname.value.trim() === '') {
-    alert('닉네임을 입력해주세요.');
+    alert('이름을 입력해주세요.');
     return;
   }
 
@@ -56,18 +67,22 @@ const updateNickname = async () => {
 
     await axios.put(`http://localhost:3000/users/${user.id}`, updatedUser);
 
-    alert('닉네임이 성공적으로 등록되었습니다.');
+    alert('이름이 성공적으로 등록되었습니다.');
     inputname.value = '';
     isblack.value = false;
     router.push('/hyunsoo');
   } catch (error) {
     console.error('닉네임 변경 오류:', error);
-    alert('닉네임 등록 중 오류가 발생했습니다.');
+    alert('이름 등록 중 오류가 발생했습니다.');
   }
 };
 </script>
 
 <style scoped>
+.textname {
+  white-space: nowrap;
+}
+
 .viewport {
   width: 1080px;
   height: 2340px;

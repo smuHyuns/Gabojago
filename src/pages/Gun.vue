@@ -173,31 +173,8 @@ function navigateToCalendar() {
 </script>
 
 <style scoped>
-.viewport {
-  width: 1080px;
-  height: 2340px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  background-color: #fff;
-}
 .search-container {
   margin-top: 10px;
-}
-
-.kindTripBox {
-  max-width: 1080px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
-  justify-content: flex-start; /* 좌측 정렬 */
-  margin: 30px;
 }
 
 .whiteBox {
@@ -208,28 +185,45 @@ function navigateToCalendar() {
   position: relative; /* 버튼 위치 설정을 위한 기준 요소 */
 }
 
+.kindTripBox {
+  max-width: 1080px;
+  height: 184px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
+  justify-content: flex-start; /* 좌측 정렬 */
+  margin: 0 58px;
+}
+
 .kindTripBox ul {
   display: flex;
-  overflow-x: auto; /* 수평스크롤 활성화 */
-  overflow-y: hidden; /* 수직스크롤 비활성화 */
-  gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding: 0; /* 기본 패딩 제거 */
-  margin: 0; /* 기본 마진 제거 */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .tripCategory {
-  height: 60px; /* 높이를 더 키움 */
+  height: 94px; /* 높이를 더 키움 */
   justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 중앙 정렬 */
-  gap: 15px; /* 간격을 더 키움 */
-  display: inline-flex;
-  background: var(--grey-200); /* 기본 배경 색상 */
-  border-radius: 40px;
+  border-radius: 57px;
   padding: 20px 25px; /* 패딩을 더 키움 */
-  font-size: 30px; /* 글자 크기를 더 키움 */
   color: var(--grey-700); /* 기본 글자 색상 */
   white-space: nowrap; /* 텍스트가 줄 바꿈 되지 않도록 */
+}
+
+.tripCategory {
+  padding: 0 34px;
+  gap: 15px;
+  display: flex; /* 가로 정렬을 위해 flex로 설정 */
+  align-items: center; /* 텍스트를 수직 가운데 정렬 */
+  background: #f5f6f7;
+  border-radius: 57px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #8892a0;
 }
 
 .tripCategory:hover {
