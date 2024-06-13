@@ -173,17 +173,6 @@ function navigateToCalendar() {
 </script>
 
 <style scoped>
-.viewport {
-  width: 1080px;
-  height: 2340px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  background-color: #fff;
-}
 .search-container {
   margin-top: 10px;
 }
@@ -219,13 +208,13 @@ function navigateToCalendar() {
 }
 
 .tripCategory {
-  height: 60px; /* 높이를 더 키움 */
+  height: 94px; /* 높이를 더 키움 */
   justify-content: center; /* 중앙 정렬 */
   align-items: center; /* 중앙 정렬 */
   gap: 15px; /* 간격을 더 키움 */
-  display: inline-flex;
+  display: flex;
   background: var(--grey-200); /* 기본 배경 색상 */
-  border-radius: 40px;
+  border-radius: 57px;
   padding: 20px 25px; /* 패딩을 더 키움 */
   font-size: 30px; /* 글자 크기를 더 키움 */
   color: var(--grey-700); /* 기본 글자 색상 */

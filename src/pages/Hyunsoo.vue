@@ -61,7 +61,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';

@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "nickname": "육월십삼호",
+      "nickname": "ㅎ롤홀호로",
       "trips": [
         {
           "daysUntilTrip": 0,
@@ -362,6 +362,78 @@
               "description": "기본 등록",
               "category": "기타",
               "amount": 0,
+              "convertedAmount": 0
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 11,
+          "startPeriod": "2024-06-24",
+          "endPeriod": "2024-06-28",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "건우형여행",
+          "headcount": 4,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 0,
+              "convertedAmount": 0
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 11,
+          "startPeriod": "2024-06-24",
+          "endPeriod": "2024-06-28",
+          "category": "쇼핑",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "건우형여행",
+          "headcount": 4,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "건우형여행지출기록",
+              "category": "쇼핑",
+              "amount": 333,
+              "convertedAmount": 2912.88
+            }
+          ],
+          "totalBudget": -2912.88,
+          "usedBudget": 2912.88,
+          "remainingBudget": 0
+        },
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-10",
+          "endPeriod": "2024-06-14",
+          "category": "숙박",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "여행 중",
+          "describe": "ㄹㄹ호",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "ㅗㅓㅗ",
+              "category": "숙박",
+              "amount": null,
               "convertedAmount": 0
             }
           ],
