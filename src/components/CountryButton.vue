@@ -6,6 +6,7 @@
   >
     <img class="flag" :src="flagSrc" :alt="countryName" />
     <span class="country-name">{{ countryName }}</span>
+
     <img
       class="check-icon"
       :class="{ visible: isSelected }"
@@ -48,8 +49,8 @@ function toggleSelection() {
 .flag {
   margin-left: 15px;
   margin-right: 25px;
-  width: 80px;
-  height: 60px;
+  width: 85px;
+  height: 55px;
 }
 
 .country-name {

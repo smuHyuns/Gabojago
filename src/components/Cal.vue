@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container">
-    <h1 style="color: black">{{ selectedDateValue }}</h1>
+    <!-- <h1 style="color: black">{{ selectedDateValue }}</h1> -->
     <div class="calendar-header">
       <img
         src="../assets/chevron-right.png"
@@ -131,8 +131,18 @@ function selectDate(date) {
       updateSelectedDateValue();
     }
     updateHighlightDates();
-    emit('dateSelected', selectedDates.value);
+    emit(
+      'dateSelected',
+      selectedDates.value.map((key) => formatDateKey(key))
+    );
   }
+}
+
+function formatDateKey(key) {
+  const day = calendarDates.value.find((date) => date.key === key).value;
+  return `${currentYear.value}-${(currentMonth.value + 1)
+    .toString()
+    .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
 
 function updateSelectedDateValue() {

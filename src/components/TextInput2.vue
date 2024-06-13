@@ -65,29 +65,17 @@ watch(
   height: 184px;
 }
 
-.header {
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 52px;
-  line-height: 1;
-  text-align: left;
-  color: #353b43;
-  margin-right: 10px;
-  width: 90px;
-  height: 52px;
-}
-
 .inputBox {
-  width: 737px;
+  margin: 0;
+  margin-right: 45px;
+  width: 950px;
   height: 138px;
   background: #f5f6f7;
-  border-radius: 28.8px;
-  font-family: Pretendard;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 46px;
   padding-left: 40px; /* 아이콘의 너비와 추가 마진 */
+  border-radius: 28.8px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 46px;
   line-height: 1.3;
   text-align: left;
   color: #353b43; /* 기본 상태 색상 */

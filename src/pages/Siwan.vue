@@ -14,7 +14,7 @@
 
     <CtaBar
       class="down"
-      inputname="여행자 닉네임 변경"
+      inputname="여행자 등록하기"
       :on="isblack"
       @submit="updateNickname"
     />
@@ -36,7 +36,6 @@ const limitInput = (event) => {
     inputname.value = event.target.value.slice(0, 10);
   }
   isblack.value = inputname.value.length >= 1;
-  console.log(isblack.value);
 };
 
 const updateNickname = async () => {
@@ -53,13 +52,13 @@ const updateNickname = async () => {
 
     await axios.put(`http://localhost:3000/users/${user.id}`, updatedUser);
 
-    alert('닉네임이 성공적으로 변경되었습니다.');
+    alert('닉네임이 성공적으로 등록되었습니다.');
     inputname.value = '';
     isblack.value = false;
     router.push('/hyunsoo');
   } catch (error) {
     console.error('닉네임 변경 오류:', error);
-    alert('닉네임 변경 중 오류가 발생했습니다.');
+    alert('닉네임 등록 중 오류가 발생했습니다.');
   }
 };
 </script>
@@ -77,7 +76,7 @@ const updateNickname = async () => {
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 90px;
+  font-size: 75px;
   line-height: 1.4;
   text-align: left;
   width: 965px;
@@ -89,12 +88,12 @@ const updateNickname = async () => {
   height: 152px;
   padding: 12px 16px;
   padding-left: 50px; /* 왼쪽 마진 */
-  margin-top: 20px;
+  margin-top: 30px;
   background: #f5f6f7;
   border-radius: 46px;
   font-style: normal;
-  font-weight: 500;
-  font-size: 60px;
+  font-weight: 400;
+  font-size: 52px;
   line-height: 1.3;
   color: #353b43;
   border: none;
