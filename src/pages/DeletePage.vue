@@ -1,123 +1,163 @@
 <template>
-  <TopbarWithIcon titleText="일주일 도쿄 여행" />
-  <div class="day-box">날짜 db받기</div>
-  <div class="scroll-box">
-    <div class="country-buttons">
-      <DeleteButtonSiwan
-        v-for="country in filteredCountries"
-        :key="country.list"
-        :countryName="country.list"
-        :flagSrc="country.flagSrc"
-        :isSelected="selectedCountries.includes(country.list)"
-        :number="country.number"
-        :number2="country.number2"
-        @update:isSelected="updateSelectedCountries(country.list)"
+  <div>
+    <TopbarWithIcon-tokyo
+      :titleText="trip?.describe || '지출 내역'"
+      :tripId="tripId"
+      class="topbar"
+    />
+    <div class="date">{{ selectedDate }}</div>
+    <div v-for="expense in filteredExpenses" :key="expense.description">
+      <DeleteButton-siwan
+        :countryName="expense.description"
+        :flagSrc="getCategoryImage(expense.category)"
+        :isSelected="selectedExpenses.includes(expense.description)"
+        :number="expense.convertedAmount"
+        :number2="expense.amount"
+        @update:isSelected="updateSelectedExpenses(expense.description)"
       />
-      <!-- <DeleteButtonSiwan
-        :key="1"
-        countryName="일본"
-        :flagSrc="'/src'"
-        :isSelected="true"
-        :number="4000"
-        :number2="50000"
-        @update:isSelected="updateSelectedCountries(country.list)"
-      /> -->
     </div>
+
+    <CtaBarBlackSiwan
+      class="ctabarblacksiwan"
+      inputname="삭제하기"
+      @click="deleteSelectedExpenses"
+    />
   </div>
-  <CtaBar inputname="다음으로" :on="isblack" @click="navigateToCalendar" />
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import CtaBar from '@/components/CtaBar.vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
+import TopbarWithIconTokyo from '@/components/TopbarWithIcon-tokyo.vue';
 import DeleteButtonSiwan from '@/components/DeleteButton-siwan.vue';
-import TopbarWithIcon from '@/components/TopbarWithIcon.vue';
+import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 
-const searchQuery = ref('');
-const selectedCategory = ref('전체');
-const selectedCountries = ref([]);
-const isblack = ref(false);
+const route = useRoute();
+const router = useRouter();
+const tripId = route.params.tripId;
+const trip = ref(null);
+const filteredExpenses = ref([]);
+const selectedExpenses = ref([]);
+const selectedDate = route.params.date;
+const userId = '08ac'; // 사용자 ID를 0으로 설정합니다.
 
-const countries = {
-  전체: [
-    {
-      flagSrc: '/src/assets/관광.png',
-      list: '관광',
-      number: '- 5,109',
-      number2: '- 580',
-    },
-    {
-      flagSrc: '/src/assets/현금.png',
-      list: '현금',
-      number: '+ 100,000',
-      number2: '+ 11,392.77',
-    },
-    {
-      flagSrc: '/src/assets/현금.png',
-      list: '현금',
-      number: '+ 100,000',
-      number2: '+ 5,000',
-    },
-    {
-      flagSrc: '/src/assets/관광.png',
-      list: '관광',
-      number: '- 5,109',
-      number2: '- 580',
-    },
-    // ... 다른 국가들 추가
-  ],
-};
-
-const filteredCountries = computed(() => {
-  let filtered = countries[selectedCategory.value];
-  if (searchQuery.value) {
-    filtered = filtered.filter((country) => country.list.includes(searchQuery.value));
+onMounted(async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/users'); // JSON 서버 경로 확인
+    const data = response.data;
+    console.log('Fetched data:', data); // 데이터 로깅
+    const userTrips = data.find((user) => user.id === userId).trips;
+    trip.value = userTrips.find((trip) => trip.id === parseInt(tripId));
+    console.log('Found trip:', trip.value); // trip 로깅
+    if (trip.value) {
+      filteredExpenses.value = trip.value.expenses;
+      console.log('Filtered expenses:', filteredExpenses.value); // filteredExpenses 로깅
+    }
+  } catch (error) {
+    console.error('Error fetching trip data:', error);
   }
-  return filtered;
 });
 
-function updateSelectedCountries(countryName) {
-  if (selectedCountries.value.includes(countryName)) {
-    selectedCountries.value = selectedCountries.value.filter((name) => name !== countryName);
+function updateSelectedExpenses(expenseDescription) {
+  if (selectedExpenses.value.includes(expenseDescription)) {
+    selectedExpenses.value = selectedExpenses.value.filter(
+      (desc) => desc !== expenseDescription
+    );
   } else {
-    selectedCountries.value = [countryName];
+    selectedExpenses.value.push(expenseDescription);
   }
-  isblack.value = selectedCountries.value.length >= 1;
 }
 
-function navigateToCalendar() {
-  // Navigate to calendar logic
+async function deleteSelectedExpenses() {
+  try {
+    const user = (await axios.get(`http://localhost:3000/users/${userId}`))
+      .data;
+    const updatedTrips = user.trips.map((t) => {
+      if (t.id === parseInt(tripId)) {
+        return {
+          ...t,
+          expenses: t.expenses.filter(
+            (expense) => !selectedExpenses.value.includes(expense.description)
+          ),
+        };
+      }
+      return t;
+    });
+
+    const response = await axios.patch(
+      `http://localhost:3000/users/${userId}`,
+      {
+        trips: updatedTrips,
+      }
+    );
+
+    if (response.status === 200) {
+      alert('선택된 지출 내역이 삭제되었습니다.');
+      // 삭제 후 로컬 상태를 업데이트
+      filteredExpenses.value = trip.value.expenses.filter(
+        (expense) => !selectedExpenses.value.includes(expense.description)
+      );
+      selectedExpenses.value = [];
+    }
+  } catch (error) {
+    console.error('Error deleting expenses:', error);
+    alert('지출 내역 삭제 중 오류가 발생했습니다.');
+  }
+}
+
+function formatAmount(amount) {
+  return amount ? `${amount.toLocaleString()}` : '0';
+}
+
+function getCategoryImage(category) {
+  try {
+    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
+  } catch (e) {
+    return new URL(`/src/assets/default.png`, import.meta.url).href;
+  }
 }
 </script>
 
 <style scoped>
-.viewport {
-  width: 1080px;
-  height: 2340px;
-  overflow: hidden;
+.date {
+  box-sizing: border-box;
+  width: 100%;
+  height: 96px;
+  background: #f5f6f7;
+  color: #8892a0;
+  font-size: 40px;
+  font-weight: 500;
+  padding-left: 1.5em;
+  display: flex;
+  align-items: center;
+}
+.result-box {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  background-color: #eff4fe;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.spent-money {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  background-color: #fff;
 }
-.day-box {
-  width: 1080px;
-  height: 60px;
-  background: #eaecef;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-  font-size: 25px;
+.spent-money-title {
+  text-align: center;
   color: #8892a0;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 52px;
 }
-.scroll-box {
-  margin: 0;
-  width: 1080px;
-  height: 1350.72px;
-  overflow-y: scroll;
-  padding-bottom: 70px;
+
+.spent-money-amount {
+  text-align: center;
+  font-size: 60px;
+  font-weight: 700;
 }
 </style>

@@ -3,10 +3,9 @@
     <div class="imgbox">
       <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
-      <button class="Changeicon">
+      <button class="Changeicon" @click="navigateToDeletePage">
         <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
       </button>
-      <!-- ChangeIcon은 변경하세요~~ -->
     </div>
   </div>
 </template>
@@ -16,8 +15,16 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-defineProps({
+const props = defineProps({
   titleText: {
+    type: String,
+    required: true,
+  },
+  tripId: {
+    type: Number,
+    required: true,
+  },
+  selectedDate: {
     type: String,
     required: true,
   },
@@ -25,6 +32,16 @@ defineProps({
 
 function goBack() {
   router.back();
+}
+
+function navigateToDeletePage() {
+  router.push({
+    name: 'deletepage',
+    params: {
+      tripId: props.tripId,
+      date: props.selectedDate,
+    },
+  });
 }
 </script>
 
@@ -37,32 +54,28 @@ function goBack() {
   padding-left: 50px;
   padding-right: 237px;
   display: flex;
-  align-items: center; /* 수직 정렬 */
+  align-items: center;
 }
 
 .imgbox {
   display: flex;
   align-items: center;
-  gap: 10px; /* 아이콘과 제목 사이의 거리 */
-  margin-left: 20px; /* 좌측 벽과의 거리 */
-
-  height: 91px; /* 아이콘과 제목의 높이를 동일하게 설정 (70px * 1.3) */
-  /* overflow: hidden; 내용이 넘치는 경우 자르기 */
+  gap: 10px;
+  margin-left: 20px;
+  height: 91px;
 }
 
 .icon {
-  height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
+  height: 75px;
   object-fit: contain;
-  overflow: visible;
   cursor: pointer;
 }
 
 .title {
   color: #353b43;
-  font-size: 58px; /* 폰트 크기를 1.3배 증가 (24px * 1.3) */
+  font-size: 58px;
   font-weight: 700;
-  line-height: 91px; /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
-  word-wrap: break-word;
+  line-height: 91px;
 }
 
 .icon2 {
@@ -71,13 +84,13 @@ function goBack() {
   padding: 8.64px;
   justify-content: center;
   align-items: center;
-  display: inline-flex; /* 여기서 아이콘 크기 변경하세요~~~*/
+  display: inline-flex;
 }
 
 .Changeicon {
-  left: 400px; /* 여기서 left로 부터 멀어지는 값 볼 수 잇어요~~ */
+  left: 400px;
   background: none;
-  border: none; /* 아이콘과 동일한 높이 */
+  border: none;
   position: relative;
 }
 </style>

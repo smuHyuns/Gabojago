@@ -1,6 +1,5 @@
 <template>
   <div class="payment-box">
-    <Modal @close="handleModalClose" @confirm="handleModalConfirm" />
     <Topbar class="topbar" titleText="경비" />
     <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
     <div class="price-box">
@@ -64,7 +63,7 @@
       </div>
     </div>
     <div class="ctabar">
-      <CtaBar inputname="등록하기" @click="navigateToHyunsoo" />
+      <CtaBar inputname="등록하기" @click="registerExpense" />
     </div>
   </div>
 </template>
@@ -88,19 +87,10 @@ const expenseType = ref('지출');
 const paymentMethod = ref('현금');
 const expenseDetail = ref('');
 const selectedCategory = ref('');
-
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
-const selectedDates = ref(
-  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
-);
-const memberCount = ref(
-  route.query.memberCount ? parseInt(route.query.memberCount) : 0
-);
-const travelTitle = ref(route.query.travelTitle || '');
-
 const categories = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
+
+const selectedDate = ref(route.query.selectedDate || '');
+const tripId = ref(route.query.tripId || '');
 
 const generateUniqueId = () => {
   return Date.now() + Math.floor(Math.random() * 1000);
@@ -118,76 +108,7 @@ const handleModalConfirm = () => {
   console.log('Modal confirmed');
 };
 
-const registerDefaultData = async () => {
-  const expense = {
-    id: generateUniqueId(),
-    type: expenseType.value,
-    paymentMethod: paymentMethod.value,
-    description: '기본 등록',
-    category: '기타',
-    amount: 0,
-    convertedAmount: 0,
-  };
-
-  const currentDate = new Date();
-  const startDate = new Date(selectedDates.value[0]);
-  const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
-
-  let daysUntilTrip = Math.ceil(
-    (startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  if (daysUntilTrip < 0) daysUntilTrip = 0;
-
-  let travelComplete = '다가오는 여행';
-  if (currentDate >= startDate && currentDate <= endDate) {
-    travelComplete = '여행 중';
-  } else if (currentDate > endDate) {
-    travelComplete = '완료';
-  }
-
-  const userId = '08ac';
-  try {
-    const response = await axios.get(`http://localhost:3000/users/${userId}`);
-    const user = response.data;
-
-    let totalBudget = 0;
-    let usedBudget = 0;
-    let remainingBudget = 0;
-    if (expenseType.value === '추가') {
-      totalBudget += expense.convertedAmount;
-      remainingBudget += expense.convertedAmount;
-    } else {
-      totalBudget -= expense.convertedAmount;
-      usedBudget += expense.convertedAmount;
-    }
-
-    const newTrip = {
-      id: generateUniqueId(),
-      daysUntilTrip,
-      startPeriod: selectedDates.value[0],
-      endPeriod: selectedDates.value[selectedDates.value.length - 1],
-      category: selectedCategory.value,
-      country: selectedCountries.value.join(','),
-      type: expenseType.value,
-      travelComplete,
-      describe: travelTitle.value,
-      headcount: memberCount.value,
-      expenses: [expense],
-      totalBudget,
-      usedBudget,
-      remainingBudget,
-    };
-
-    user.trips.push(newTrip);
-
-    await axios.put(`http://localhost:3000/users/${userId}`, user);
-    console.log('Default data registered successfully');
-  } catch (error) {
-    console.error('Failed to register default data:', error);
-  }
-};
-
-const navigateToHyunsoo = async () => {
+const registerExpense = async () => {
   const expense = {
     id: generateUniqueId(),
     type: expenseType.value,
@@ -196,68 +117,37 @@ const navigateToHyunsoo = async () => {
     category: selectedCategory.value,
     amount: parseFloat(displayAmountJPY.value.replace(' JPY', '')),
     convertedAmount: parseFloat(conversionResult.value.KRW),
+    date: selectedDate.value,
   };
-
-  const currentDate = new Date();
-  const startDate = new Date(selectedDates.value[0]);
-  const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
-
-  let daysUntilTrip = Math.ceil(
-    (startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  if (daysUntilTrip < 0) daysUntilTrip = 0;
-
-  let travelComplete = '다가오는 여행';
-  if (currentDate >= startDate && currentDate <= endDate) {
-    travelComplete = '여행 중';
-  } else if (currentDate > endDate) {
-    travelComplete = '완료';
-  }
 
   const userId = '08ac';
   try {
     const response = await axios.get(`http://localhost:3000/users/${userId}`);
     const user = response.data;
 
-    let totalBudget = 0;
-    let usedBudget = 0;
-    let remainingBudget = 0;
-    if (expenseType.value === '추가') {
-      totalBudget += expense.convertedAmount;
-      remainingBudget += expense.convertedAmount;
-    } else {
-      totalBudget -= expense.convertedAmount;
-      usedBudget += expense.convertedAmount;
+    const trip = user.trips.find((t) => t.id === parseInt(tripId.value));
+    if (trip) {
+      trip.expenses.push(expense);
+      if (expenseType.value === '추가') {
+        trip.totalBudget += expense.convertedAmount;
+        trip.remainingBudget += expense.convertedAmount;
+      } else {
+        trip.totalBudget -= expense.convertedAmount;
+        trip.usedBudget += expense.convertedAmount;
+      }
+
+      await axios.put(`http://localhost:3000/users/${userId}`, user);
+      console.log('Expense registered successfully');
+
+      // 쿼리 정보를 포함하여 siwan_test 페이지로 이동
+      router.push({
+        name: 'siwan_test',
+        params: { date: selectedDate.value, tripId: tripId.value },
+      });
     }
-
-    const newTrip = {
-      id: generateUniqueId(),
-      daysUntilTrip,
-      startPeriod: selectedDates.value[0],
-      endPeriod: selectedDates.value[selectedDates.value.length - 1],
-      category: selectedCategory.value,
-      country: selectedCountries.value.join(','),
-      type: expenseType.value,
-      travelComplete,
-      describe: travelTitle.value,
-      headcount: memberCount.value,
-      expenses: [expense],
-      totalBudget,
-      usedBudget,
-      remainingBudget,
-    };
-
-    user.trips.push(newTrip);
-
-    await axios.put(`http://localhost:3000/users/${userId}`, user);
-    console.log('Trip added successfully');
   } catch (error) {
-    console.error('Failed to add trip:', error);
+    console.error('Failed to register expense:', error);
   }
-
-  router.push({
-    path: '/hyunsoo',
-  });
 };
 
 async function fetchExchangeRate(from, to) {
