@@ -1,11 +1,21 @@
 <template>
   <div>
-    <TopbarWithIcon titleText="일주일 도쿄여행" class="topbar" />
+    <TopbarWithIcontokyo titleText="일주일 도쿄여행" class="topbar" />
+  </div>
+  <div>
+    <HistoryListItem />
+  </div>
+  <div>
+    <CtaBarSiwan />
+  </div>
+  <div>
+    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
   </div>
 </template>
 
 <script setup>
-import TopbarWithIcon from "@/components/TopbarWithIcon.vue";
+import TopbarWithIcontokyo from "@/components/TopbarWithIcon-tokyo.vue";
+import HistoryListItem from "@/components/HistoryListItem.vue";
 import CtaBarSiwan from "@/components/CtaBar-siwan.vue";
 import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
 </script>
