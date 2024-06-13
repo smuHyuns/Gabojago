@@ -11,6 +11,7 @@ import Modal from '@/components/Modal.vue';
 import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
+import DeletePage from '@/pages/DeletePage.vue';
 import Start from '@/pages/Start.vue';
 
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/siwan_test',
       name: 'siwan_test',
       component: Siwan_test,
+    },
+    {
+      path: '/deletepage',
+      name: 'deletepage',
+      component: DeletePage,
     },
     {
       path: '/member',
