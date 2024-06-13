@@ -1,7 +1,12 @@
 <template>
   <div class="payment-box">
     <Topbar class="topbar" titleText="경비" />
-    <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" />
+    <TopSelect
+      class="top-select"
+      onetitle="지출 추가"
+      twotitle="경비 추가"
+      @updateType="updateExpenseType"
+    />
     <div class="price-box">
       <div class="price-details">
         <input
@@ -75,7 +80,6 @@ import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import TopSelect from '@/components/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
-import Modal from '@/components/Modal.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -94,18 +98,6 @@ const tripId = ref(route.query.tripId || '');
 
 const generateUniqueId = () => {
   return Date.now() + Math.floor(Math.random() * 1000);
-};
-
-const handleModalClose = (confirm) => {
-  if (confirm) {
-    registerDefaultData().then(() => {
-      router.push({ path: '/hyunsoo' });
-    });
-  }
-};
-
-const handleModalConfirm = () => {
-  console.log('Modal confirmed');
 };
 
 const registerExpense = async () => {
@@ -188,10 +180,6 @@ function updateAmountJPY(event) {
   convertCurrency();
 }
 
-function selectExpenseType(type) {
-  expenseType.value = type;
-}
-
 function selectPaymentMethod(method) {
   paymentMethod.value = method;
 }
@@ -206,6 +194,10 @@ function getCategoryImage(category) {
   } catch (e) {
     return new URL(`/src/assets/default.png`, import.meta.url).href;
   }
+}
+
+function updateExpenseType(type) {
+  expenseType.value = type;
 }
 </script>
 

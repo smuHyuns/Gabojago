@@ -3,7 +3,7 @@
     <Topbar titleText="여행 제목" />
     <TextInput2
       placeholder="제목을 입력해주세요"
-      v-model="inputname"
+      v-model="travelTitle"
       @input="limitInput"
     />
     <div class="spacer"></div>
@@ -38,13 +38,12 @@ const memberCount = ref(
 );
 
 const isblack = ref(false);
-let inputname = ref('');
 
 const limitInput = () => {
-  if (inputname.value.length > 10) {
-    inputname.value = inputname.value.slice(0, 10);
+  if (travelTitle.value.length > 10) {
+    travelTitle.value = travelTitle.value.slice(0, 10);
   }
-  isblack.value = inputname.value.length >= 1;
+  isblack.value = travelTitle.value.length >= 1;
 };
 
 const navigateToAddPayment = () => {
