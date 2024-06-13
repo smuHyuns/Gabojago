@@ -1,20 +1,12 @@
 <template>
   <div class="history-list-container">
     <div class="history-img-box">
-      <img class="history-check-icon" v-bind:src="img" alt="Selected Icon" />
+      <img class="history-img" v-bind:src="img" alt="Selected Icon" />
     </div>
     <div class="histroy-list">{{ list }}</div>
     <div class="history-money">
       <div class="history-money-won">{{ number }}원</div>
       <div class="history-money-local">{{ number2 }}JPY</div>
-    </div>
-    <div class="history-check-box">
-      <img
-        class="history-check-icon"
-        :class="{ visible: isSelected }"
-        src="../assets/check-circle.png"
-        alt="Selected Icon"
-      />
     </div>
   </div>
 </template>
@@ -37,7 +29,7 @@ const props = defineProps({
   align-items: center;
   height: 216px;
   margin: 0;
-  padding: 0 2em 0 4em;
+  padding: 0 2em 0 1em;
   gap: 2em;
 }
 
@@ -50,6 +42,11 @@ const props = defineProps({
   align-items: center;
 
   border-radius: 1em;
+}
+
+.history-img {
+  width: 80px;
+  height: 80px;
 }
 
 .histroy-list {
@@ -72,19 +69,5 @@ const props = defineProps({
   text-align: right;
   font-size: 1.5em;
   color: #999;
-}
-
-.history-check-box {
-  margin: 0;
-  width: 100px;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.history-check-icon {
-  width: 80px;
-  height: 80px;
 }
 </style>
