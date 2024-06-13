@@ -1,28 +1,21 @@
 <template>
   <div>
-    <TopbarWithIcon titleText="일주일 도쿄여행" class="topbar" />
+    <Topbar titleText="일주일 도쿄여행" class="topbar" />
     <div class="calendar-box">
       <Cal />
     </div>
-    <CtaBarSiwan class="" inputname="사용한 금액  남은 금액" />
-    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
+    <CtaBar class="ctabar" inputname="추가하기" />
   </div>
 </template>
 
 <script setup>
-import TopbarWithIcon from "@/components/TopbarWithIcon.vue";
+import Topbar from "@/components/Topbar.vue";
 import Cal from "@/components/Cal.vue";
-import CtaBarSiwan from "@/components/CtaBar-siwan.vue";
-import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
+
 // 반응형 변수 선언
 </script>
 
 <style scoped>
-.ctabarblacksiwan {
-  text-align: center;
-  margin-bottom: 0px;
-}
-
 .calendar-box {
   width: 100%;
   height: 100%; /* 원하는 높이로 조정하세요 */

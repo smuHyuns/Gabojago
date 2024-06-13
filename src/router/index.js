@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
 import Isu from '@/pages/Isu.vue';
@@ -11,7 +12,9 @@ import Modal from '@/components/Modal.vue';
 import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
+import Siwan_tour from "@/pages/Siwan_tour.vue";
 import Start from '@/pages/Start.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,8 +50,14 @@ const router = createRouter({
       component: Siwan_test,
     },
     {
-      path: '/member',
-      name: 'member',
+
+      path: "/siwan_tour",
+      name: "siwan_tour",
+      component: Siwan_tour,
+    },
+    {
+      path: "/member",
+      name: "member",
       component: Member,
     },
     {
@@ -77,8 +86,8 @@ const router = createRouter({
       component: Calendar,
     },
     {
-      path: '/start',
-      name: 'Start',
+      path: "/start",
+      name: "Start",
       component: Start,
     },
   ],
