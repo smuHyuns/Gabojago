@@ -12,24 +12,54 @@
       />
     </div>
 
-    <CtaBar class="down" inputname="여행자 등록하기" :on="isblack" />
+    <CtaBar
+      class="down"
+      inputname="여행자 등록하기"
+      :on="isblack"
+      @submit="updateNickname"
+    />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
 import CtaBar from '@/components/CtaBar.vue';
-import { ref, computed } from 'vue';
 
 const isblack = ref(false);
-let inputname = ref(''); // 데이터 바인딩을 위한 변수
+let inputname = ref('');
+const router = useRouter();
 
-// 입력 제한 함수
 const limitInput = (event) => {
   if (event.target.value.length > 10) {
-    inputname.value = event.target.value.slice(0, 10); // 10자 이후의 문자열을 제거
+    inputname.value = event.target.value.slice(0, 10);
   }
   isblack.value = inputname.value.length >= 1;
-  console.log(isblack.value);
+};
+
+const updateNickname = async () => {
+  if (inputname.value.trim() === '') {
+    alert('닉네임을 입력해주세요.');
+    return;
+  }
+
+  try {
+    const response = await axios.get('/db.json');
+    const user = response.data.users[0];
+
+    const updatedUser = { ...user, nickname: inputname.value };
+
+    await axios.put(`http://localhost:3000/users/${user.id}`, updatedUser);
+
+    alert('닉네임이 성공적으로 등록되었습니다.');
+    inputname.value = '';
+    isblack.value = false;
+    router.push('/hyunsoo');
+  } catch (error) {
+    console.error('닉네임 변경 오류:', error);
+    alert('닉네임 등록 중 오류가 발생했습니다.');
+  }
 };
 </script>
 
@@ -46,7 +76,7 @@ const limitInput = (event) => {
   width: 100%;
   font-style: normal;
   font-weight: 700;
-  font-size: 90px;
+  font-size: 75px;
   line-height: 1.4;
   text-align: left;
   width: 965px;
@@ -58,12 +88,12 @@ const limitInput = (event) => {
   height: 152px;
   padding: 12px 16px;
   padding-left: 50px; /* 왼쪽 마진 */
-  margin-top: 20px;
+  margin-top: 30px;
   background: #f5f6f7;
   border-radius: 46px;
   font-style: normal;
-  font-weight: 500;
-  font-size: 60px;
+  font-weight: 400;
+  font-size: 52px;
   line-height: 1.3;
   color: #353b43;
   border: none;
@@ -87,5 +117,12 @@ const limitInput = (event) => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
+}
+
+.down {
+  position: absolute;
+  bottom: 133px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

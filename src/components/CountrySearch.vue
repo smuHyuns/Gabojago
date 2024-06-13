@@ -67,17 +67,21 @@ watch(inputValue, (newValue) => {
   font-size: 46px;
   line-height: 1.3;
   text-align: left;
-  color: #caced4; /* 기본 상태 색상 */
+  color: #353b43; /* 기본 상태 색상 */
   border: none; /* Remove border when not focused */
 }
 
 .inputBox::placeholder {
-  color: #caced4; /* 플레이스홀더 색상 */
+  color: #caced4;
 }
 
 .inputBox:focus {
   outline: none;
-  color: #353b43; /* 포커스 상태 색상 */
+  color: #353b43;
+}
+
+.inputBox:focus::placeholder {
+  color: transparent;
 }
 
 .search-icon {

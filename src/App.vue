@@ -13,10 +13,11 @@
     <h3><router-link to="/gun">gun 이동</router-link></h3>
     <h3><router-link to="/siwan">siwan 이동</router-link></h3>
     <h3><router-link to="/siwan_test">siwan_test 이동</router-link></h3>
+    <h3><router-link to="/DeletePage">DeletePage 이동</router-link></h3>
     <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
 
     <h3><router-link to="/addPayment">addPayment 이동</router-link></h3>
-    <h3><router-link to="/TravleName">TravleName 이동</router-link></h3>
+    <h3><router-link to="/TravelName">TravelName 이동</router-link></h3>
     <h3><router-link to="/Member">Member 이동</router-link></h3>
     <h3><router-link to="/Err">Err 이동</router-link></h3>
     <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
@@ -34,10 +35,11 @@
 * {
   margin: 0px auto;
   padding: 0px;
-  font-family: 'Pretendard Variable', Pretendard, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
-    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+}
+::-webkit-scrollbar {
+  background-color: transparent;
 }
 
 #app {
@@ -46,8 +48,7 @@
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-    format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }

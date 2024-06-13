@@ -16,7 +16,7 @@
         >
           {{ twotitle }}
         </div>
-        <!-- 강조선을 titles 클래스의 하위 요소로 이동 -->
+        <!-- 강조선을 titles 클래스의 하위의 요소로 이동 -->
         <div class="highlight" :style="{ left: highlightPosition }"></div>
       </div>
     </div>

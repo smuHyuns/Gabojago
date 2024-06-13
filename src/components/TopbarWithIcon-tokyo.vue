@@ -1,10 +1,10 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/xsign.png" />
+      <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
       <button class="Changeicon">
-        <img src="../assets/xsign.png" alt="Icon" class="icon2" />
+        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
       </button>
       <!-- ChangeIcon은 변경하세요~~ -->
     </div>
@@ -12,12 +12,20 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 defineProps({
   titleText: {
     type: String,
     required: true,
   },
 });
+
+function goBack() {
+  router.back();
+}
 </script>
 
 <style scoped>
@@ -37,14 +45,16 @@ defineProps({
   align-items: center;
   gap: 10px; /* 아이콘과 제목 사이의 거리 */
   margin-left: 20px; /* 좌측 벽과의 거리 */
+
   height: 91px; /* 아이콘과 제목의 높이를 동일하게 설정 (70px * 1.3) */
-  overflow: hidden; /* 내용이 넘치는 경우 자르기 */
+  /* overflow: hidden; 내용이 넘치는 경우 자르기 */
 }
 
 .icon {
   height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
   object-fit: contain;
   overflow: visible;
+  cursor: pointer;
 }
 
 .title {
@@ -53,5 +63,21 @@ defineProps({
   font-weight: 700;
   line-height: 91px; /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
   word-wrap: break-word;
+}
+
+.icon2 {
+  width: 69.12px;
+  height: 69.12px;
+  padding: 8.64px;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex; /* 여기서 아이콘 크기 변경하세요~~~*/
+}
+
+.Changeicon {
+  left: 400px; /* 여기서 left로 부터 멀어지는 값 볼 수 잇어요~~ */
+  background: none;
+  border: none; /* 아이콘과 동일한 높이 */
+  position: relative;
 }
 </style>

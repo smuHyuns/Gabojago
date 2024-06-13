@@ -1,31 +1,19 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img
-        class="icon"
-        src="../assets/chevron-right.png"
-        @click="navigateToHyunsoo"
-      />
+      <img class="icon" src="../assets/chevron-right.png" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-
-const props = defineProps({
+defineProps({
   titleText: {
     type: String,
     required: true,
   },
 });
-
-const router = useRouter();
-
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
-};
 </script>
 
 <style scoped>
@@ -38,6 +26,22 @@ const navigateToHyunsoo = () => {
   margin-top: 127px; /* 항상 top 부분을 127px 띄움 */
 }
 
+.Changeicon {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.Changeicon .icon2 {
+  display: block;
+  position: absolute;
+  left: 0px;
+}
+
 .imgbox {
   display: flex;
   align-items: center;
@@ -48,7 +52,6 @@ const navigateToHyunsoo = () => {
 .icon {
   width: 69px;
   height: 69px;
-  cursor: pointer;
 }
 
 .title {

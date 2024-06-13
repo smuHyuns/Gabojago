@@ -1,27 +1,15 @@
 <template>
-  <div v-if="showModal" class="modal-overlay" @click="closeModal">
+  <div v-if="showModal" class="modal-overlay" @click="closeModal(false)">
     <div class="modal-content" @click.stop>
       <video class="modal-video" autoplay muted playsinline loop>
         <source src="../assets/coin_spin.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
-      <h1 class="modal-title">같은 날에 다른 여행이 있어요</h1>
-      <p class="modal-subtitle">계속해서 등록하시겠어요?</p>
+      <h1 class="modal-title">여행 경비를 추가해보세요</h1>
+      <p class="modal-subtitle">경비는 언제든지 다시 추가할 수 있어요!</p>
       <div class="modal-buttons">
-        <button
-          class="modal-button-no"
-          :class="{ faded: !isNoSelected }"
-          @click="selectNo"
-        >
-          안할래요
-        </button>
-        <button
-          class="modal-button-yes"
-          :class="{ faded: !isYesSelected }"
-          @click="selectYes"
-        >
-          등록할래요
-        </button>
+        <button class="modal-button-no" :class="{ faded: !isNoSelected }" @click="selectNo">안할래요</button>
+        <button class="modal-button-yes" :class="{ faded: !isYesSelected }" @click="selectYes">추가할래요</button>
       </div>
     </div>
   </div>
@@ -32,25 +20,25 @@ import { ref, defineEmits } from 'vue';
 
 const emit = defineEmits(['close', 'confirm']);
 
-const showModal = ref(true); // 모달이 열려 있는지 여부를 추적하는 변수
-const isNoSelected = ref(false); // '안할래요' 버튼이 선택되었는지 여부를 추적하는 변수
-const isYesSelected = ref(false); // '등록할래요' 버튼이 선택되었는지 여부를 추적하는 변수
+const showModal = ref(true);
+const isNoSelected = ref(false);
+const isYesSelected = ref(false);
 
 function selectNo() {
   isNoSelected.value = true;
   isYesSelected.value = false;
-  closeModal(false); // false를 전달하여 모달을 닫음
+  emit('close', true); // true를 전달하여 안할래요를 선택했음을 알림
 }
 
 function selectYes() {
   isYesSelected.value = true;
   isNoSelected.value = false;
-  closeModal(true); // true를 전달하여 모달을 닫음
+  closeModal(false); // 모달을 닫음
 }
 
 function closeModal(value) {
-  showModal.value = false; // showModal 변수를 false로 설정하여 모달을 닫음
-  emit('close', value); // 이벤트를 발생시켜 부모 컴포넌트에 값을 전달함
+  showModal.value = false;
+  emit('close', value);
 }
 </script>
 
@@ -101,16 +89,6 @@ function closeModal(value) {
   display: flex;
   gap: 30px;
 }
-
-/* .modal-button:hover {
-  background: #2e3240;
-/* color: white;
-} */
-/* 2024.06.12 호버삭제 */
-
-/* .modal-button-no:not(.faded) {
-  background: #3e444e;
-  color: white;} */
 
 .modal-button-no {
   font-style: normal;

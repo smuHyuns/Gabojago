@@ -1,30 +1,106 @@
 <template>
-  <div class="container">
-    총 지출 금액 중<br />
-    {{ expenseCategory }} 사용이 가장 많았어요
+  <div>
+    <TopbarWithIcontokyo :titleText="trip?.describe || '지출 내역'" class="topbar" />
+    <div class="date">{{ selectedDate }}</div>
+    <div v-for="expense in expenses" :key="expense.id">
+      <HistoryListItemNoCheck
+        :list="expense.description"
+        :number="formatAmount(expense.amount)"
+        :number2="formatAmount(expense.convertedAmount)"
+        :img="getCategoryImage(expense.category)"
+      />
+    </div>
+    <div class="result-box">
+      <div class="spent-money">
+        <div class="spent-money-title">사용한 금액</div>
+        <div class="spent-money-amount">{{ formatAmount(totalSpent.value) }}</div>
+      </div>
+    </div>
+    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import TopbarWithIcontokyo from '@/components/TopbarWithIcon-tokyo.vue';
+import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
+import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 
-const expenseCategory = ref(""); // 빈 문자열로 초기화
+const route = useRoute();
+const selectedDate = route.params.date;
+const tripId = route.params.tripId;
+const trip = ref(null);
+const expenses = ref([]);
+const totalSpent = ref(0);
 
-// 다른 곳에서 이 변수에 값을 할당하여 동적으로 변경할 수 있습니다.
-expenseCategory.value = "식비"; // 예시 데이터, 실제로는 해당 데이터를 받아와야 합니다.
+onMounted(async () => {
+  const response = await fetch('/db.json'); // JSON 파일 경로 확인
+  if (!response.ok) {
+    console.error(`HTTP error! status: ${response.status}`);
+    return;
+  }
+  const data = await response.json();
+  const userTrips = data.users[0].trips;
+  trip.value = userTrips.find((trip) => trip.id === parseInt(tripId));
+  if (trip.value) {
+    expenses.value = trip.value.expenses.filter((expense) => expense.date === selectedDate);
+    totalSpent.value = expenses.value.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+  }
+});
+
+function formatAmount(amount) {
+  return amount ? `${amount.toLocaleString()}` : '0';
+}
+
+function getCategoryImage(category) {
+  try {
+    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
+  } catch (e) {
+    return new URL(`/src/assets/default.png`, import.meta.url).href;
+  }
+}
 </script>
 
 <style scoped>
-.container {
-  font-family: Pretendard;
+.date {
+  box-sizing: border-box;
   width: 100%;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 75px;
-  line-height: 1.4;
-  text-align: left;
-  width: 965px;
-  margin: 0 auto;
-  color: #3e444e;
+  height: 96px;
+  background: #f5f6f7;
+  color: #8892a0;
+  font-size: 40px;
+  font-weight: 500;
+  padding-left: 1.5em;
+  display: flex;
+  align-items: center;
+}
+.result-box {
+  width: 100%;
+  height: 220px;
+  display: flex;
+  background-color: #eff4fe;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.spent-money {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.spent-money-title {
+  text-align: center;
+  color: #8892a0;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 52px;
+}
+
+.spent-money-amount {
+  text-align: center;
+  font-size: 60px;
+  font-weight: 700;
 }
 </style>

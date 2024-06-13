@@ -1,6 +1,6 @@
 <template>
   <div class="BlueBox">
-    <Header class="header" />
+    <Header class="header" style="z-index: 9999;" />
     <div class="imgContainer">
       <img src="../assets/비행기토끼.png" class="rabbitImg" />
     </div>
@@ -8,79 +8,52 @@
       class="infoBox"
       firstInput="돈 관리는 저희가 도와드릴게요"
       secondInput="어디로 떠나시나요?"
-      thirdInput="여행 등록하기 >"
+      thirdInput="여행 등록하기"
     />
   </div>
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
-        <li class="tripCategory selected">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '전체' }" @click="selectCategory('전체')">
           <div class="tripCategoryName">전체</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ totalTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '여행 중' }" @click="selectCategory('여행 중')">
           <div class="tripCategoryName">여행 중</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ ongoingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '다가오는 여행' }" @click="selectCategory('다가오는 여행')">
           <div class="tripCategoryName">다가오는 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ upcomingTrips }}</div>
         </li>
-        <li class="tripCategory">
+        <li class="tripCategory" :class="{ selected: selectedCategory === '완료' }" @click="selectCategory('완료')">
           <div class="tripCategoryName">지난 여행</div>
-          <div class="tripCategoryCount">0</div>
+          <div class="tripCategoryCount">{{ completedTrips }}</div>
         </li>
       </ul>
     </div>
     <div class="planListBox">
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
+      <div 
+        class="useBox" 
+        v-for="(trip, index) in filteredTrips" 
+        :key="index"
+        :class="{ faded: trip.daysUntilTrip === 0 }"
+        @click="goToAccountCalendar(trip.id)"
+      >
+        <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
         <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
+          <span class="useBox-txt-main">{{ trip.describe }}</span><br />
+          <span class="useBox-txt-sub">
+            <template v-if="trip.daysUntilTrip > 0">
+              {{ trip.country }} · D-{{ trip.daysUntilTrip }}
+            </template>
+            <template v-else>
+              {{ formatPeriod(trip.startPeriod, trip.endPeriod) }}
+            </template>
+          </span>
         </div>
         <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
-        </div>
-      </div>
-      <div class="useBox">
-        <img class="useBox-img" src="../assets/비행기토끼.png"></img>
-        <div class="useBox-txt">
-          <span class="useBox-txt-main">일주일 도쿄 여행!</span><br />
-          <span class="useBox-txt-sub">D-3</span>
-        </div>
-        <div class="useBox-detail">
-          <img src="../assets/chevron-left.png" />
+          <img src="../assets/userBox-left.png" />
         </div>
       </div>
     </div>
@@ -89,13 +62,72 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const totalTrips = ref(0);
+const ongoingTrips = ref(0);
+const upcomingTrips = ref(0);
+const completedTrips = ref(0);
+const trips = ref([]);
+const selectedCategory = ref('전체');
+const router = useRouter();
+
+const formatPeriod = (start, end) => {
+  const formatDate = (date) => {
+    const [year, month, day] = date.split('-');
+    return `${year.slice(2)}.${month}.${day}`;
+  };
+  const startDate = formatDate(start);
+  const endDate = formatDate(end);
+  return `${startDate} ~ ${endDate}`;
+};
+
+const selectCategory = (category) => {
+  selectedCategory.value = category;
+};
+
+const filteredTrips = computed(() => {
+  if (selectedCategory.value === '전체') {
+    return trips.value;
+  }
+  return trips.value.filter(trip => trip.travelComplete === selectedCategory.value);
+});
+
+const goToAccountCalendar = (tripId) => {
+  router.push({ name: 'Tokyo_calendar', params: { tripId } });
+};
+
+onMounted(async () => {
+  try {
+    const response = await fetch('/db.json'); // JSON 파일 경로 확인
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    const userTrips = data.users[0].trips;
+
+    trips.value = userTrips;
+    totalTrips.value = userTrips.length;
+    ongoingTrips.value = userTrips.filter(trip => trip.travelComplete === '여행 중').length;
+    upcomingTrips.value = userTrips.filter(trip => trip.travelComplete === '다가오는 여행').length;
+    completedTrips.value = userTrips.filter(trip => trip.travelComplete === '완료').length;
+  } catch (error) {
+    console.error('Error fetching data: ', error);
+  }
+});
 </script>
 
 <style scoped>
+.faded {
+  opacity: 0.7;
+}
+
 .BlueBox {
-  height: 1170px;
+  height: 1180px;
   width: 1080px;
   margin: 0;
   background-color: var(--blue-200);
@@ -103,9 +135,9 @@ import InfoBox from '@/components/InfoBox.vue';
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden; /* 이미지가 박스를 넘지 않도록 설정 */
-  margin-bottom: 0; /* 잔여 공간이 없도록 설정 */
-  padding-bottom: 0; /* 추가된 여백 제거 */
+  overflow: hidden;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .imgContainer {
@@ -113,28 +145,25 @@ import InfoBox from '@/components/InfoBox.vue';
   justify-content: center;
   align-items: center;
   flex-grow: 1;
-  position: relative;
-}
-
-.rabbitImg {
-  max-width: 100%;
-  max-height: calc(100% - 220px); /* 헤더와의 거리 포함 */
-  width: auto;
-  height: auto;
-  object-fit: contain; /* 비율을 유지하면서 이미지가 커지거나 작아지도록 함 */
-  transform: scale(1.1); /* 이미지 크기를 1.1배로 확대 */
-  margin-top: 20px;
+  position: absolute;
 }
 
 .header {
   position: relative;
-  top: 170px;
+  top: 126px; /* 기존에는 170px이었음 */
+}
+
+.rabbitImg {
+  width: 604px;
+  height: auto;
+  object-fit: contain;
+  margin-top: 300px; /* 헤더와의 간격을 조정 */
 }
 
 .infoBox {
   position: absolute;
-  height: 430px;
-  bottom: 0; /* imgContainer의 밑부분을 완전히 덮도록 설정 */
+  height: 476px;
+  bottom: 0; 
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
   margin: 0;
   background: linear-gradient(
@@ -146,78 +175,88 @@ import InfoBox from '@/components/InfoBox.vue';
 }
 
 .whiteBox {
-  height: 1160px;
+  height: 1115px;
   width: 1080px;
-  background-color: var(--grey-0);
-  margin: 0;
+  background-color: #fff;
+  /* margin: 0; */
   position: relative; /* 버튼 위치 설정을 위한 기준 요소 */
 }
 
+/* 카테고리 css start*/
+
 .kindTripBox {
   max-width: 1080px;
-  height: 100px;
+  height: 184px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 0;
   overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
   justify-content: flex-start; /* 좌측 정렬 */
-  margin: 30px;
+  margin: 0 58px;
 }
 
 .kindTripBox ul {
   display: flex;
-  gap: 20px; /* li 요소 간의 간격을 조금 더 키움 */
-  list-style: none; /* 기본 리스트 스타일 제거 */
-  padding: 0; /* 기본 패딩 제거 */
-  margin: 0; /* 기본 마진 제거 */
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* trip category */
 .tripCategory {
-  height: 60px; /* 높이를 더 키움 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 중앙 정렬 */
-  gap: 15px; /* 간격을 더 키움 */
-  display: inline-flex;
-  background: var(--grey-200); /* 기본 배경 색상 */
-  border-radius: 40px;
-  padding: 20px 25px; /* 패딩을 더 키움 */
-  font-size: 30px; /* 글자 크기를 더 키움 */
-  color: var(--grey-700); /* 기본 글자 색상 */
+  height: 94px; 
+  padding: 0 34px;
+  gap: 15px; 
+  display: flex; /* 가로 정렬을 위해 flex로 설정 */
+  align-items: center; /* 텍스트를 수직 가운데 정렬 */
+  background: #F5F6F7; 
+  border-radius: 57px;
+  font-size: 40px;
+  font-weight: 500;
+  color: #8892A0; 
 }
 
 .tripCategory:hover {
-  background-color: var(--grey-700); /* 선택된 배경 색상 */
-  color: white !important; /* 선택된 글자 색상 */
-  transition-duration: 0.8s;
+  background-color: #616B79; 
+  color: #FFFFFF !important;
+  transition-duration: 0.5s;
 }
 
-.tripCategoryName,
+.tripCategoryName {
+  font-weight: 500;
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호로 표시 */
+  color: inherit;
+  white-space: nowrap; /* 한 줄로만 표시되도록 설정 */
+}
+
 .tripCategoryCount {
-  font-weight: 600;
+  font-weight: 500;
   word-wrap: break-word;
-  color: inherit; /* 부모 요소의 글자 색상 상속 */
+  color: inherit; 
 }
 
 .tripCategoryCount {
-  font-size: 22px; /* 글자 크기를 더 키움 */
+  font-size: 40px; 
 }
 
 .selected {
-  background-color: var(--grey-700); /* 선택된 배경 색상 */
-  color: white !important; /* 선택된 글자 색상 */
+  background-color: #616B79; 
+  color: #FFFFFF !important; 
 }
 
+/* 카테고리 css end*/
+
 .planListBox {
-  width: 900px;
+  width: 964px;
   max-height: 950px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
-  gap: 20px;
+  gap: 35px;
   overflow-x: hidden; /* 수평 스크롤 비활성화 */
   overflow-y: scroll; /* 수직 스크롤 활성화 */
 }
@@ -232,54 +271,71 @@ import InfoBox from '@/components/InfoBox.vue';
   width: 100%;
   height: 259.2px;
   background: #f5f6f7;
-  border-radius: 28.8px;
+  border-radius: 29px;
   margin: 0;
   padding: 0;
   display: flex;
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  gap: 100px;
 }
 
 .useBox-txt {
-  margin: 0;
+  margin: 0; /* 이전에 있던 여백 제거 */
   padding: 0;
+  flex-grow: 1;
 }
 
 .useBox-img {
   width: 144px;
   height: 144px;
   object-fit: cover;
-  background: #d9d9d9;
-  border-radius: 9999px;
+  margin-right: 27px; /* 이미지 오른쪽 여백 조정 */
+  margin-left: 48px; /* 왼쪽 여백 추가 */    
+}
+
+
+.useBox-detail {
+  flex-grow: 0;
+  padding-right: 3em
+}
+
+.useBox-detail img {
+  width: 69px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  
 }
 
 .useBox-txt-main {
   color: #3e444e;
-  font-size: 46.08px;
-  font-weight: 600;
-  line-height: 46.08px;
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 46px;
   word-wrap: break-word;
-  padding: 10px;
+  display: block;
+  padding-bottom: 20px; /* 간격 조정 */
 }
 
 .useBox-txt-sub {
   color: #8892a0;
-  font-size: 34.56px;
-  font-weight: 400;
-  line-height: 34.56px;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 34px;
   word-wrap: break-word;
-  padding: 10px;
+  display: block;
 }
 
 .addPlanBtn {
-  width: 200px;
-  height: 200px;
+  width: 161px;
+  height: 161x;
   position: absolute;
-  right: 50px; /* 오른쪽 50px 위치 */
-  bottom: 100px; /* 아래쪽 100px 위치 */
+  border-radius: 100%;
+  right: 59px; /* 오른쪽 50px 위치 */
+  bottom: 108px; /* 아래쪽 100px 위치 */
   border: none;
   cursor: pointer;
+  box-shadow: 0px 0px 28px rgba(0, 0, 0, 0.15);
 }
 </style>
