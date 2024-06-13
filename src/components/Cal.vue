@@ -1,10 +1,18 @@
 <template>
   <div class="calendar-container">
-    <h1 style="color: black">{{ selectedDateValue }}</h1>
+    <!-- <h1 style="color: black">{{ selectedDateValue }}</h1> -->
     <div class="calendar-header">
-      <img src="../assets/chevron-right.png" @click="prevMonth" class="right-btn" />
+      <img
+        src="../assets/chevron-right.png"
+        @click="prevMonth"
+        class="right-btn"
+      />
       <h2>{{ currentMonthYear }}</h2>
-      <img src="../assets/chevron-left.png" @click="nextMonth" class="left-btn" />
+      <img
+        src="../assets/chevron-left.png"
+        @click="nextMonth"
+        class="left-btn"
+      />
     </div>
     <div class="calendar-days">
       <div class="day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
@@ -38,7 +46,9 @@ const currentYear = ref(today.getFullYear());
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
-const currentMonthYear = computed(() => `${currentYear.value}년 ${currentMonth.value + 1}월`);
+const currentMonthYear = computed(
+  () => `${currentYear.value}년 ${currentMonth.value + 1}월`
+);
 
 const calendarDates = ref([]);
 const selectedDates = ref([]);
@@ -52,7 +62,11 @@ function handleDateSelect(date) {
 
 function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1);
-  const daysInMonth = new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
+  const daysInMonth = new Date(
+    currentYear.value,
+    currentMonth.value + 1,
+    0
+  ).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
   const dates = [];
@@ -101,10 +115,12 @@ function selectDate(date) {
         });
 
         if (date.value < Math.min(...dateValues)) {
-          const maxKey = selectedDates.value[dateValues.indexOf(Math.max(...dateValues))];
+          const maxKey =
+            selectedDates.value[dateValues.indexOf(Math.max(...dateValues))];
           selectedDates.value.splice(selectedDates.value.indexOf(maxKey), 1);
         } else {
-          const minKey = selectedDates.value[dateValues.indexOf(Math.min(...dateValues))];
+          const minKey =
+            selectedDates.value[dateValues.indexOf(Math.min(...dateValues))];
           selectedDates.value.splice(selectedDates.value.indexOf(minKey), 1);
         }
         selectedDates.value.push(date.key);
@@ -124,7 +140,9 @@ function selectDate(date) {
 
 function formatDateKey(key) {
   const day = calendarDates.value.find((date) => date.key === key).value;
-  return `${currentYear.value}-${(currentMonth.value + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  return `${currentYear.value}-${(currentMonth.value + 1)
+    .toString()
+    .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
 
 function updateSelectedDateValue() {
@@ -149,10 +167,16 @@ function updateHighlightDates() {
       return dateA - dateB;
     });
 
-    const firstDate = calendarDates.value.find((date) => date.key === firstKey).value;
-    const secondDate = calendarDates.value.find((date) => date.key === secondKey).value;
+    const firstDate = calendarDates.value.find(
+      (date) => date.key === firstKey
+    ).value;
+    const secondDate = calendarDates.value.find(
+      (date) => date.key === secondKey
+    ).value;
 
-    highlightDates.value = calendarDates.value.filter((date) => date.value > firstDate && date.value < secondDate).map((date) => date.key);
+    highlightDates.value = calendarDates.value
+      .filter((date) => date.value > firstDate && date.value < secondDate)
+      .map((date) => date.key);
   } else {
     highlightDates.value = [];
   }
