@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Topbar titleText="일주일 도쿄여행" class="topbar" />
+    <TopbarWithIcon titleText="일주일 도쿄여행" class="topbar" />
     <div class="calendar-box">
       <Cal />
     </div>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import Topbar from "@/components/Topbar.vue";
+import TopbarWithIcon from "@/components/TopbarWithIcon.vue";
 import Cal from "@/components/Cal.vue";
 
 // 반응형 변수 선언

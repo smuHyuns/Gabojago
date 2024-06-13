@@ -4,7 +4,9 @@
     <div class="calendar-box">
       <Cal />
     </div>
-    <CtaBarSiwan class="" inputname="사용한 금액  남은 금액" />
+    <div>
+      <CtaBarSiwan class="ctawhite" inputname="사용한 금액  남은 금액" />
+    </div>
     <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
   </div>
 </template>
@@ -20,7 +22,7 @@ import CtaBarBlackSiwan from "@/components/CtaBarBlack-siwan.vue";
 <style scoped>
 .ctabarblacksiwan {
   text-align: center;
-  margin-bottom: 0px;
+  margin-bottom: 500px;
 }
 
 .calendar-box {
