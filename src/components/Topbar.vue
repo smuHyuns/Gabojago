@@ -1,19 +1,31 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" />
+      <img
+        class="icon"
+        src="../assets/chevron-right.png"
+        @click="navigateToHyunsoo"
+      />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router';
+
+const props = defineProps({
   titleText: {
     type: String,
     required: true,
   },
 });
+
+const router = useRouter();
+
+const navigateToHyunsoo = () => {
+  router.push('/hyunsoo');
+};
 </script>
 
 <style scoped>
@@ -36,6 +48,7 @@ defineProps({
 .icon {
   width: 69px;
   height: 69px;
+  cursor: pointer;
 }
 
 .title {

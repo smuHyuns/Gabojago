@@ -1,16 +1,25 @@
 <template>
   <div class="box">
     <div class="header-input">
-      <input class="inputBox" :placeholder="TextInput" />
+      <input class="inputBox" :placeholder="TextInput" v-model="inputValue" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits, ref, watch } from 'vue';
+
 const props = defineProps({
   headerInput: String,
   TextInput: String,
+});
+
+const emit = defineEmits(['update:modelValue']);
+
+const inputValue = ref(props.modelValue);
+
+watch(inputValue, (newValue) => {
+  emit('update:modelValue', newValue);
 });
 </script>
 
@@ -29,7 +38,7 @@ const props = defineProps({
 }
 
 .inputBox:focus::placeholder {
-  color: transparent; /* 포커스 시 placeholder 숨김 */
+  color: transparent;
 }
 
 .box {
@@ -37,7 +46,7 @@ const props = defineProps({
   max-height: 700px;
   text-align: center;
   color: white;
-  margin: auto; /* 가운데 정렬 */
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,7 +66,7 @@ const props = defineProps({
   width: 910px;
   height: 152px;
   padding: 12px 16px;
-  padding-left: 50px; /* 왼쪽 마진 */
+  padding-left: 50px;
   margin-top: 20px;
   background: #f5f6f7;
   border-radius: 46px;
@@ -71,11 +80,11 @@ const props = defineProps({
 }
 
 .inputBox::placeholder {
-  color: #caced4; /* 플레이스홀더 색상 */
+  color: #caced4;
 }
 
 .inputBox:focus {
   outline: none;
-  color: #353b43; /* 포커스 상태 색상 */
+  color: #353b43;
 }
 </style>

@@ -3,56 +3,63 @@
     <div class="container">
       <div class="top">여행자의<br />닉네임을 적어주세요!</div>
 
-      <input type="text" placeholder="10자 이내로 입력해주세요" class="middle" v-model="inputname" @input="limitInput" />
+      <input
+        type="text"
+        placeholder="10자 이내로 입력해주세요"
+        class="middle"
+        v-model="inputname"
+        @input="limitInput"
+      />
     </div>
 
-    <CtaBar class="down" inputname="여행자 등록하기" :on="isblack" @submit="registerUser" />
+    <CtaBar
+      class="down"
+      inputname="여행자 닉네임 변경"
+      :on="isblack"
+      @submit="updateNickname"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // useRouter 훅 가져오기
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 import CtaBar from '@/components/CtaBar.vue';
 
 const isblack = ref(false);
-let inputname = ref(''); // 데이터 바인딩을 위한 변수
-const router = useRouter(); // useRouter 훅 사용
+let inputname = ref('');
+const router = useRouter();
 
-// 입력 제한 함수
 const limitInput = (event) => {
   if (event.target.value.length > 10) {
-    inputname.value = event.target.value.slice(0, 10); // 10자 이후의 문자열을 제거
+    inputname.value = event.target.value.slice(0, 10);
   }
   isblack.value = inputname.value.length >= 1;
   console.log(isblack.value);
 };
 
-// 사용자 등록 함수
-const registerUser = async () => {
+const updateNickname = async () => {
   if (inputname.value.trim() === '') {
     alert('닉네임을 입력해주세요.');
     return;
   }
 
   try {
-    const response = await axios.post('http://localhost:3000/users', {
-      nickname: inputname.value,
-      trips: [],
-    });
+    const response = await axios.get('/db.json');
+    const user = response.data.users[0];
 
-    if (response.status === 201) {
-      alert('사용자가 성공적으로 등록되었습니다.');
-      inputname.value = ''; // 입력 필드 초기화
-      isblack.value = false; // 버튼 색상 초기화
-      router.push('/hyunsoo'); // 사용자 등록 후 Hyunsoo.vue로 이동
-    } else {
-      alert('사용자 등록에 실패했습니다.');
-    }
+    const updatedUser = { ...user, nickname: inputname.value };
+
+    await axios.put(`http://localhost:3000/users/${user.id}`, updatedUser);
+
+    alert('닉네임이 성공적으로 변경되었습니다.');
+    inputname.value = '';
+    isblack.value = false;
+    router.push('/hyunsoo');
   } catch (error) {
-    console.error('사용자 등록 오류:', error);
-    alert('사용자 등록 중 오류가 발생했습니다.');
+    console.error('닉네임 변경 오류:', error);
+    alert('닉네임 변경 중 오류가 발생했습니다.');
   }
 };
 </script>

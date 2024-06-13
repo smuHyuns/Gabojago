@@ -11,6 +11,12 @@
 
 <script setup>
 import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const navigateToGun = () => {
+  router.push('/gun');
+};
 
 const props = defineProps({
   firstInput: String,
@@ -56,6 +62,7 @@ const props = defineProps({
   padding-left: 50px;
   padding-right: 24px;
   margin: 0;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
