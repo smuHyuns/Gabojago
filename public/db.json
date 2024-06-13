@@ -1,11 +1,7 @@
 {
   "users": [
     {
-<<<<<<< HEAD
-      "nickname": "야호",
-=======
-      "nickname": "오현이형안녕2",
->>>>>>> f6a4e3606606fafa18ff2d670b55229b8e8d92a5
+      "nickname": "최고야",
       "trips": [
         {
           "id": 1,
@@ -187,7 +183,7 @@
             {
               "type": "지출",
               "paymentMethod": "현금",
-              "description": "테스트",
+              "description": "지출테스트1",
               "category": "숙박",
               "amount": 333,
               "convertedAmount": 2912.88,
@@ -196,7 +192,7 @@
             {
               "type": "추가",
               "paymentMethod": "현금",
-              "description": "테스트2",
+              "description": "추가테스트",
               "category": "쇼핑",
               "amount": 333,
               "convertedAmount": 2912.88,
@@ -205,7 +201,25 @@
             {
               "type": "추가",
               "paymentMethod": "현금",
-              "description": "테스트3",
+              "description": "추가테스트2",
+              "category": "기타",
+              "amount": 333,
+              "convertedAmount": 2912.88,
+              "date": "2024-06-12"
+            },
+            {
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "추가테스트3",
+              "category": "기타",
+              "amount": 333,
+              "convertedAmount": 2912.88,
+              "date": "2024-06-12"
+            },
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "지출테스트2",
               "category": "기타",
               "amount": 333,
               "convertedAmount": 2912.88,
