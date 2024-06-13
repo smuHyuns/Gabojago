@@ -1,53 +1,90 @@
 <template>
   <div>
-    <TopbarWithIcontokyo :titleText="trip?.describe || '지출 내역'" class="topbar" />
+    <TopbarWithIcontokyo
+      :titleText="trip?.describe || '지출 내역'"
+      class="topbar"
+    />
     <div class="date">{{ selectedDate }}</div>
-    <div v-for="expense in expenses" :key="expense.id">
+    <div v-for="expense in filteredExpenses" :key="expense.description">
       <HistoryListItemNoCheck
         :list="expense.description"
-        :number="formatAmount(expense.amount)"
-        :number2="formatAmount(expense.convertedAmount)"
+        :number="expense.amount"
+        :number2="expense.convertedAmount"
         :img="getCategoryImage(expense.category)"
+        :type="expense.type"
       />
     </div>
     <div class="result-box">
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
-        <div class="spent-money-amount">{{ formatAmount(totalSpent.value) }}</div>
+        <div class="spent-money-amount">
+          {{ usedBudget.toLocaleString() }}원
+        </div>
       </div>
     </div>
-    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
+    <CtaBarBlackSiwan
+      class="ctabarblacksiwan"
+      inputname="추가하기"
+      @click="navigateToAddPayment"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 import TopbarWithIcontokyo from '@/components/TopbarWithIcon-tokyo.vue';
 import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
 import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 
 const route = useRoute();
+const router = useRouter();
 const selectedDate = route.params.date;
 const tripId = route.params.tripId;
 const trip = ref(null);
-const expenses = ref([]);
-const totalSpent = ref(0);
+const filteredExpenses = ref([]);
+const usedBudget = ref(0);
 
 onMounted(async () => {
-  const response = await fetch('/db.json'); // JSON 파일 경로 확인
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status}`);
-    return;
-  }
-  const data = await response.json();
-  const userTrips = data.users[0].trips;
-  trip.value = userTrips.find((trip) => trip.id === parseInt(tripId));
-  if (trip.value) {
-    expenses.value = trip.value.expenses.filter((expense) => expense.date === selectedDate);
-    totalSpent.value = expenses.value.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+  try {
+    const response = await axios.get('http://localhost:3000/users/08ac');
+    const user = response.data;
+    const userTrips = user.trips;
+    trip.value = userTrips.find((trip) => trip.id === parseInt(tripId));
+    if (trip.value) {
+      filteredExpenses.value = trip.value.expenses.filter(
+        (expense) => expense.date === selectedDate
+      );
+
+      usedBudget.value = trip.value.expenses
+        .filter((expense) => expense.type === '지출')
+        .reduce((sum, expense) => sum + (expense.convertedAmount || 0), 0);
+
+      // 여기서 trip 객체의 usedBudget과 remainingBudget 값을 업데이트하고 있습니다.
+      trip.value.usedBudget = usedBudget.value;
+      trip.value.remainingBudget =
+        trip.value.totalBudget - trip.value.usedBudget;
+
+      // 업데이트된 값을 DB에 저장합니다.
+      await axios.put(`http://localhost:3000/users/08ac`, user);
+    } else {
+      console.error('Trip not found');
+    }
+  } catch (error) {
+    console.error('Failed to fetch or update data:', error);
   }
 });
+
+function navigateToAddPayment() {
+  router.push({
+    name: 'AddPaymentFromDate',
+    query: {
+      tripId,
+      selectedDate,
+    },
+  });
+}
 
 function formatAmount(amount) {
   return amount ? `${amount.toLocaleString()}` : '0';

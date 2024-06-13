@@ -1,6 +1,7 @@
 {
   "users": [
     {
+      "id": "08ac",
       "nickname": "최고야",
       "trips": [
         {
@@ -208,15 +209,6 @@
               "date": "2024-06-12"
             },
             {
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "추가테스트3",
-              "category": "기타",
-              "amount": 333,
-              "convertedAmount": 2912.88,
-              "date": "2024-06-12"
-            },
-            {
               "type": "지출",
               "paymentMethod": "현금",
               "description": "지출테스트2",
@@ -224,10 +216,20 @@
               "amount": 333,
               "convertedAmount": 2912.88,
               "date": "2024-06-12"
+            },
+            {
+              "id": 1718298428029,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "이동테스",
+              "category": "항공",
+              "amount": 2421,
+              "convertedAmount": 21177.46,
+              "date": "2024-06-12"
             }
           ],
-          "totalBudget": -2912.88,
-          "usedBudget": 2912.88,
+          "totalBudget": -53245.42,
+          "usedBudget": 56158.3,
           "remainingBudget": 0
         },
         {
@@ -491,9 +493,34 @@
           "totalBudget": -2912.88,
           "usedBudget": 2912.88,
           "remainingBudget": 0
+        },
+        {
+          "id": 1718305267597,
+          "daysUntilTrip": 5,
+          "startPeriod": "2024-06-18",
+          "endPeriod": "2024-06-21",
+          "category": "쇼핑",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "",
+          "headcount": 2,
+          "expenses": [
+            {
+              "id": 1718305266819,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "가보",
+              "category": "쇼핑",
+              "amount": 222,
+              "convertedAmount": 1941.92
+            }
+          ],
+          "totalBudget": -1941.92,
+          "usedBudget": 1941.92,
+          "remainingBudget": -3883.84
         }
-      ],
-      "id": "08ac"
+      ]
     }
   ]
 }

@@ -1,12 +1,30 @@
 <template>
   <div class="history-list-container">
     <div class="history-img-box">
-      <img class="history-img" :src="img" alt="Selected Icon" />
+      <img
+        class="history-img"
+        :src="img"
+        alt="Selected Icon"
+        :style="{
+          filter:
+            type === '추가'
+              ? 'hue-rotate(371deg) brightness(1) saturate(7)'
+              : 'none',
+        }"
+      />
     </div>
-    <div class="histroy-list">{{ list }}</div>
+    <div class="history-list">{{ list }}</div>
     <div class="history-money">
-      <div :class="['history-money-won', { income: type === '추가', expense: type === '지출' }]">{{ type === '추가' ? '+' : '-' }} {{ Math.abs(number).toLocaleString() }}원</div>
-      <div class="history-money-local">{{ number2.toLocaleString() }} JPY</div>
+      <div
+        :class="[
+          'history-money-won',
+          { income: type === '추가', expense: type === '지출' },
+        ]"
+      >
+        {{ type === '추가' ? '+' : '-' }}
+        {{ Math.abs(number2).toLocaleString() }}원
+      </div>
+      <div class="history-money-local">{{ number.toLocaleString() }} JPY</div>
     </div>
   </div>
 </template>
@@ -19,7 +37,7 @@ const props = defineProps({
   number: Number,
   number2: Number,
   img: String,
-  type: String, // 타입을 추가합니다.
+  type: String,
 });
 
 console.log(props.type); // type이 올바르게 전달되는지 확인하는 디버그 로그
@@ -51,7 +69,7 @@ console.log(props.type); // type이 올바르게 전달되는지 확인하는 �
   height: 80px;
 }
 
-.histroy-list {
+.history-list {
   margin: 0;
   font-size: 3em;
   flex-grow: 1;
@@ -68,11 +86,10 @@ console.log(props.type); // type이 올바르게 전달되는지 확인하는 �
 }
 
 .history-money-won.income {
-  color: blue;
+  color: var(--blue-300);
 }
 
 .history-money-won.expense {
-  color: red;
 }
 
 .history-money-local {
