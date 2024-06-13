@@ -1,0 +1,150 @@
+{
+  "users": [
+    {
+      "nickname": "세리니",
+      "trips": [
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2023-06-01",
+          "endPeriod": "2023-06-10",
+          "category": "교통",
+          "country": "한국",
+          "type": "여행",
+          "travelComplete": "완료",
+          "describe": "전주가서 육전뿌시기",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "카드",
+              "description": "지하철 티켓",
+              "amount": 50000
+            },
+            {
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "추가 예산",
+              "amount": 100000
+            }
+          ],
+          "totalBudget": 1000000,
+          "usedBudget": 500000,
+          "remainingBudget": 500000
+        },
+        {
+          "daysUntilTrip": 20,
+          "startPeriod": "2024-07-15",
+          "endPeriod": "2024-07-20",
+          "category": "쇼핑",
+          "country": "미국",
+          "type": "출장",
+          "travelComplete": "다가오는 여행",
+          "describe": "미국 패션위크가기",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "카드",
+              "description": "호텔 숙박비",
+              "amount": 300000
+            },
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "식사비",
+              "amount": 100000
+            }
+          ],
+          "totalBudget": 2000000,
+          "usedBudget": 1200000,
+          "remainingBudget": 800000
+        },
+        {
+          "daysUntilTrip": 25,
+          "startPeriod": "2024-06-08",
+          "endPeriod": "2024-06-15",
+          "category": "관광",
+          "country": "프랑스",
+          "type": "여행",
+          "travelComplete": "여행 중",
+          "describe": "프랑스 에펠탑 기대기",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "카드",
+              "description": "와인 투어",
+              "amount": 200000
+            },
+            {
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "긴급 현금",
+              "amount": 50000
+            }
+          ],
+          "totalBudget": 3000000,
+          "usedBudget": 1500000,
+          "remainingBudget": 1500000
+        },
+        {
+          "daysUntilTrip": 0,
+          "startPeriod": "2023-06-01",
+          "endPeriod": "2023-06-10",
+          "category": "교통",
+          "country": "한국",
+          "type": "여행",
+          "travelComplete": "완료",
+          "describe": "전주가서 육전뿌시기",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "카드",
+              "description": "지하철 티켓",
+              "amount": 50000
+            },
+            {
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "추가 예산",
+              "amount": 100000
+            }
+          ],
+          "totalBudget": 1000000,
+          "usedBudget": 500000,
+          "remainingBudget": 500000
+        },
+        {
+          "daysUntilTrip": 20,
+          "startPeriod": "2024-07-15",
+          "endPeriod": "2024-07-20",
+          "category": "쇼핑",
+          "country": "미국",
+          "type": "출장",
+          "travelComplete": "다가오는 여행",
+          "describe": "미국 패션위크가기",
+          "headcount": 1,
+          "expenses": [
+            {
+              "type": "지출",
+              "paymentMethod": "카드",
+              "description": "호텔 숙박비",
+              "amount": 300000
+            },
+            {
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "식사비",
+              "amount": 100000
+            }
+          ],
+          "totalBudget": 2000000,
+          "usedBudget": 1200000,
+          "remainingBudget": 800000
+        }
+      ],
+      "id": "08ac"
+    }
+  ]
+}

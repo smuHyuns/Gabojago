@@ -36,17 +36,14 @@
           @update:isSelected="updateSelectedCountries(country.name)"
         />
       </div>
-      <div class="country-button" @click="toggleSelected">
-        <img :src="flagSrc" />
-        <span class="country-name">{{ countryName }}</span>
-      </div>
     </div>
-    <CtaBar inputname="다음으로" :on="isblack" />
+    <CtaBar inputname="다음으로" :on="isblack" @click="navigateToCalendar" />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import TopbarXSign from '@/components/TopbarXSign.vue';
 import CountrySearch from '@/components/CountrySearch.vue';
 import CountryButton from '@/components/CountryButton.vue';
@@ -56,6 +53,7 @@ const searchQuery = ref('');
 const selectedCategory = ref('전체');
 const selectedCountries = ref([]);
 const isblack = ref(false);
+const router = useRouter();
 
 const categories = [
   '전체',
@@ -102,7 +100,6 @@ const countries = {
     { name: '인도네시아', flag: 'indonesia.png' },
     { name: '싱가포르', flag: 'singapore.png' },
     { name: '라오스', flag: 'laos.png' },
-
     // ... 나머지 아시아 국가들
   ],
   유럽: [
@@ -123,7 +120,6 @@ const countries = {
   아프리카: [
     { name: '이집트', flag: 'egypt.png' },
     { name: '남아프리카 공화국', flag: 'southafrica.png' },
-
     // ... 나머지 아프리카 국가들
   ],
   오세아니아: [
@@ -164,7 +160,15 @@ function updateSelectedCountries(countryName) {
     selectedCountries.value.splice(index, 1);
   }
   isblack.value = selectedCountries.value.length >= 1;
-  console.log(isblack.value);
+}
+
+function navigateToCalendar() {
+  if (isblack.value) {
+    router.push({
+      path: '/calendar',
+      query: { countries: selectedCountries.value.join(',') },
+    });
+  }
 }
 </script>
 

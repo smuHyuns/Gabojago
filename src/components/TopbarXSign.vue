@@ -1,7 +1,7 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/xsign.png" />
+      <img class="icon" src="../assets/xsign.png" @click="navigateToHyunsoo" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
@@ -14,6 +14,12 @@ defineProps({
     required: true,
   },
 });
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const navigateToHyunsoo = () => {
+  router.push('/hyunsoo');
+};
 </script>
 
 <style scoped>
@@ -41,6 +47,7 @@ defineProps({
   height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
   object-fit: contain;
   overflow: visible;
+  cursor: pointer;
 }
 
 .title {

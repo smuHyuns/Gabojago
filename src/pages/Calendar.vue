@@ -2,9 +2,15 @@
   <div>
     <Topbar titleText="여행지 제목" class="topbar" />
     <div class="calendar-box">
-      <Cal />
+      <Cal @dateSelected="handleDateSelected" />
     </div>
-    <CtaBar class="ctabar" inputname="다음으로" />
+    <CtaBar
+      class="ctabar"
+      inputname="다음으로"
+      :on="isblack"
+      @click="navigateToMember"
+      :style="{ cursor: isblack ? 'pointer' : 'auto' }"
+    />
   </div>
 </template>
 
@@ -12,13 +18,39 @@
 import Topbar from '@/components/Topbar.vue';
 import Cal from '@/components/Cal.vue';
 import CtaBar from '@/components/CtaBar.vue';
-// 반응형 변수 선언
+import { useRouter, useRoute } from 'vue-router';
+import { ref } from 'vue';
+
+const router = useRouter();
+const route = useRoute();
+
+const selectedDates = ref([]);
+const isblack = ref(false);
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+
+const handleDateSelected = (dates) => {
+  isblack.value = dates.length > 0;
+  selectedDates.value = dates;
+};
+
+const navigateToMember = () => {
+  router.push({
+    path: '/Member',
+    query: {
+      selectedDates: JSON.stringify(selectedDates.value),
+      countries: selectedCountries.value.join(','),
+    },
+  });
+};
 </script>
 
 <style scoped>
 .ctabar {
   text-align: center;
   margin-top: 740px;
+  cursor: pointer;
 }
 
 .calendar-box {

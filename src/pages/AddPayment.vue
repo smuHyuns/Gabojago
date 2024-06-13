@@ -59,7 +59,7 @@
     </div>
 
     <div class="ctabar">
-      <CtaBar inputname="등록하기" />
+      <CtaBar inputname="등록하기" @click="navigateToHyunsoo"/>
     </div>
 
     <!-- 다른 컴포넌트나 요소들을 여기에 추가하세요 -->
@@ -70,6 +70,15 @@
 import Topbar from '@/components/Topbar.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import TopSelect from '@/components/TopSelect.vue';
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const navigateToHyunsoo = () => {
+  router.push({
+    path: '/hyunsoo',
+  });
+};
 </script>
 
 <style scoped>
@@ -83,6 +92,7 @@ import TopSelect from '@/components/TopSelect.vue';
   justify-content: flex-start; /* 상단에 배치하기 위해 flex-start로 설정 */
   margin: 0 auto; /* 여유 공간이 있을 경우 뷰포트를 중앙에 배치 */
   background-color: #fff; /* 선택 사항: 배경색 설정 */
+  
 }
 
 .topbar {
@@ -110,7 +120,7 @@ import TopSelect from '@/components/TopSelect.vue';
 .price-box {
   margin: 50px;
   width: 965px;
-  height: 250px;
+  height: 288px;
   background-color: #f5f6f7;
   /* border: 1px solid black; */
   border-radius: 20px;
@@ -126,30 +136,31 @@ import TopSelect from '@/components/TopSelect.vue';
   align-items: center;
   gap: 10px;
   color: #8892a0;
-  margin-left: 30px;
+  margin-left: 75px;
 }
 
 .print-big-price {
-  font-size: 80.64px;
+  font-size: 80px;
   font-weight: 700;
-  line-height: 80.64px;
+  line-height: 80px;
 }
 
 .type-of-money {
   color: #8892a0;
-  font-size: 34.56px;
+  font-size: 35px;
   font-weight: 600;
-  line-height: 34.56px;
+  line-height: 35px;
   word-wrap: break-word;
 }
 
 .print-small-price {
   color: #8892a0;
-  font-size: 46.08px;
+  font-size: 46px;
   font-weight: 600;
-  line-height: 46.08px;
+  line-height: 46px;
   word-wrap: break-word;
-  margin-left: 30px;
+  margin-top: 23px;
+  margin-left: 75px;
 }
 
 .price-box-content {
@@ -170,8 +181,8 @@ import TopSelect from '@/components/TopSelect.vue';
 }
 
 .payType {
-  width: 964.8px;
-  height: 184.32px;
+  width: 965px;
+  height: 184px;
   border-radius: 20px;
   font-size: 40px;
   /* gap: 20px; */
@@ -184,10 +195,10 @@ import TopSelect from '@/components/TopSelect.vue';
 
 .title {
   margin: 0;
-  font-weight: bold;
-  font-size: 46.08px;
-  font-weight: 500;
-  line-height: 59.9px;
+  font-weight: 800;
+  font-size: 52px;
+  line-height: 60px;
+  color: #353b43;
 }
 
 .payType-box {

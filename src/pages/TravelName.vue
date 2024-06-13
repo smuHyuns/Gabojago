@@ -1,18 +1,16 @@
 <template>
   <div class="viewport">
-    <Topbar titleText="인원 선택" class="top-bar" />
+    <Topbar titleText="여행 제목" />
     <div class="content">
-      <div class="spacer"></div>
-      <MemberAdd class="Member-add" @update:memberCount="updateMemberCount" />
+      <InputBox v-model="travelTitle" TextInput="제목을 입력해 주세요" />
     </div>
-    <div class="spacer"></div>
-    <CtaBar inputname="다음으로" @click="navigateToTravelName" />
+    <CtaBar inputname="여행 등록하기" @click="navigateToAddPayment" />
   </div>
 </template>
 
 <script setup>
 import Topbar from '@/components/Topbar.vue';
-import MemberAdd from '@/components/MemberAdd.vue';
+import InputBox from '@/components/InputBox.vue';
 import CtaBar from '@/components/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
@@ -20,25 +18,25 @@ import { ref } from 'vue';
 const router = useRouter();
 const route = useRoute();
 
+const travelTitle = ref('');
 const selectedCountries = ref(
   route.query.countries ? route.query.countries.split(',') : []
 );
 const selectedDates = ref(
   route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
 );
-const memberCount = ref(0);
+const memberCount = ref(
+  route.query.memberCount ? parseInt(route.query.memberCount) : 0
+);
 
-const updateMemberCount = (count) => {
-  memberCount.value = count;
-};
-
-const navigateToTravelName = () => {
+const navigateToAddPayment = () => {
   router.push({
-    path: '/TravelName',
+    path: '/addPayment',
     query: {
       countries: selectedCountries.value.join(','),
       selectedDates: JSON.stringify(selectedDates.value),
       memberCount: memberCount.value,
+      travelTitle: travelTitle.value,
     },
   });
 };
@@ -59,10 +57,10 @@ const navigateToTravelName = () => {
 
 .content {
   flex: 1;
-}
-
-.spacer {
-  height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 html,
