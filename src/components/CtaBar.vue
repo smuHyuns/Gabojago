@@ -1,11 +1,16 @@
 <template>
   <div class="ctaBar">
-    <button :class="isblack" @click="handleClick">{{ inputname }}</button>
+    <button
+      :class="{ 'cta-bar-black': props.on, 'cta-bar': !props.on }"
+      @click="handleClick"
+    >
+      {{ props.inputname }}
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   inputname: String,
@@ -13,8 +18,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['submit']);
-
-const isblack = computed(() => (props.on ? 'cta-bar-black' : 'cta-bar'));
 
 const handleClick = () => {
   if (props.on) {

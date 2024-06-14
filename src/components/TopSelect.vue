@@ -2,37 +2,34 @@
   <div class="TopSelect">
     <div class="titlebox">
       <div class="titles">
+        <div class="slider" :style="{ transform: sliderPosition }"></div>
         <div
-          class="onetitle"
+          class="onetitle title"
           :class="{ active: activeTitle === 'onetitle' }"
           @click="toggle('onetitle')"
         >
           {{ onetitle }}
         </div>
         <div
-          class="twotitle"
+          class="twotitle title"
           :class="{ active: activeTitle === 'twotitle' }"
           @click="toggle('twotitle')"
         >
           {{ twotitle }}
         </div>
-        <!-- 강조선을 titles 클래스의 하위의 요소로 이동 -->
-        <div class="highlight" :style="{ left: highlightPosition }"></div>
       </div>
     </div>
     <div class="content" v-if="activeTitle === 'onetitle'">
-      <!-- onetitle에 대한 내용 -->
       <p>{{ firstInput }}</p>
     </div>
     <div class="content" v-if="activeTitle === 'twotitle'">
-      <!-- twotitle에 대한 내용 -->
       <p>{{ secondInput }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   onetitle: String,
@@ -42,14 +39,21 @@ const props = defineProps({
 });
 
 const activeTitle = ref('onetitle');
-const highlightPosition = ref('0px');
+
+const sliderPosition = ref('translateX(0px)');
+
+const emit = defineEmits(['updateType']);
 
 const toggle = (title) => {
   if (activeTitle.value !== title) {
     activeTitle.value = title;
-    highlightPosition.value = title === 'twotitle' ? '50px' : '0px';
+    sliderPosition.value =
+      title === 'twotitle' ? 'translateX(452px)' : 'translateX(0px)';
+    emit('updateType', title === 'twotitle' ? '추가' : '지출');
   }
 };
+
+emit('updateType', activeTitle.value === 'twotitle' ? '추가' : '지출');
 </script>
 
 <style scoped>
@@ -67,11 +71,11 @@ const toggle = (title) => {
 .titles {
   display: flex;
   position: relative;
+  width: 904px;
   overflow: hidden;
 }
 
-.onetitle,
-.twotitle {
+.title {
   width: 452px;
   height: 115px;
   border-radius: 18px;
@@ -83,12 +87,25 @@ const toggle = (title) => {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: color 0.3s;
+  z-index: 2; /* 제목이 슬라이더 위에 오도록 설정 */
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 452px;
+  height: 115px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0px 0px 14.4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.4s;
+  z-index: 1; /* 슬라이더가 제목 아래에 오도록 설정 */
 }
 
 .twotitle.active,
 .onetitle.active {
-  background: #ffffff;
-  box-shadow: 0px 0px 14.4px rgba(0, 0, 0, 0.04);
   color: #353b43;
   font-weight: 600;
 }

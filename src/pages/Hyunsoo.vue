@@ -37,7 +37,7 @@
         class="useBox" 
         v-for="(trip, index) in filteredTrips" 
         :key="index"
-        :class="{ faded: trip.daysUntilTrip === 0 }"
+        :class="{ faded: isFaded(trip) }"
         @click="goToAccountCalendar(trip.id)"
       >
         <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
+  
   </div>
 </template>
 
@@ -99,6 +99,13 @@ const filteredTrips = computed(() => {
 
 const goToAccountCalendar = (tripId) => {
   router.push({ name: 'Tokyo_calendar', params: { tripId } });
+};
+
+const isFaded = (trip) => {
+  const currentDate = new Date();
+  const startPeriod = new Date(trip.startPeriod);
+  const endPeriod = new Date(trip.endPeriod);
+  return trip.daysUntilTrip === 0 && !(currentDate >= startPeriod && currentDate <= endPeriod);
 };
 
 onMounted(async () => {

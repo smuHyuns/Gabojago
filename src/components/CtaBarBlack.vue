@@ -1,19 +1,26 @@
 <template>
-  <div>
-    <button class="cta-bar" @click="addSomething">{{ inputname }}</button>
+  <div class="ctaBar">
+    <button :class="{ 'cta-bar-black': props.on, 'cta-bar': !props.on }" @click="handleClick">
+      {{ props.inputname }}
+    </button>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   inputname: String,
+  on: Boolean,
 });
 
-function addSomething() {
-  console.log(props.inputname);
-}
+const emit = defineEmits(['submit']);
+
+const handleClick = () => {
+  if (props.on) {
+    emit('submit');
+  }
+};
 </script>
 
 <style scoped>

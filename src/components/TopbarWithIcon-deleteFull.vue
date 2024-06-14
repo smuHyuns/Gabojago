@@ -3,12 +3,11 @@
     <div class="imgbox">
       <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
+      <button class="Changeicon" @click="navigateToFullDeletePage">
+        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
+      </button>
     </div>
-    <button class="changeIcon" @click="navigateToDeletePage">
-      <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
-    </button>
   </div>
-  <div></div>
 </template>
 
 <script setup>
@@ -25,22 +24,17 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  selectedDate: {
-    type: String,
-    required: true,
-  },
 });
 
 function goBack() {
   router.back();
 }
 
-function navigateToDeletePage() {
+function navigateToFullDeletePage() {
   router.push({
-    name: 'deletepage',
+    name: 'siwan_test_full_delete',
     params: {
       tripId: props.tripId,
-      date: props.selectedDate,
     },
   });
 }
@@ -48,8 +42,8 @@ function navigateToDeletePage() {
 
 <style scoped>
 .topbarBox {
-  width: 100%;
   margin-top: 10%;
+  width: 100%;
   padding-top: 19px;
   padding-bottom: 19px;
   padding-left: 50px;
@@ -61,40 +55,37 @@ function navigateToDeletePage() {
 .imgbox {
   display: flex;
   align-items: center;
-  margin-left: 20px; /* 좌측 벽과의 거리 */
-  justify-content: space-between;
+  gap: 10px;
   margin-left: 20px;
-
-  height: 91px; /* 아이콘과 제목의 높이를 동일하게 설정 (70px * 1.3) */
-  /* overflow: hidden; 내용이 넘치는 경우 자르기 */
+  height: 91px;
 }
 
 .icon {
   height: 75px;
   object-fit: contain;
-  overflow: visible;
+  cursor: pointer;
 }
 
 .title {
-  width: 500px;
   color: #353b43;
   font-size: 58px;
   font-weight: 700;
-  /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
-  word-wrap: break-word;
+  line-height: 91px;
 }
 
 .icon2 {
-  width: 69px;
-  height: 69px;
-  padding: 8px;
-  justify-content: flex-end;
+  width: 69.12px;
+  height: 69.12px;
+  padding: 8.64px;
+  justify-content: center;
   align-items: center;
+  display: inline-flex;
 }
-.changeIcon {
-  flex-grow: 1;
+
+.Changeicon {
+  left: 400px;
   background: none;
-  border: none; /* 아이콘과 동일한 높이 */
-  padding-left: 100px;
+  border: none;
+  position: relative;
 }
 </style>

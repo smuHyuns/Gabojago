@@ -5,8 +5,8 @@
         <RouterView></RouterView>
       </div>
     </div>
-    &nbsp;
-    <h1>App화면1</h1>
+    <!-- &nbsp; -->
+    <!-- <h1>App화면1</h1>
     <hr />
     <h3><router-link to="/">home 이동</router-link></h3>
     <h3><router-link to="/isu">isu 이동</router-link></h3>
@@ -23,7 +23,7 @@
     <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
     <h3><router-link to="/modal">modal-test</router-link></h3>
     <h3><router-link to="/Start">시작페이지</router-link></h3>
-    <hr />
+    <hr /> -->
   </div>
 </template>
 
@@ -35,8 +35,10 @@
 * {
   margin: 0px auto;
   padding: 0px;
-  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
-    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  font-family: 'Pretendard Variable', Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
+    'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }
 ::-webkit-scrollbar {
   background-color: transparent;
@@ -48,7 +50,8 @@
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
   font-weight: 400;
   font-style: normal;
 }

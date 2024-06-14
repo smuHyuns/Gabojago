@@ -1,9 +1,17 @@
 <template>
   <div class="calendar-container">
     <div class="calendar-header">
-      <img src="../assets/chevron-right.png" @click="prevMonth" class="left-btn" />
+      <img
+        src="../assets/chevron-right.png"
+        @click="prevMonth"
+        class="left-btn"
+      />
       <h2>{{ currentMonthYear }}</h2>
-      <img src="../assets/chevron-left.png" @click="nextMonth" class="right-btn" />
+      <img
+        src="../assets/chevron-left.png"
+        @click="nextMonth"
+        class="right-btn"
+      />
     </div>
     <div class="calendar-days">
       <div class="day" v-for="day in daysOfWeek" :key="day">{{ day }}</div>
@@ -55,14 +63,20 @@ const todayKey = `date-${today.getDate()}`;
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
-const currentMonthYear = computed(() => `${currentYear.value}년 ${currentMonth.value + 1}월`);
+const currentMonthYear = computed(
+  () => `${currentYear.value}년 ${currentMonth.value + 1}월`
+);
 
 const calendarDates = ref([]);
 const highlightDates = ref([]);
 
 function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1);
-  const daysInMonth = new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
+  const daysInMonth = new Date(
+    currentYear.value,
+    currentMonth.value + 1,
+    0
+  ).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
   const dates = [];
@@ -104,13 +118,21 @@ function updateHighlightDates() {
   highlightDates.value = [];
 
   if (
-    (startDate.getFullYear() === currentYear.value && startDate.getMonth() === currentMonth.value) ||
-    (endDate.getFullYear() === currentYear.value && endDate.getMonth() === currentMonth.value) ||
-    (startDate < new Date(currentYear.value, currentMonth.value + 1, 0) && endDate > new Date(currentYear.value, currentMonth.value, 1))
+    (startDate.getFullYear() === currentYear.value &&
+      startDate.getMonth() === currentMonth.value) ||
+    (endDate.getFullYear() === currentYear.value &&
+      endDate.getMonth() === currentMonth.value) ||
+    (startDate < new Date(currentYear.value, currentMonth.value + 1, 0) &&
+      endDate > new Date(currentYear.value, currentMonth.value, 1))
   ) {
-    const startHighlight = startDate.getFullYear() === currentYear.value && startDate.getMonth() === currentMonth.value ? startDate.getDate() : 1;
+    const startHighlight =
+      startDate.getFullYear() === currentYear.value &&
+      startDate.getMonth() === currentMonth.value
+        ? startDate.getDate()
+        : 1;
     const endHighlight =
-      endDate.getFullYear() === currentYear.value && endDate.getMonth() === currentMonth.value
+      endDate.getFullYear() === currentYear.value &&
+      endDate.getMonth() === currentMonth.value
         ? endDate.getDate()
         : new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
 
@@ -122,8 +144,16 @@ function updateHighlightDates() {
 
 function dateClick(date) {
   if (!date.empty) {
-    const selectedDate = new Date(currentYear.value, currentMonth.value, date.value);
+    const selectedDate = new Date(
+      currentYear.value,
+      currentMonth.value,
+      date.value
+    );
     selectedDate.setHours(12); // 타임존 문제를 해결하기 위해 시간 설정
+    console.log('Navigating to siwan_test with params:', {
+      date: selectedDate.toISOString().split('T')[0],
+      tripId: props.tripId,
+    });
     router.push({
       name: 'siwan_test',
       params: {

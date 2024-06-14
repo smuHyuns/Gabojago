@@ -1,8 +1,6 @@
 import './assets/main.css';
-
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-
 import App from './App.vue';
 import router from './router';
 
@@ -13,14 +11,10 @@ app.use(router);
 
 app.mount('#app');
 
-//수정하는부분
-
+// V-Calendar 설정
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 
-// Use plugin defaults (optional)
 app.use(setupCalendar, {});
-
-// Use the components
 app.component('VCalendar', Calendar);
 app.component('VDatePicker', DatePicker);

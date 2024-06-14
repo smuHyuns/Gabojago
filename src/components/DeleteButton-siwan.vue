@@ -1,24 +1,4 @@
 <template>
-  <!-- <div :class="{ selected: isSelected }" @click="toggleSelection">
-    <img
-      class="history-check-icon"
-      src="../assets/관광.png"
-      alt="Selected Icon"
-    />
-
-    <span class="histroy-list">{{ countryName }}</span>
-    <div class="history-money">
-      <span class="history-money-won">{{ number }}원</span>
-      <span class="history-money-local">{{ number2 }}JPY</span>
-
-      <img
-        class="check-icon"
-        :class="{ visible: isSelected }"
-        src="../assets/check-circle.png"
-        alt="Selected Icon"
-      />
-    </div>
-  </div> -->
   <div class="history-list-container" @click="toggleSelection">
     <div class="history-img-box">
       <img class="history-icon" v-bind:src="flagSrc" alt="Selected Icon" />
@@ -37,22 +17,6 @@
       />
     </div>
   </div>
-
-  <!-- <div
-    class="country-button"
-    :class="{ selected: isSelected }"
-    @click="toggleSelection"
-  >
-    <img class="flag" :src="flagSrc" :alt="countryName" />
-    <span class="country-name">{{ countryName }}</span>
-
-    <img
-      class="check-icon"
-      :class="{ visible: isSelected }"
-      src="../assets/check-circle.png"
-      alt="Selected Icon"
-    />
-  </div> -->
 </template>
 
 <script setup>

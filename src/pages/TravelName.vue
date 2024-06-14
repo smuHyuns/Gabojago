@@ -3,7 +3,7 @@
     <Topbar titleText="여행 제목" />
     <TextInput2
       placeholder="제목을 입력해주세요"
-      v-model="inputname"
+      v-model="travelTitle"
       @input="limitInput"
     />
     <div class="spacer"></div>
@@ -12,6 +12,7 @@
       inputname="여행 등록하기"
       :on="isblack"
       @submit="updateNickname"
+      @click="navigateToAddPayment"
     />
   </div>
 </template>
@@ -20,16 +21,41 @@
 import Topbar from '@/components/Topbar.vue';
 import TextInput2 from '@/components/TextInput2.vue';
 import CtaBar from '@/components/CtaBar.vue';
+import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 
+const router = useRouter();
+const route = useRoute();
+const travelTitle = ref('');
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+const selectedDates = ref(
+  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
+);
+const memberCount = ref(
+  route.query.memberCount ? parseInt(route.query.memberCount) : 0
+);
+
 const isblack = ref(false);
-let inputname = ref('');
 
 const limitInput = () => {
-  if (inputname.value.length > 10) {
-    inputname.value = inputname.value.slice(0, 10);
+  if (travelTitle.value.length > 10) {
+    travelTitle.value = travelTitle.value.slice(0, 10);
   }
-  isblack.value = inputname.value.length >= 1;
+  isblack.value = travelTitle.value.length >= 1;
+};
+
+const navigateToAddPayment = () => {
+  router.push({
+    path: '/addPayment',
+    query: {
+      countries: selectedCountries.value.join(','),
+      selectedDates: JSON.stringify(selectedDates.value),
+      memberCount: memberCount.value,
+      travelTitle: travelTitle.value,
+    },
+  });
 };
 </script>
 

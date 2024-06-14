@@ -1,17 +1,28 @@
 <template>
   <div v-if="trip">
-    <TopbarWithIcon :titleText="trip.describe || '여행 정보 없음'" class="topbar" />
+    <TopbarWithIcon
+      :titleText="trip.describe || '여행 정보 없음'"
+      class="topbar"
+    />
     <div class="calendar-box">
-      <CalTokyo :startPeriod="trip.startPeriod" :endPeriod="trip.endPeriod" :tripId="trip.id" />
+      <CalTokyo
+        :startPeriod="trip.startPeriod"
+        :endPeriod="trip.endPeriod"
+        :tripId="trip.id"
+      />
     </div>
     <div class="result-box">
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
-        <div class="spent-money-amount">{{ trip.usedBudget?.toLocaleString() || '0' }}</div>
+        <div class="spent-money-amount">
+          {{ trip.usedBudget?.toLocaleString() || '0' }}원
+        </div>
       </div>
       <div class="remain-money">
         <div class="remain-money-title">남은 금액</div>
-        <div class="remain-money-amount">{{ trip.remainingBudget?.toLocaleString() || '0' }}</div>
+        <div class="remain-money-amount">
+          {{ trip.remainingBudget?.toLocaleString() || '0' }}원
+        </div>
       </div>
     </div>
     <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" />
