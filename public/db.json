@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "얘들아슈퍼홧팅",
+      "nickname": "고고싱!",
       "trips": [
         {
           "id": 1,
@@ -67,8 +67,8 @@
             }
           ],
           "totalBudget": 20000,
-          "usedBudget": 12000,
-          "remainingBudget": 8000
+          "usedBudget": 35000,
+          "remainingBudget": -15000
         },
         {
           "id": 3,
@@ -613,244 +613,6 @@
           "remainingBudget": 1941.92
         },
         {
-          "id": 1718307040728,
-          "daysUntilTrip": 12,
-          "startPeriod": "2024-06-25",
-          "endPeriod": "2024-06-28",
-          "category": "관광",
-          "country": "일본",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "가보자",
-          "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718307040024,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비추가",
-              "category": "관광",
-              "amount": 222,
-              "convertedAmount": 1941.92
-            },
-            {
-              "id": 1718307072378,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "추가",
-              "category": "숙박",
-              "amount": 22,
-              "convertedAmount": 192.44,
-              "date": "2024-06-26"
-            },
-            {
-              "id": 1718307087237,
-              "type": "지출",
-              "paymentMethod": "현금",
-              "description": "지출",
-              "category": "교통",
-              "amount": 11,
-              "convertedAmount": 96.22,
-              "date": "2024-06-26"
-            }
-          ],
-          "totalBudget": 2038.14,
-          "usedBudget": 96.22,
-          "remainingBudget": 1941.92
-        },
-        {
-          "id": 1718307239762,
-          "daysUntilTrip": 12,
-          "startPeriod": "2024-06-25",
-          "endPeriod": "2024-06-28",
-          "category": "관광",
-          "country": "일본",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "안녕수면",
-          "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718307240574,
-              "type": "추가",
-              "paymentMethod": "카드",
-              "description": "경비",
-              "category": "관광",
-              "amount": 356,
-              "convertedAmount": 3114.07
-            },
-            {
-              "id": 1718307267707,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비야",
-              "category": "쇼핑",
-              "amount": 234,
-              "convertedAmount": 2046.89,
-              "date": "2024-06-26"
-            }
-          ],
-          "totalBudget": 3297.76,
-          "usedBudget": 0,
-          "remainingBudget": 3297.76
-        },
-        {
-          "id": 1718325531038,
-          "daysUntilTrip": 4,
-          "startPeriod": "2024-06-18",
-          "endPeriod": "2024-06-21",
-          "category": "숙박",
-          "country": "일본",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "새로운여행을떠나요",
-          "headcount": 2,
-          "expenses": [
-            {
-              "id": 1718325531196,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "추가됐나요?",
-              "category": "숙박",
-              "amount": 2222,
-              "convertedAmount": 19451.39
-            }
-          ],
-          "totalBudget": 19451.39,
-          "usedBudget": 0,
-          "remainingBudget": 19451.39
-        },
-        {
-          "id": 1718330700177,
-          "daysUntilTrip": 11,
-          "startPeriod": "2024-06-25",
-          "endPeriod": "2024-06-28",
-          "category": "숙박",
-          "country": "일본",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "너이러면안돼^^",
-          "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718330700067,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비추가요",
-              "category": "숙박",
-              "amount": 333,
-              "convertedAmount": 2915.08
-            },
-            {
-              "id": 1718330723419,
-              "type": "지출",
-              "paymentMethod": "현금",
-              "description": "지출추가요^^",
-              "category": "음식",
-              "amount": 22,
-              "convertedAmount": 192.59,
-              "date": "2024-06-26"
-            },
-            {
-              "id": 1718330764463,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비추가요^^",
-              "category": "교통",
-              "amount": 333,
-              "convertedAmount": 2915.08,
-              "date": "2024-06-27"
-            }
-          ],
-          "totalBudget": 5532.5199999999995,
-          "usedBudget": 192.59,
-          "remainingBudget": 5339.929999999999
-        },
-        {
-          "id": 1718331017994,
-          "daysUntilTrip": 0,
-          "startPeriod": "2024-06-10",
-          "endPeriod": "2024-06-13",
-          "category": "숙박",
-          "country": "태국",
-          "type": "추가",
-          "travelComplete": "완료",
-          "describe": "제발!!",
-          "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718331018160,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비추가!",
-              "category": "숙박",
-              "amount": 222,
-              "convertedAmount": 1943.39
-            }
-          ],
-          "totalBudget": 1943.39,
-          "usedBudget": 0,
-          "remainingBudget": 1943.39
-        },
-        {
-          "id": 1718331496330,
-          "daysUntilTrip": 3,
-          "startPeriod": "2024-06-17",
-          "endPeriod": "2024-06-21",
-          "category": "음식",
-          "country": "일본",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "여행제목이야!",
-          "headcount": 3,
-          "expenses": [],
-          "totalBudget": 19451.39,
-          "usedBudget": 0,
-          "remainingBudget": 19451.39
-        },
-        {
-          "id": 1718332091550,
-          "daysUntilTrip": 0,
-          "startPeriod": "2024-06-11",
-          "endPeriod": "2024-06-15",
-          "category": "음식",
-          "country": "베트남",
-          "type": "추가",
-          "travelComplete": "여행 중",
-          "describe": "가보자",
-          "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718332091527,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "야호",
-              "category": "음식",
-              "amount": 222222222,
-              "convertedAmount": 1945333331.39
-            }
-          ],
-          "totalBudget": 1945333331.39,
-          "usedBudget": 0,
-          "remainingBudget": 1945333331.39
-        },
-        {
-          "id": 1718332226626,
-          "daysUntilTrip": 5,
-          "startPeriod": "2024-06-19",
-          "endPeriod": "2024-06-21",
-          "category": "음식",
-          "country": "중국",
-          "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "건우형홧팅!!",
-          "headcount": 3,
-          "expenses": [],
-          "totalBudget": 194531.39,
-          "usedBudget": 0,
-          "remainingBudget": 194531.39
-        },
-        {
           "id": 1718332568982,
           "daysUntilTrip": 3,
           "startPeriod": "2024-06-17",
@@ -872,6 +634,22 @@
               "convertedAmount": 1943.39
             }
           ],
+          "totalBudget": 1943.39,
+          "usedBudget": 0,
+          "remainingBudget": 1943.39
+        },
+        {
+          "id": 1718333830227,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-12",
+          "endPeriod": "2024-06-15",
+          "category": "항공",
+          "country": "베트남",
+          "type": "추가",
+          "travelComplete": "여행 중",
+          "describe": "가봅시다^^",
+          "headcount": 3,
+          "expenses": [],
           "totalBudget": 1943.39,
           "usedBudget": 0,
           "remainingBudget": 1943.39
