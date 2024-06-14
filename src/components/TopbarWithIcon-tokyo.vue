@@ -4,12 +4,11 @@
       <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
     </div>
-  </div>
-  <div>
     <button class="changeIcon" @click="navigateToDeletePage">
       <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
     </button>
   </div>
+  <div></div>
 </template>
 
 <script setup>
@@ -56,7 +55,7 @@ function navigateToDeletePage() {
   padding-left: 50px;
   padding-right: 237px;
   display: flex;
-  align-items: center; /* 수직 정렬 */
+  align-items: center;
 }
 
 .imgbox {
@@ -71,14 +70,15 @@ function navigateToDeletePage() {
 }
 
 .icon {
-  height: 75px; /* 아이콘의 높이를 1.3배 증가 (70px * 1.3) */
+  height: 75px;
   object-fit: contain;
   overflow: visible;
 }
 
 .title {
+  width: 500px;
   color: #353b43;
-  font-size: 58px; /* 폰트 크기를 1.3배 증가 (24px * 1.3) */
+  font-size: 58px;
   font-weight: 700;
   /* 폰트 높이를 아이콘 높이와 동일하게 설정 */
   word-wrap: break-word;

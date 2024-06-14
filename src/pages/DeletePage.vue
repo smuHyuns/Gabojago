@@ -1,6 +1,10 @@
 <template>
   <div>
-    <TopbarWithIcon-tokyo :titleText="trip?.describe || '지출 내역'" :tripId="tripId" class="topbar" />
+    <TopbarWithIcon-tokyo
+      :titleText="trip?.describe || '지출 내역'"
+      :tripId="tripId"
+      class="topbar"
+    />
     <div class="print-box">
       <div class="date">{{ selectedDate }}</div>
       <div v-for="expense in filteredExpenses" :key="expense.description">
@@ -14,7 +18,11 @@
         />
       </div>
     </div>
-    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="삭제하기" @click="deleteSelectedExpenses" />
+    <CtaBarBlackSiwan
+      class="ctabarblacksiwan"
+      inputname="삭제하기"
+      @click="deleteSelectedExpenses"
+    />
   </div>
 </template>
 
@@ -54,7 +62,9 @@ onMounted(async () => {
 
 function updateSelectedExpenses(expenseDescription) {
   if (selectedExpenses.value.includes(expenseDescription)) {
-    selectedExpenses.value = selectedExpenses.value.filter((desc) => desc !== expenseDescription);
+    selectedExpenses.value = selectedExpenses.value.filter(
+      (desc) => desc !== expenseDescription
+    );
   } else {
     selectedExpenses.value.push(expenseDescription);
   }
@@ -62,25 +72,33 @@ function updateSelectedExpenses(expenseDescription) {
 
 async function deleteSelectedExpenses() {
   try {
-    const user = (await axios.get(`http://localhost:3000/users/${userId}`)).data;
+    const user = (await axios.get(`http://localhost:3000/users/${userId}`))
+      .data;
     const updatedTrips = user.trips.map((t) => {
       if (t.id === parseInt(tripId)) {
         return {
           ...t,
-          expenses: t.expenses.filter((expense) => !selectedExpenses.value.includes(expense.description)),
+          expenses: t.expenses.filter(
+            (expense) => !selectedExpenses.value.includes(expense.description)
+          ),
         };
       }
       return t;
     });
 
-    const response = await axios.patch(`http://localhost:3000/users/${userId}`, {
-      trips: updatedTrips,
-    });
+    const response = await axios.patch(
+      `http://localhost:3000/users/${userId}`,
+      {
+        trips: updatedTrips,
+      }
+    );
 
     if (response.status === 200) {
       alert('선택된 지출 내역이 삭제되었습니다.');
       // 삭제 후 로컬 상태를 업데이트
-      filteredExpenses.value = trip.value.expenses.filter((expense) => !selectedExpenses.value.includes(expense.description));
+      filteredExpenses.value = trip.value.expenses.filter(
+        (expense) => !selectedExpenses.value.includes(expense.description)
+      );
       selectedExpenses.value = [];
     }
   } catch (error) {
@@ -104,7 +122,7 @@ function getCategoryImage(category) {
 
 <style scoped>
 .print-box {
-  height: 1500px;
+  height: 2000px;
   overflow-y: scroll;
 }
 

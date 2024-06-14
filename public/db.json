@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "고고싱!",
+      "nickname": "닉네임 다시 변경",
       "trips": [
         {
           "id": 1718335039489,
@@ -30,7 +30,9 @@
               "id": 1718335751120,
               "type": "추가",
               "paymentMethod": "현금",
+
               "description": "경비추가",
+
               "category": "숙박",
               "amount": 2222,
               "convertedAmount": 19451.39,
@@ -104,6 +106,7 @@
           "totalBudget": 43770,
           "usedBudget": 0,
           "remainingBudget": 43770
+
         }
       ]
     }

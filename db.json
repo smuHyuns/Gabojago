@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "ㅇㄹㄴ",
+      "nickname": "나건우",
       "trips": [
         {
           "id": 1,
@@ -100,8 +100,8 @@
             }
           ],
           "totalBudget": 30000,
-          "usedBudget": 17500,
-          "remainingBudget": 12500
+          "usedBudget": 15000,
+          "remainingBudget": 15000
         },
         {
           "id": 4,
@@ -133,8 +133,8 @@
             }
           ],
           "totalBudget": 10000,
-          "usedBudget": 4375,
-          "remainingBudget": 5625
+          "usedBudget": 5000,
+          "remainingBudget": 5000
         },
         {
           "id": 5,
@@ -182,6 +182,26 @@
           "headcount": 3,
           "expenses": [
             {
+              "id": 1718325336931,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "추가해볼게",
+              "category": "쇼핑",
+              "amount": 111,
+              "convertedAmount": 971.69,
+              "date": "2024-06-11"
+            },
+            {
+              "id": 1718325344993,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "지출해볼게",
+              "category": "음식",
+              "amount": 222,
+              "convertedAmount": 1943.39,
+              "date": "2024-06-11"
+            },
+            {
               "type": "지출",
               "paymentMethod": "현금",
               "description": "지출테스트1",
@@ -226,11 +246,31 @@
               "amount": 33,
               "convertedAmount": 288.66,
               "date": "2024-06-12"
+            },
+            {
+              "id": 1718323648676,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "플렉스",
+              "category": "음식",
+              "amount": 33333,
+              "convertedAmount": 291797.08,
+              "date": "2024-06-12"
+            },
+            {
+              "id": 1718323696550,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "맛있는사탕사먹기",
+              "category": "쇼핑",
+              "amount": 222,
+              "convertedAmount": 1943.39,
+              "date": "2024-06-12"
             }
           ],
-          "totalBudget": -53446.61,
-          "usedBudget": 5825.76,
-          "remainingBudget": -59272.37
+          "totalBudget": 259929.07,
+          "usedBudget": 9712.54,
+          "remainingBudget": 250216.53
         },
         {
           "id": 7,
@@ -256,7 +296,7 @@
           ],
           "totalBudget": -2134.37,
           "usedBudget": 2134.37,
-          "remainingBudget": 0
+          "remainingBudget": -4268.74
         },
         {
           "id": 8,
@@ -282,7 +322,7 @@
           ],
           "totalBudget": -8750,
           "usedBudget": 8750,
-          "remainingBudget": 0
+          "remainingBudget": -17500
         },
         {
           "id": 9,
@@ -573,112 +613,46 @@
           "remainingBudget": 1941.92
         },
         {
-          "id": 1718307040728,
-          "daysUntilTrip": 12,
-          "startPeriod": "2024-06-25",
-          "endPeriod": "2024-06-28",
-          "category": "관광",
+          "id": 1718332568982,
+          "daysUntilTrip": 3,
+          "startPeriod": "2024-06-17",
+          "endPeriod": "2024-06-21",
+          "category": "숙박",
           "country": "일본",
           "type": "추가",
           "travelComplete": "다가오는 여행",
-          "describe": "가보자",
-          "headcount": 3,
+          "describe": "슈퍼슈퍼여행",
+          "headcount": 4,
           "expenses": [
             {
-              "id": 1718307040024,
+              "id": 1718332569694,
               "type": "추가",
               "paymentMethod": "현금",
-              "description": "경비추가",
-              "category": "관광",
-              "amount": 222,
-              "convertedAmount": 1941.92
-            },
-            {
-              "id": 1718307072378,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "추가",
+              "description": "가보자고~",
               "category": "숙박",
-              "amount": 22,
-              "convertedAmount": 192.44,
-              "date": "2024-06-26"
-            },
-            {
-              "id": 1718307087237,
-              "type": "지출",
-              "paymentMethod": "현금",
-              "description": "지출",
-              "category": "교통",
-              "amount": 11,
-              "convertedAmount": 96.22,
-              "date": "2024-06-26"
+              "amount": 222,
+              "convertedAmount": 1943.39
             }
           ],
-          "totalBudget": 2038.14,
-          "usedBudget": 96.22,
-          "remainingBudget": 1941.92
+          "totalBudget": 1943.39,
+          "usedBudget": 0,
+          "remainingBudget": 1943.39
         },
         {
-          "id": 1718307239762,
-          "daysUntilTrip": 12,
-          "startPeriod": "2024-06-25",
-          "endPeriod": "2024-06-28",
-          "category": "관광",
-          "country": "일본",
+          "id": 1718333830227,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-12",
+          "endPeriod": "2024-06-15",
+          "category": "항공",
+          "country": "베트남",
           "type": "추가",
-          "travelComplete": "다가오는 여행",
-          "describe": "안녕수면",
+          "travelComplete": "여행 중",
+          "describe": "가봅시다^^",
           "headcount": 3,
-          "expenses": [
-            {
-              "id": 1718307240574,
-              "type": "추가",
-              "paymentMethod": "카드",
-              "description": "경비",
-              "category": "관광",
-              "amount": 356,
-              "convertedAmount": 3114.07
-            },
-            {
-              "id": 1718307267707,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비야",
-              "category": "쇼핑",
-              "amount": 234,
-              "convertedAmount": 2046.89,
-              "date": "2024-06-26"
-            }
-          ],
-          "totalBudget": 3297.76,
+          "expenses": [],
+          "totalBudget": 1943.39,
           "usedBudget": 0,
-          "remainingBudget": 3297.76
-        },
-        {
-          "id": 1718325552715,
-          "daysUntilTrip": 12,
-          "startPeriod": "2024-06-26",
-          "endPeriod": "2024-06-26",
-          "category": "",
-          "country": "인도",
-          "type": "지출",
-          "travelComplete": "다가오는 여행",
-          "describe": "ㅇ",
-          "headcount": 0,
-          "expenses": [
-            {
-              "id": 1718325552874,
-              "type": "지출",
-              "paymentMethod": "현금",
-              "description": "기본 등록",
-              "category": "기타",
-              "amount": 0,
-              "convertedAmount": 0
-            }
-          ],
-          "totalBudget": 0,
-          "usedBudget": 0,
-          "remainingBudget": 0
+          "remainingBudget": 1943.39
         }
       ]
     },

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Siwan_test_full_delete :titleText="trip?.describe || '지출 내역'" :tripId="tripId" class="topbar" />
+    <Siwan_test_full_delete
+      :titleText="trip?.describe || '지출 내역'"
+      :tripId="tripId"
+      class="topbar"
+    />
     <div class="print-box">
       <div v-for="(expenses, date) in groupedExpenses" :key="date">
         <div class="date">{{ date }}</div>
@@ -19,10 +23,16 @@
     <div class="result-box">
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
-        <div class="spent-money-amount">{{ usedBudget.toLocaleString() }}원</div>
+        <div class="spent-money-amount">
+          {{ usedBudget.toLocaleString() }}원
+        </div>
       </div>
     </div>
-    <CtaBarBlackSiwan class="ctabarblacksiwan" inputname="추가하기" @click="navigateToAddPayment" />
+    <CtaBarBlackSiwan
+      class="ctabarblacksiwan"
+      inputname="추가하기"
+      @click="navigateToAddPayment"
+    />
   </div>
 </template>
 
@@ -43,7 +53,9 @@ const filteredExpenses = ref([]);
 const usedBudget = ref(0);
 
 const sortedExpenses = computed(() => {
-  return filteredExpenses.value.sort((a, b) => new Date(a.date) - new Date(b.date));
+  return filteredExpenses.value.sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
 });
 
 // selectedDate 기준으로 groupedExpenses를 계산합니다.
@@ -68,12 +80,17 @@ onMounted(async () => {
     if (trip.value) {
       console.log('Trip found:', trip.value); // trip이 제대로 찾아졌는지 확인
       // 모든 expenses를 날짜별로 정렬하여 filteredExpenses에 저장합니다.
-      filteredExpenses.value = trip.value.expenses.sort((a, b) => new Date(a.date) - new Date(b.date));
+      filteredExpenses.value = trip.value.expenses.sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
 
-      usedBudget.value = trip.value.expenses.filter((expense) => expense.type === '지출').reduce((sum, expense) => sum + (expense.convertedAmount || 0), 0);
+      usedBudget.value = trip.value.expenses
+        .filter((expense) => expense.type === '지출')
+        .reduce((sum, expense) => sum + (expense.convertedAmount || 0), 0);
 
       trip.value.usedBudget = usedBudget.value;
-      trip.value.remainingBudget = trip.value.totalBudget - trip.value.usedBudget;
+      trip.value.remainingBudget =
+        trip.value.totalBudget - trip.value.usedBudget;
 
       await axios.put(`http://localhost:3000/users/08ac`, user);
     } else {
@@ -109,7 +126,7 @@ function getCategoryImage(category) {
 
 <style scoped>
 .print-box {
-  height: 1500px;
+  height: 1600px;
   overflow-y: scroll;
 }
 

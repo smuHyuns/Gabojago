@@ -8,8 +8,20 @@
       <h1 class="modal-title">여행 경비를 추가해보세요</h1>
       <p class="modal-subtitle">경비는 언제든지 다시 추가할 수 있어요!</p>
       <div class="modal-buttons">
-        <button class="modal-button-no" :class="{ faded: !isNoSelected }" @click="selectNo">안할래요</button>
-        <button class="modal-button-yes" :class="{ faded: !isYesSelected }" @click="selectYes">추가할래요</button>
+        <button
+          class="modal-button-no"
+          :class="{ faded: !isNoSelected }"
+          @click="selectNo"
+        >
+          안할래요
+        </button>
+        <button
+          class="modal-button-yes"
+          :class="{ faded: !isYesSelected }"
+          @click="selectYes"
+        >
+          추가할래요
+        </button>
       </div>
     </div>
   </div>
@@ -60,7 +72,7 @@ function closeModal(value) {
   background: white;
   width: 800px;
   height: 650px;
-  border-radius: 20px;
+  border-radius: 34px;
   padding: 60px;
   display: flex;
   flex-direction: column;
@@ -74,13 +86,13 @@ function closeModal(value) {
 }
 
 .modal-title {
-  font-size: 55px;
-  font-weight: bolder;
+  font-size: 63px;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
 .modal-subtitle {
-  font-size: 35px;
+  font-size: 40px;
   color: grey;
   margin-bottom: 60px;
 }
@@ -93,7 +105,7 @@ function closeModal(value) {
 .modal-button-no {
   font-style: normal;
   font-weight: 600;
-  font-size: 40px;
+  font-size: 46px;
   color: #8892a0;
   width: 350px;
   padding: 35px;
@@ -105,8 +117,8 @@ function closeModal(value) {
 
 .modal-button-yes {
   font-style: normal;
-  font-weight: 500;
-  font-size: 40px;
+  font-weight: 600;
+  font-size: 46px;
   color: white;
   width: 350px;
   padding: 35px;
