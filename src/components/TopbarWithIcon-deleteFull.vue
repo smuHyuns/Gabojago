@@ -1,10 +1,10 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" @click="navigateToHyunsoo" />
+      <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
-      <button class="Changeicon">
-        <img src="../assets/리포트2.png" alt="Icon" class="icon2" @click="navigateToFullCalendar" />
+      <button class="Changeicon" @click="navigateToFullDeletePage">
+        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
       </button>
     </div>
   </div>
@@ -12,6 +12,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   titleText: {
@@ -24,18 +26,18 @@ const props = defineProps({
   },
 });
 
-const router = useRouter();
+function goBack() {
+  router.back();
+}
 
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
-};
-
-const navigateToFullCalendar = () => {
+function navigateToFullDeletePage() {
   router.push({
-    name: 'siwan_test_full',
-    query: { tripId: props.tripId },
+    name: 'siwan_test_full_delete',
+    params: {
+      tripId: props.tripId,
+    },
   });
-};
+}
 </script>
 
 <style scoped>
@@ -61,7 +63,7 @@ const navigateToFullCalendar = () => {
 .icon {
   height: 75px;
   object-fit: contain;
-  overflow: visible;
+  cursor: pointer;
 }
 
 .title {
@@ -69,7 +71,6 @@ const navigateToFullCalendar = () => {
   font-size: 58px;
   font-weight: 700;
   line-height: 91px;
-  word-wrap: break-word;
 }
 
 .icon2 {

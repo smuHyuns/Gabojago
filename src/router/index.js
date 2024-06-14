@@ -15,6 +15,8 @@ import DeletePage from '@/pages/DeletePage.vue';
 import Start from '@/pages/Start.vue';
 import Tokyo_calendar from '@/pages/Tokyo_calendar.vue';
 import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
+import Siwan_test_full from '@/pages/Siwan_test_full.vue';
+import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
 
 const routes = [
   {
@@ -104,6 +106,18 @@ const routes = [
     path: '/addPaymentFromDate',
     name: 'AddPaymentFromDate',
     component: AddPaymentFromDate,
+  },
+  {
+    path: '/siwan_test_full/:tripId',
+    name: 'siwan_test_full',
+    component: Siwan_test_full,
+    props: true,
+  },
+  {
+    path: '/siwan_test_full_delete/:tripId',
+    name: 'siwan_test_full_delete',
+    component: Siwan_test_full_delete,
+    props: true,
   },
 ];
 
