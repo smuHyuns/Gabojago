@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "123",
+      "nickname": "가볼래",
       "trips": [
         {
           "id": 1718335039489,
@@ -141,6 +141,90 @@
           "totalBudget": 818499,
           "usedBudget": 17508,
           "remainingBudget": 800991
+        },
+        {
+          "id": 1718342589193,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-13",
+          "endPeriod": "2024-06-19",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "여행 중",
+          "describe": "일본여행",
+          "headcount": 0,
+          "expenses": [
+            {
+              "id": 1718342589263,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 0,
+              "convertedAmount": 0,
+              "date": "2024-06-13"
+            },
+            {
+              "id": 1718342638562,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "밥",
+              "category": "음식",
+              "amount": 300,
+              "convertedAmount": 2626.2,
+              "date": "2024-06-15"
+            }
+          ],
+          "totalBudget": -2626.2,
+          "usedBudget": 2626.2,
+          "remainingBudget": -5252.4
+        },
+        {
+          "id": 1718349267636,
+          "daysUntilTrip": 11,
+          "startPeriod": "2024-06-25",
+          "endPeriod": "2024-06-28",
+          "category": "관광",
+          "country": "일본",
+          "type": "추가",
+          "travelComplete": "다가오는 여행",
+          "describe": "도쿄 여행ㅇ가볼래",
+          "headcount": 3,
+          "expenses": [
+            {
+              "id": 1718349267673,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "여행 경비",
+              "category": "관광",
+              "amount": 30000,
+              "convertedAmount": 262620,
+              "date": "2024-06-25"
+            },
+            {
+              "id": 1718349308049,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "택시비",
+              "category": "교통",
+              "amount": 1000,
+              "convertedAmount": 8754,
+              "date": "2024-06-25"
+            },
+            {
+              "id": 1718349410492,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "덮밥 먹기",
+              "category": "음식",
+              "amount": 3000,
+              "convertedAmount": 26262,
+              "date": "2024-06-26"
+            }
+          ],
+          "totalBudget": 201342,
+          "usedBudget": 35016,
+          "remainingBudget": 166326
         }
       ]
     }
