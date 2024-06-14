@@ -6,26 +6,25 @@
       <MemberAdd class="Member-add" @update:memberCount="updateMemberCount" />
     </div>
     <div class="spacer"></div>
-    <CtaBar inputname="다음으로" @click="navigateToTravelName" />
+    <!-- <CtaBar inputname="다음으로" @click="navigateToTravelName" /> -->
+    <CtaBarBlack inputname="다음으로" @click="navigateToTravelName" />
   </div>
 </template>
 
 <script setup>
 import Topbar from '@/components/Topbar.vue';
 import MemberAdd from '@/components/MemberAdd.vue';
-import CtaBar from '@/components/CtaBar.vue';
+// import CtaBar from '@/components/CtaBar.vue';
+import CtaBarBlack from '@/components/CtaBarBlack.vue';
+
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
 
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
-const selectedDates = ref(
-  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
-);
+const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
+const selectedDates = ref(route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []);
 const memberCount = ref(0);
 
 const updateMemberCount = (count) => {

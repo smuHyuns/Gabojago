@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "가보자고^^!",
+      "nickname": "건우형홧팅!!!",
       "trips": [
         {
           "id": 1,
@@ -775,6 +775,90 @@
           "totalBudget": 5532.5199999999995,
           "usedBudget": 192.59,
           "remainingBudget": 5339.929999999999
+        },
+        {
+          "id": 1718331017994,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-10",
+          "endPeriod": "2024-06-13",
+          "category": "숙박",
+          "country": "태국",
+          "type": "추가",
+          "travelComplete": "완료",
+          "describe": "제발!!",
+          "headcount": 3,
+          "expenses": [
+            {
+              "id": 1718331018160,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "경비추가!",
+              "category": "숙박",
+              "amount": 222,
+              "convertedAmount": 1943.39
+            }
+          ],
+          "totalBudget": 1943.39,
+          "usedBudget": 0,
+          "remainingBudget": 1943.39
+        },
+        {
+          "id": 1718331496330,
+          "daysUntilTrip": 3,
+          "startPeriod": "2024-06-17",
+          "endPeriod": "2024-06-21",
+          "category": "음식",
+          "country": "일본",
+          "type": "추가",
+          "travelComplete": "다가오는 여행",
+          "describe": "여행제목이야!",
+          "headcount": 3,
+          "expenses": [],
+          "totalBudget": 19451.39,
+          "usedBudget": 0,
+          "remainingBudget": 19451.39
+        },
+        {
+          "id": 1718332091550,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-11",
+          "endPeriod": "2024-06-15",
+          "category": "음식",
+          "country": "베트남",
+          "type": "추가",
+          "travelComplete": "여행 중",
+          "describe": "가보자",
+          "headcount": 3,
+          "expenses": [
+            {
+              "id": 1718332091527,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "야호",
+              "category": "음식",
+              "amount": 222222222,
+              "convertedAmount": 1945333331.39
+            }
+          ],
+          "totalBudget": 1945333331.39,
+          "usedBudget": 0,
+          "remainingBudget": 1945333331.39
+        },
+        {
+          "id": 1718332226626,
+          "daysUntilTrip": 5,
+          "startPeriod": "2024-06-19",
+          "endPeriod": "2024-06-21",
+          "category": "음식",
+          "country": "중국",
+          "type": "추가",
+          "travelComplete": "다가오는 여행",
+          "describe": "건우형홧팅!!",
+          "headcount": 3,
+          "expenses": [],
+          "totalBudget": 194531.39,
+          "usedBudget": 0,
+          "remainingBudget": 194531.39
         }
       ]
     }

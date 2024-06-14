@@ -31,7 +31,8 @@
       </div>
     </div>
     <div class="ctabar">
-      <CtaBar inputname="등록하기" @click="navigateToHyunsoo" />
+      <!-- <CtaBar inputname="등록하기" @click="navigateToHyunsoo" /> -->
+      <CtaBarBlack inputname="등록하기" @click="navigateToHyunsoo" />
     </div>
   </div>
 </template>
@@ -40,7 +41,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import Topbar from '@/components/Topbar.vue';
-import CtaBar from '@/components/CtaBar.vue';
+// import CtaBar from '@/components/CtaBar.vue';
+import CtaBarBlack from '@/components/CtaBarBlack.vue';
 import TopSelect from '@/components/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
 import Modal from '@/components/Modal.vue';
@@ -277,8 +279,257 @@ function updateExpenseType(type) {
   expenseType.value = type;
 }
 </script>
-
 <style scoped>
+.category-box .selected {
+  /* background-color: var(--blue-200); 선택된 항목의 배경색 */
+  filter: hue-rotate(350deg) brightness(1) saturate(7);
+  color: white; /* 선택된 항목의 글자색 */
+}
+.payment-box {
+  width: 1080px;
+  height: 2340px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.topbar {
+  margin-bottom: 20px;
+}
+
+.box {
+  width: 335px;
+  height: 30px;
+  padding: 30px;
+  margin: 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  font-size: 35px;
+}
+
+.selected {
+  background-color: white;
+}
+
+.price-box {
+  margin-top: 58px;
+  margin-bottom: 28px;
+  width: 965px;
+  height: 288px;
+  background-color: #f5f6f7;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.price-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: #8892a0;
+  margin-left: 75px;
+}
+
+.print-big-price {
+  width: 500px;
+  background-color: transparent;
+  border: transparent;
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 80px;
+  outline: none; /* 클릭 시 테두리가 보이지 않도록 설정 */
+}
+
+.type-of-money {
+  color: #8892a0;
+  font-size: 35px;
+  font-weight: 600;
+  line-height: 35px;
+  word-wrap: break-word;
+}
+
+.print-small-price {
+  color: #8892a0;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 46px;
+  word-wrap: break-word;
+  margin-top: 23px;
+  margin-left: 75px;
+}
+
+.price-box-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.payInfoBox {
+  width: 964.8px;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: 40px;
+  gap: 20px;
+  background-color: #f5f6f7;
+  margin: 25px auto;
+}
+
+.payType {
+  width: 965px;
+  height: 184px;
+  border-radius: 20px;
+  font-size: 52px;
+  padding-bottom: 23.04px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 52px;
+  line-height: 60px;
+  color: #353b 43;
+}
+
+.payType-box {
+  margin: 0;
+  display: flex;
+  gap: 30px;
+}
+
+.payType-list {
+  width: 259px;
+  height: 127px;
+  border-radius: 30px;
+  font-weight: 500;
+  line-height: 46.08px;
+  color: black;
+  background-color: #f5f6f7;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payType .selected {
+  background: #616b79;
+  color: white;
+}
+
+.payDetail {
+  width: 965px;
+  border-radius: 20px;
+  font-size: 40px;
+  gap: 20px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+
+.payDetail-input {
+  margin: 0;
+  width: 650px;
+  height: 138px;
+  padding: 0 40px; /* 텍스트 왼쪽 여백 추가 */
+  background-color: #f5f6f7;
+  font-size: 20px;
+  border-radius: 30px;
+  border: transparent;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.3;
+  font-weight: 500;
+  text-align: left;
+  color: #caced4;
+}
+
+.payDetail-input:focus {
+  color: #353b43; /* 입력 필드가 선택되었을 때의 색상 */
+  outline: none; /* 포커스 상태에서 라인 없애기 */
+}
+.payDetail-input::placeholder {
+  margin: 0;
+  width: 737px;
+  height: 138px;
+  background-color: #f5f6f7;
+  font-size: 20px;
+  border-radius: 30px;
+  border: transparent;
+  font-size: 46px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: left;
+  color: #caced4;
+}
+
+.category {
+  width: 965px;
+  font-size: 40px;
+  gap: 20px;
+  margin-top: 85px;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 35px;
+  padding-top: 12px;
+  overflow-x: scroll; /* 수평 스크롤 비활성화 */
+  overflow-y: hidden; /* 수직 스크롤 활성화 */
+}
+
+.category-box-component {
+  width: 138px;
+  height: 196px;
+  flex-direction: column;
+  justify-content: flex-start; /* 변경 */
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.category-box-img {
+  width: 138px;
+  height: 138px;
+  object-fit: cover;
+}
+
+.category-box-txt {
+  text-align: center;
+  color: #caced4;
+  font-size: 40px;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+.ctabar {
+  height: 221.28px;
+  margin-top: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<!-- <style scoped>
 .category-box .selected {
   filter: hue-rotate(350deg) brightness(1) saturate(7);
   color: white;
@@ -523,4 +774,4 @@ function updateExpenseType(type) {
   justify-content: center;
   align-items: center;
 }
-</style>
+</style> -->

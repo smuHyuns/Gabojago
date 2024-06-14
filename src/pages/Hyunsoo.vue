@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <img src="../assets/addPlanBtn.png" class="addPlanBtn" />
+  
   </div>
 </template>
 
