@@ -5,14 +5,16 @@
       class="topbar"
     />
     <div class="date">{{ selectedDate }}</div>
-    <div v-for="expense in filteredExpenses" :key="expense.description">
-      <HistoryListItemNoCheck
-        :list="expense.description"
-        :number="expense.amount"
-        :number2="expense.convertedAmount"
-        :img="getCategoryImage(expense.category)"
-        :type="expense.type"
-      />
+    <div class="testbox">
+      <div v-for="expense in filteredExpenses" :key="expense.description">
+        <HistoryListItemNoCheck
+          :list="expense.description"
+          :number="expense.amount"
+          :number2="expense.convertedAmount"
+          :img="getCategoryImage(expense.category)"
+          :type="expense.type"
+        />
+      </div>
     </div>
     <div class="result-box">
       <div class="spent-money">
@@ -100,6 +102,10 @@ function getCategoryImage(category) {
 </script>
 
 <style scoped>
+.testbox {
+  height: 1500px;
+  overflow-y: scroll;
+}
 .date {
   box-sizing: border-box;
   width: 100%;

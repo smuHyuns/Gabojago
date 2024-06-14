@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "고고싱!",
+      "nickname": "닉네임 다시 변경",
       "trips": [
         {
           "id": 1,
@@ -100,8 +100,8 @@
             }
           ],
           "totalBudget": 30000,
-          "usedBudget": 15000,
-          "remainingBudget": 15000
+          "usedBudget": 17500,
+          "remainingBudget": 12500
         },
         {
           "id": 4,
@@ -653,6 +653,87 @@
           "totalBudget": 1943.39,
           "usedBudget": 0,
           "remainingBudget": 1943.39
+        },
+        {
+          "id": 1718335716437,
+          "daysUntilTrip": 6,
+          "startPeriod": "2024-06-20",
+          "endPeriod": "2024-06-28",
+          "category": "",
+          "country": "인도",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "ㄴㄴㅇㄴ",
+          "headcount": 1,
+          "expenses": [
+            {
+              "id": 1718335716625,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "기본 등록",
+              "category": "기타",
+              "amount": 0,
+              "convertedAmount": 0,
+              "date": "2024-06-20"
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+        },
+        {
+          "id": 1718335967628,
+          "daysUntilTrip": 6,
+          "startPeriod": "2024-06-20",
+          "endPeriod": "2024-06-28",
+          "category": "숙박",
+          "country": "인도",
+          "type": "추가",
+          "travelComplete": "다가오는 여행",
+          "describe": "ㄴㄴㅇㄴ",
+          "headcount": 1,
+          "expenses": [
+            {
+              "id": 1718335967774,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "추가",
+              "category": "숙박",
+              "amount": 123123,
+              "convertedAmount": 1077818.74,
+              "date": "2024-06-20"
+            }
+          ],
+          "totalBudget": 1077818.74,
+          "usedBudget": 0,
+          "remainingBudget": 1077818.74
+        },
+        {
+          "id": 1718340914522,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-10",
+          "endPeriod": "2024-06-14",
+          "category": "",
+          "country": "베트남",
+          "type": "지출",
+          "travelComplete": "완료",
+          "describe": "테스닝ㄴ;인;인;인",
+          "headcount": 0,
+          "expenses": [
+            {
+              "id": 1718340914184,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "ㄴㅇㄴㅇ",
+              "category": "",
+              "amount": null,
+              "convertedAmount": 0,
+              "date": "2024-06-10"
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
         }
       ]
     }

@@ -3,10 +3,18 @@
     <div class="titlebox">
       <div class="titles">
         <div class="slider" :style="{ transform: sliderPosition }"></div>
-        <div class="onetitle title" :class="{ active: activeTitle === 'onetitle' }" @click="toggle('onetitle')">
+        <div
+          class="onetitle title"
+          :class="{ active: activeTitle === 'onetitle' }"
+          @click="toggle('onetitle')"
+        >
           {{ onetitle }}
         </div>
-        <div class="twotitle title" :class="{ active: activeTitle === 'twotitle' }" @click="toggle('twotitle')">
+        <div
+          class="twotitle title"
+          :class="{ active: activeTitle === 'twotitle' }"
+          @click="toggle('twotitle')"
+        >
           {{ twotitle }}
         </div>
       </div>
@@ -39,7 +47,8 @@ const emit = defineEmits(['updateType']);
 const toggle = (title) => {
   if (activeTitle.value !== title) {
     activeTitle.value = title;
-    sliderPosition.value = title === 'twotitle' ? 'translateX(452px)' : 'translateX(0px)';
+    sliderPosition.value =
+      title === 'twotitle' ? 'translateX(452px)' : 'translateX(0px)';
     emit('updateType', title === 'twotitle' ? '추가' : '지출');
   }
 };

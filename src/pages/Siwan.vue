@@ -118,11 +118,4 @@ const updateNickname = async () => {
   background-color: #fff;
   position: relative;
 }
-
-.down {
-  position: absolute;
-  bottom: 133px;
-  left: 50%;
-  transform: translateX(-50%);
-}
 </style>

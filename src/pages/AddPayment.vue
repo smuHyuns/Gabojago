@@ -526,30 +526,76 @@ function getCategoryImage(category) {
   <div class="payment-box">
     <Modal @close="handleModalClose" @confirm="handleModalConfirm" />
     <Topbar class="topbar" titleText="경비" />
-    <TopSelect class="top-select" onetitle="지출 추가" twotitle="경비 추가" @updateType="updateExpenseType" />
+    <TopSelect
+      class="top-select"
+      onetitle="지출 추가"
+      twotitle="경비 추가"
+      @updateType="updateExpenseType"
+    />
     <div class="price-box">
       <div class="price-details">
-        <input v-model="displayAmountJPY" @input="updateAmountJPY" type="text" class="print-big-price" placeholder="0 JPY" />
+        <input
+          v-model="displayAmountJPY"
+          @input="updateAmountJPY"
+          type="text"
+          class="print-big-price"
+          placeholder="0 JPY"
+        />
       </div>
       <div class="type-of-money" style="margin-left: 75px">(일본 엔)</div>
       <div class="print-small-price">={{ conversionResult.KRW }} 원</div>
     </div>
     <div class="payType">
-      <span class="title">{{ expenseType === '지출' ? '지출 형태' : '추가 형태' }}</span>
+      <span class="title">{{
+        expenseType === '지출' ? '지출 형태' : '추가 형태'
+      }}</span>
       <div class="payType-box">
-        <div class="payType-list" :class="{ selected: paymentMethod === '현금' }" @click="selectPaymentMethod('현금')">현금</div>
-        <div class="payType-list" :class="{ selected: paymentMethod === '카드' }" @click="selectPaymentMethod('카드')">카드</div>
+        <div
+          class="payType-list"
+          :class="{ selected: paymentMethod === '현금' }"
+          @click="selectPaymentMethod('현금')"
+        >
+          현금
+        </div>
+        <div
+          class="payType-list"
+          :class="{ selected: paymentMethod === '카드' }"
+          @click="selectPaymentMethod('카드')"
+        >
+          카드
+        </div>
       </div>
     </div>
     <div class="payDetail">
-      <span class="title">{{ expenseType === '지출' ? '지출 내용' : '추가 내용' }}</span>
-      <input v-model="expenseDetail" type="text" class="payDetail-input" :placeholder="expenseType === '지출' ? '내용을 입력해 주세요' : '추가 내용을 입력해 주세요'" />
+      <span class="title">{{
+        expenseType === '지출' ? '지출 내용' : '추가 내용'
+      }}</span>
+      <input
+        v-model="expenseDetail"
+        type="text"
+        class="payDetail-input"
+        :placeholder="
+          expenseType === '지출'
+            ? '내용을 입력해 주세요'
+            : '추가 내용을 입력해 주세요'
+        "
+      />
     </div>
     <div class="category">
       <span class="title">카테고리</span>
       <div class="category-box">
-        <div class="category-box-component" v-for="category in categories" :key="category" @click="selectCategory(category)" :class="{ selected: selectedCategory === category }">
-          <img class="category-box-img" :src="getCategoryImage(category)" style="object-fit: cover" />
+        <div
+          class="category-box-component"
+          v-for="category in categories"
+          :key="category"
+          @click="selectCategory(category)"
+          :class="{ selected: selectedCategory === category }"
+        >
+          <img
+            class="category-box-img"
+            :src="getCategoryImage(category)"
+            style="object-fit: cover"
+          />
           <div class="category-box-txt">{{ category }}</div>
         </div>
       </div>
@@ -582,9 +628,15 @@ const paymentMethod = ref('현금');
 const expenseDetail = ref('');
 const selectedCategory = ref('');
 
-const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
-const selectedDates = ref(route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []);
-const memberCount = ref(route.query.memberCount ? parseInt(route.query.memberCount) : 0);
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+const selectedDates = ref(
+  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
+);
+const memberCount = ref(
+  route.query.memberCount ? parseInt(route.query.memberCount) : 0
+);
 const travelTitle = ref(route.query.travelTitle || '');
 
 const categories = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
@@ -621,7 +673,9 @@ const registerDefaultData = async () => {
   const startDate = new Date(selectedDates.value[0]);
   const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
 
-  let daysUntilTrip = Math.ceil((startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  let daysUntilTrip = Math.ceil(
+    (startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
   if (daysUntilTrip < 0) daysUntilTrip = 0;
 
   let travelComplete = '다가오는 여행';
@@ -689,7 +743,9 @@ const navigateToHyunsoo = async () => {
   const startDate = new Date(selectedDates.value[0]);
   const endDate = new Date(selectedDates.value[selectedDates.value.length - 1]);
 
-  let daysUntilTrip = Math.ceil((startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  let daysUntilTrip = Math.ceil(
+    (startDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
   if (daysUntilTrip < 0) daysUntilTrip = 0;
 
   let travelComplete = '다가오는 여행';
@@ -756,7 +812,9 @@ async function fetchExchangeRate(from, to) {
     if (parsedData.result === 'success') {
       return parsedData.conversion_rate;
     } else {
-      console.error(`Failed to fetch exchange rate for ${from} to ${to}: ${parsedData['error-type']}`);
+      console.error(
+        `Failed to fetch exchange rate for ${from} to ${to}: ${parsedData['error-type']}`
+      );
       return 0;
     }
   } catch (error) {
@@ -809,7 +867,7 @@ function updateExpenseType(type) {
 <style scoped>
 .category-box .selected {
   /* background-color: var(--blue-200); 선택된 항목의 배경색 */
-  filter: hue-rotate(350deg) brightness(1) saturate(7);
+  filter: hue-rotate(371deg) brightness(1) saturate(7);
   color: white; /* 선택된 항목의 글자색 */
 }
 .payment-box {
@@ -980,7 +1038,7 @@ function updateExpenseType(type) {
   line-height: 1.3;
   font-weight: 500;
   text-align: left;
-  color: #caced4;
+  color: #353b43;
 }
 
 .payDetail-input:focus {
