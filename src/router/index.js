@@ -19,11 +19,11 @@ import Siwan_test_full from '@/pages/Siwan_test_full.vue';
 import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home,
-  },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: Home,
+  // },
   {
     path: '/isu',
     name: 'isu',
@@ -87,7 +87,7 @@ const routes = [
     component: Calendar,
   },
   {
-    path: '/start',
+    path: '/',
     name: 'Start',
     component: Start,
   },

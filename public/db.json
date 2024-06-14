@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "닉네임 다시 변경",
+      "nickname": "123",
       "trips": [
         {
           "id": 1718335039489,
@@ -30,9 +30,7 @@
               "id": 1718335751120,
               "type": "추가",
               "paymentMethod": "현금",
-
               "description": "경비추가",
-
               "category": "숙박",
               "amount": 2222,
               "convertedAmount": 19451.39,
@@ -106,7 +104,43 @@
           "totalBudget": 43770,
           "usedBudget": 0,
           "remainingBudget": 43770
-
+        },
+        {
+          "id": 1718341644408,
+          "daysUntilTrip": 0,
+          "startPeriod": "2024-06-11",
+          "endPeriod": "2024-06-14",
+          "category": "쇼핑",
+          "country": "일본",
+          "type": "추가",
+          "travelComplete": "완료",
+          "describe": "도쿄 여행 테스트",
+          "headcount": 0,
+          "expenses": [
+            {
+              "id": 1718341644249,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "선물",
+              "category": "쇼핑",
+              "amount": 100000,
+              "convertedAmount": 875400,
+              "date": "2024-06-11"
+            },
+            {
+              "id": 1718341720044,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "시완이형 선물",
+              "category": "쇼핑",
+              "amount": 2000,
+              "convertedAmount": 17508,
+              "date": "2024-06-13"
+            }
+          ],
+          "totalBudget": 818499,
+          "usedBudget": 17508,
+          "remainingBudget": 800991
         }
       ]
     }
