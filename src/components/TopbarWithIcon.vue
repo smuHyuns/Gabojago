@@ -3,12 +3,12 @@
     <div class="imgbox">
       <img class="icon" src="../assets/chevron-right.png" @click="navigateToHyunsoo" />
       <div class="title">{{ titleText }}</div>
-      <button class="Changeicon">
+      <!-- <button class="Changeicon">
         <img src="../assets/리포트2.png" alt="Icon" class="icon2" @click="navigateToFullCalendar" />
-      </button>
+      </button> -->
     </div>
     <button class="changeIcon">
-      <img src="../assets/리포트2.png" alt="Icon" class="icon2" />
+      <img src="../assets/리포트2.png" alt="Icon" class="icon2" @click="navigateToFullCalendar" />
     </button>
   </div>
 </template>

@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "08ac",
-      "nickname": "건우형홧팅!!!",
+      "nickname": "얘들아슈퍼홧팅",
       "trips": [
         {
           "id": 1,
@@ -266,16 +266,6 @@
               "amount": 222,
               "convertedAmount": 1943.39,
               "date": "2024-06-12"
-            },
-            {
-              "id": 1718327658418,
-              "type": "추가",
-              "paymentMethod": "현금",
-              "description": "경비추가요!",
-              "category": "음식",
-              "amount": 333,
-              "convertedAmount": 2915.08,
-              "date": "2024-06-13"
             }
           ],
           "totalBudget": 259929.07,
@@ -859,6 +849,32 @@
           "totalBudget": 194531.39,
           "usedBudget": 0,
           "remainingBudget": 194531.39
+        },
+        {
+          "id": 1718332568982,
+          "daysUntilTrip": 3,
+          "startPeriod": "2024-06-17",
+          "endPeriod": "2024-06-21",
+          "category": "숙박",
+          "country": "일본",
+          "type": "추가",
+          "travelComplete": "다가오는 여행",
+          "describe": "슈퍼슈퍼여행",
+          "headcount": 4,
+          "expenses": [
+            {
+              "id": 1718332569694,
+              "type": "추가",
+              "paymentMethod": "현금",
+              "description": "가보자고~",
+              "category": "숙박",
+              "amount": 222,
+              "convertedAmount": 1943.39
+            }
+          ],
+          "totalBudget": 1943.39,
+          "usedBudget": 0,
+          "remainingBudget": 1943.39
         }
       ]
     }
