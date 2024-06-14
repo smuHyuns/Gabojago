@@ -59,7 +59,6 @@
 .mainContainer {
   max-width: 1080px;
   max-height: 2340px;
-  border: 1px solid black;
   background-color: white;
 }
 
