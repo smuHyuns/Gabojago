@@ -2,7 +2,11 @@
   "users": [
     {
       "id": "08ac",
+<<<<<<< Updated upstream
       "nickname": "가볼래",
+=======
+      "nickname": "어서 가보자고",
+>>>>>>> Stashed changes
       "trips": [
         {
           "id": 1718335039489,
@@ -143,6 +147,7 @@
           "remainingBudget": 800991
         },
         {
+<<<<<<< Updated upstream
           "id": 1718342589193,
           "daysUntilTrip": 0,
           "startPeriod": "2024-06-13",
@@ -225,6 +230,33 @@
           "totalBudget": 201342,
           "usedBudget": 35016,
           "remainingBudget": 166326
+=======
+          "id": 1718344098823,
+          "daysUntilTrip": 11,
+          "startPeriod": "2024-06-25",
+          "endPeriod": "2024-06-28",
+          "category": "",
+          "country": "일본",
+          "type": "지출",
+          "travelComplete": "다가오는 여행",
+          "describe": "도쿄",
+          "headcount": 0,
+          "expenses": [
+            {
+              "id": 1718344099434,
+              "type": "지출",
+              "paymentMethod": "현금",
+              "description": "ㄴㅇㄹ",
+              "category": "",
+              "amount": null,
+              "convertedAmount": 0,
+              "date": "2024-06-25"
+            }
+          ],
+          "totalBudget": 0,
+          "usedBudget": 0,
+          "remainingBudget": 0
+>>>>>>> Stashed changes
         }
       ]
     }
