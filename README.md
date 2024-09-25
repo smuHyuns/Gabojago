@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/888add54-9024-4b26-9eef-5c29817a31c7)
+
 ### ✸  Gabojago
 > 𝟤𝟢𝟤𝟦. 𝟢𝟩. 𝟣𝟥 - 𝟤𝟢𝟤𝟦. 𝟢𝟪. 𝟢𝟦
 
