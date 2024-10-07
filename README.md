@@ -7,26 +7,27 @@
 주요 기능으로는 실시간 환율 변환, 지출 내역 관리, 예산 설정, 지출 통계 시각화 등이 포함되어 있습니다.
 ⠀<br>
 ⠀<br>
-◦ **Data:** JSON 형식으로 db.json을 활용해 관리<br>
-◦ **FE:** Vue.js로 사용자 인터페이스 구축<br>
-◦ **BE:** Node.js와 Express 사용하여 서버 구현<br>
 
 
 ⠀
-### ✸  Project Setup
 
-```sh
-npm install
-```
+### ✸  Members
+<table>
+   <tr>
+    <td align="center"><b><a href="https://github.com/Kimsiwan30">김시완</a></b></td>
+    <td align="center"><b><a href="https://github.com/gimeus">김이수</a></b></td>
+    <td align="center"><b><a href="">나건우</a></b></td>
+    <td align="center"><b><a href="https://github.com/smuHyuns">최현수</a></b></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Frontend</b></td>
+    <td align="center"><b>UI/UX, Frontend</b></td>
+    <td align="center"><b>Motion, Frontend</b></td>
+    <td align="center"><b>DB, Frontend</b></td>
+  </tr>
+</table>
 
-```sh
-npm run dev
-```
-
-```sh
-npm run build
-```
-
+⠀
 
 ⠀
 ### ✸  Tech Stack
