@@ -20,7 +20,7 @@
 ⠀
 ⠀
 ## ③ 프로젝트 주요 기능
-<img src="(https://github.com/user-attachments/assets/abd209f1-022b-4c99-a8ce-035825fb6906"/>
+<img src="https://github.com/user-attachments/assets/abd209f1-022b-4c99-a8ce-035825fb6906"/>
 <img src="https://github.com/user-attachments/assets/770f40f2-186b-4587-b578-5bd31cf529e4"/>
 <img src="https://github.com/user-attachments/assets/97da243e-4441-41cb-8d80-d42cb59ac9fb"/>
 
