@@ -33,7 +33,7 @@
     <th align="center">FE</th>
     <th align="center">FE, UI/UX</th>
     <th align="center">FE, Motion</th>
-    <th align="center">FE, DB</th>
+    <th align="center">FE, BE, DB</th>
   </tr>
   <tr>
     <td align="center"><img src="https://github.com/Kimsiwan30.png?s=100" width="160"></td>
