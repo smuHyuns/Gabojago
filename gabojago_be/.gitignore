@@ -39,3 +39,6 @@ out/
 # aws
 application-aws.properties
 application.properties
+
+#docker
+docker-compose.yml
