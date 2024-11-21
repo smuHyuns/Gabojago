@@ -1,4 +1,4 @@
-package Gabojago.gabojago_be.hello;
+package Gabojago.gabojago_be.test;
 
 
 import Gabojago.gabojago_be.entity.User;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class HelloController {
+public class TestController {
 
     private final UserService userService;
 
