@@ -5,25 +5,6 @@
         <RouterView></RouterView>
       </div>
     </div>
-    <!-- &nbsp; -->
-    <!-- <h1>App화면1</h1>
-    <hr />
-    <h3><router-link to="/">home 이동</router-link></h3>
-    <h3><router-link to="/isu">isu 이동</router-link></h3>
-    <h3><router-link to="/gun">gun 이동</router-link></h3>
-    <h3><router-link to="/siwan">siwan 이동</router-link></h3>
-    <h3><router-link to="/siwan_test">siwan_test 이동</router-link></h3>
-    <h3><router-link to="/DeletePage">DeletePage 이동</router-link></h3>
-    <h3><router-link to="/hyunsoo">hyunsoo 이동</router-link></h3>
-
-    <h3><router-link to="/addPayment">addPayment 이동</router-link></h3>
-    <h3><router-link to="/TravelName">TravelName 이동</router-link></h3>
-    <h3><router-link to="/Member">Member 이동</router-link></h3>
-    <h3><router-link to="/Err">Err 이동</router-link></h3>
-    <h3><router-link to="/calendar">캘린더 이동</router-link></h3>
-    <h3><router-link to="/modal">modal-test</router-link></h3>
-    <h3><router-link to="/Start">시작페이지</router-link></h3>
-    <hr /> -->
   </div>
 </template>
 

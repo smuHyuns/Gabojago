@@ -12,18 +12,25 @@ import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
 import DeletePage from '@/pages/DeletePage.vue';
-import Start from '@/pages/Start.vue';
+import Start from '@/pages/home/Start.vue';
 import Tokyo_calendar from '@/pages/Tokyo_calendar.vue';
 import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
 import Siwan_test_full from '@/pages/Siwan_test_full.vue';
 import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
+import Login from '@/pages/home/Login.vue';
+import Sign_up from '@/pages/home/Sign_up.vue';
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   component: Home,
-  // },
+  {
+    path: '/sign-up',
+    name: 'sign_up',
+    component: Sign_up,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+  },
   {
     path: '/isu',
     name: 'isu',
