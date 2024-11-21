@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserUtilService userUtilService;
 
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
@@ -26,6 +27,10 @@ public class UserService {
         user.setUserPassword(dto.getUserPassword());
         user.setUserLoginId(dto.getUserLoginId());
         user.setUserProfileImg(defaultProfileImage);
+        user.setUserEmail(dto.getUserEmail());
+        user.setUserUsername(dto.getUserUsername());
+        user.setUserBirth(userUtilService.stringToDate(dto.getUserBirth()));
+        user.setUserGender(dto.getUserGender());
         return userRepository.save(user);
     }
 
