@@ -11,7 +11,7 @@ import lombok.Setter;
 public class ExchangeRate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int exchangeRateId;
+    private Long exchangeRateId;
     private String country;
-    private double rate;
+    private Double rate;
 }

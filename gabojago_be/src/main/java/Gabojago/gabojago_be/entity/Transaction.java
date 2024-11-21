@@ -13,11 +13,11 @@ import java.sql.Date;
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long transactionId;
-    private long tripId;
-    private long userId;
-    private int expenseType;
+    private Long transactionId;
+    private Long tripId;
+    private Long userId;
+    private Integer expenseType;
     private Date expenseDate;
-    private int expenseAmount;
-    private int exchangeAmount;
+    private Integer expenseAmount;
+    private Integer exchangeAmount;
 }

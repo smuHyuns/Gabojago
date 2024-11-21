@@ -2,7 +2,7 @@ package Gabojago.gabojago_be.test;
 
 
 import Gabojago.gabojago_be.entity.User;
-import Gabojago.gabojago_be.service.UserService;
+import Gabojago.gabojago_be.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

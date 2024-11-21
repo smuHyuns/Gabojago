@@ -17,10 +17,10 @@ public class Trip {
     private Long userId;
     private Date startPeriod;
     private Date endPeriod;
-    private int tripPurpose;
-    private String describe;
-    private int headCount;
-    private int tripBudget;
+    private Integer tripPurpose;
+    private String description;
+    private Integer headCount;
+    private Integer tripBudget;
     private String tripCountry;
-    private int tripExchangeBudget; // 환율 반영한 후 소수점 제거하고 값 저장할 예정
+    private Integer tripExchangeBudget; // 환율 반영한 후 소수점 제거하고 값 저장할 예정
 }
