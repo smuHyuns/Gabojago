@@ -8,24 +8,20 @@
       <div class="start-sub-msg">여행에만 집중할 수 있도록 도와드릴게요</div>
     </div>
     <video class="video" autoplay muted playsinline loop>
-      <source src="../assets/slide_final.webm" type="video/webm" />
+      <source src="@/assets/slide_final.webm" type="video/webm" />
     </video>
-    <CtaBarBlack
-      inputname="다음으로"
-      class="bottom-bar"
-      @click="navigateToSiwan"
-    />
+    <CtaBarBlack inputname="다음으로" class="bottom-bar" @click="GoLogin" />
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'; // useRouter 훅 가져오기
+import { useRouter } from 'vue-router';
 import CtaBarBlack from '@/components/CtaBarBlack.vue';
 
-const router = useRouter(); // useRouter 훅 사용
+const router = useRouter();
 
-const navigateToSiwan = () => {
-  router.push('/siwan'); // Siwan.vue로 이동
+const GoLogin = () => {
+  router.push('/login');
 };
 </script>
 
