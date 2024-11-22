@@ -1,6 +1,6 @@
 <template>
   <div class="BlueBox">
-    <Header class="header" style="z-index: 9999;" />
+    <Header class="header" style="z-index: 9999" />
     <div class="imgContainer">
       <img src="@/assets/비행기토끼.png" class="rabbitImg" />
     </div>
@@ -14,38 +14,57 @@
   <div class="whiteBox">
     <div class="kindTripBox">
       <ul>
-        <li class="tripCategory" :class="{ selected: selectedCategory === '전체' }" @click="selectCategory('전체')">
+        <li
+          class="tripCategory"
+          :class="{ selected: selectedCategory === '전체' }"
+          @click="selectCategory('전체')"
+        >
           <div class="tripCategoryName">전체</div>
           <div class="tripCategoryCount">{{ totalTrips }}</div>
         </li>
-        <li class="tripCategory" :class="{ selected: selectedCategory === '여행 중' }" @click="selectCategory('여행 중')">
+        <li
+          class="tripCategory"
+          :class="{ selected: selectedCategory === '여행 중' }"
+          @click="selectCategory('여행 중')"
+        >
           <div class="tripCategoryName">여행 중</div>
           <div class="tripCategoryCount">{{ ongoingTrips }}</div>
         </li>
-        <li class="tripCategory" :class="{ selected: selectedCategory === '다가오는 여행' }" @click="selectCategory('다가오는 여행')">
+        <li
+          class="tripCategory"
+          :class="{ selected: selectedCategory === '다가오는 여행' }"
+          @click="selectCategory('다가오는 여행')"
+        >
           <div class="tripCategoryName">다가오는 여행</div>
           <div class="tripCategoryCount">{{ upcomingTrips }}</div>
         </li>
-        <li class="tripCategory" :class="{ selected: selectedCategory === '완료' }" @click="selectCategory('완료')">
+        <li
+          class="tripCategory"
+          :class="{ selected: selectedCategory === '완료' }"
+          @click="selectCategory('완료')"
+        >
           <div class="tripCategoryName">지난 여행</div>
           <div class="tripCategoryCount">{{ completedTrips }}</div>
         </li>
       </ul>
     </div>
     <div class="planListBox">
-      <div 
-        class="useBox" 
-        v-for="(trip, index) in filteredTrips" 
-        :key="index"
+      <div
+        class="useBox"
+        v-for="(trip, index) in filteredTrips"
+        :key="trip.tripId"
         :class="{ faded: isFaded(trip) }"
-        @click="goToAccountCalendar(trip.id)"
+        @click="goToAccountCalendar(trip.tripId)"
       >
-        <img class="useBox-img" src="../assets/프로필비행기토끼.png"></img>
+        <img class="useBox-img" src="@/assets/프로필비행기토끼.png" />
         <div class="useBox-txt">
-          <span class="useBox-txt-main">{{ trip.describe }}</span><br />
+          <span class="useBox-txt-main">{{ trip.description }}</span
+          ><br />
           <span class="useBox-txt-sub">
-            <template v-if="trip.daysUntilTrip > 0">
-              {{ trip.country }} · D-{{ trip.daysUntilTrip }}
+            <template v-if="trip.tripStatus === 0">
+              {{ trip.tripCountry }} · D-{{
+                calculateDaysUntilTrip(trip.startPeriod)
+              }}
             </template>
             <template v-else>
               {{ formatPeriod(trip.startPeriod, trip.endPeriod) }}
@@ -53,80 +72,136 @@
           </span>
         </div>
         <div class="useBox-detail">
-          <img src="../assets/userBox-left.png" />
+          <img src="@/assets/userBox-left.png" />
         </div>
       </div>
     </div>
-  
   </div>
 </template>
 
 <script setup>
-import axios from 'axios';
+import axios from '@/api/axios'; // Axios 인스턴스
 import Header from '@/components/Header.vue';
 import InfoBox from '@/components/InfoBox.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const totalTrips = ref(0);
 const ongoingTrips = ref(0);
 const upcomingTrips = ref(0);
 const completedTrips = ref(0);
-const trips = ref([]);
-const selectedCategory = ref('전체');
+const trips = ref([]); // 모든 여행 데이터
+const selectedCategory = ref('전체'); // 현재 선택된 카테고리
 const router = useRouter();
+const authStore = useAuthStore(); // 인증 스토어 사용
 
+// 날짜 포맷팅 함수
 const formatPeriod = (start, end) => {
   const formatDate = (date) => {
     const [year, month, day] = date.split('-');
     return `${year.slice(2)}.${month}.${day}`;
   };
-  const startDate = formatDate(start);
-  const endDate = formatDate(end);
-  return `${startDate} ~ ${endDate}`;
+  return `${formatDate(start)} ~ ${formatDate(end)}`;
 };
 
-const selectCategory = (category) => {
+// 여행 시작까지 남은 날짜 계산
+const calculateDaysUntilTrip = (startDate) => {
+  const today = new Date();
+  const start = new Date(startDate);
+  const diff = Math.ceil((start - today) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : 0;
+};
+
+// 현재 선택된 카테고리를 설정
+const selectCategory = async (category) => {
   selectedCategory.value = category;
+  await fetchTripsByCategory(); // 선택된 카테고리에 따라 API 호출
 };
 
+// 선택된 카테고리에 따라 필터링된 여행 데이터를 반환
 const filteredTrips = computed(() => {
-  if (selectedCategory.value === '전체') {
-    return trips.value;
-  }
-  return trips.value.filter(trip => trip.travelComplete === selectedCategory.value);
+  if (selectedCategory.value === '전체') return trips.value;
+  return trips.value.filter((trip) => {
+    if (selectedCategory.value === '다가오는 여행')
+      return trip.tripStatus === 0;
+    if (selectedCategory.value === '여행 중') return trip.tripStatus === 1;
+    if (selectedCategory.value === '완료') return trip.tripStatus === 2;
+    return false;
+  });
 });
 
+// 여행 상세 페이지로 이동
 const goToAccountCalendar = (tripId) => {
   router.push({ name: 'Tokyo_calendar', params: { tripId } });
 };
 
+// 여행이 활성화 상태인지 확인
 const isFaded = (trip) => {
   const currentDate = new Date();
   const startPeriod = new Date(trip.startPeriod);
   const endPeriod = new Date(trip.endPeriod);
-  return trip.daysUntilTrip === 0 && !(currentDate >= startPeriod && currentDate <= endPeriod);
+  return !(currentDate >= startPeriod && currentDate <= endPeriod);
 };
 
-onMounted(async () => {
+// 모든 여행 데이터를 가져오는 API 호출
+const fetchAllTrips = async () => {
   try {
-    const response = await fetch('/db.json'); // JSON 파일 경로 확인
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    const userTrips = data.users[0].trips;
-
-    trips.value = userTrips;
-    totalTrips.value = userTrips.length;
-    ongoingTrips.value = userTrips.filter(trip => trip.travelComplete === '여행 중').length;
-    upcomingTrips.value = userTrips.filter(trip => trip.travelComplete === '다가오는 여행').length;
-    completedTrips.value = userTrips.filter(trip => trip.travelComplete === '완료').length;
+    const response = await axios.get('/trip/all', {
+      headers: { Authorization: `Bearer ${authStore.token}` }, // Authorization 헤더 추가
+    });
+    trips.value = response.data; // 여행 데이터 저장
+    totalTrips.value = trips.value.length;
+    ongoingTrips.value = trips.value.filter(
+      (trip) => trip.tripStatus === 1
+    ).length;
+    upcomingTrips.value = trips.value.filter(
+      (trip) => trip.tripStatus === 0
+    ).length;
+    completedTrips.value = trips.value.filter(
+      (trip) => trip.tripStatus === 2
+    ).length;
   } catch (error) {
-    console.error('Error fetching data: ', error);
+    console.error('Failed to fetch trips:', error);
   }
+};
+
+// 선택된 카테고리의 여행 데이터를 가져오는 API 호출
+const fetchTripsByCategory = async () => {
+  if (selectedCategory.value === '전체') {
+    await fetchAllTrips(); // "전체"를 선택하면 모든 데이터를 가져옴
+    return;
+  }
+
+  let status = null;
+  if (selectedCategory.value === '다가오는 여행') status = 0;
+  if (selectedCategory.value === '여행 중') status = 1;
+  if (selectedCategory.value === '완료') status = 2;
+
+  try {
+    const response = await axios.get('/trip/status', {
+      params: { status },
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    });
+    trips.value = response.data; // 선택된 카테고리의 여행 데이터 저장
+  } catch (error) {
+    console.error('Failed to fetch trips by category:', error);
+  }
+};
+
+// 컴포넌트 로드 시 초기 데이터 가져오기
+onMounted(async () => {
+  if (!authStore.token) {
+    router.push('/login'); // 토큰이 없으면 로그인 페이지로 리다이렉트
+    return;
+  }
+  await fetchAllTrips(); // 전체 여행 데이터 가져오기
 });
 </script>
+
+<style scoped>
+/* 기존 스타일 유지 */
+</style>
 
 <style scoped>
 .faded {
@@ -170,7 +245,7 @@ onMounted(async () => {
 .infoBox {
   position: absolute;
   height: 476px;
-  bottom: 0; 
+  bottom: 0;
   width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
   margin: 0;
   background: linear-gradient(
@@ -212,21 +287,21 @@ onMounted(async () => {
 }
 
 .tripCategory {
-  height: 94px; 
+  height: 94px;
   padding: 0 34px;
-  gap: 15px; 
+  gap: 15px;
   display: flex; /* 가로 정렬을 위해 flex로 설정 */
   align-items: center; /* 텍스트를 수직 가운데 정렬 */
-  background: #F5F6F7; 
+  background: #f5f6f7;
   border-radius: 57px;
   font-size: 40px;
   font-weight: 500;
-  color: #8892A0; 
+  color: #8892a0;
 }
 
 .tripCategory:hover {
-  background-color: #616B79; 
-  color: #FFFFFF !important;
+  background-color: #616b79;
+  color: #ffffff !important;
   transition-duration: 0.5s;
 }
 
@@ -241,16 +316,16 @@ onMounted(async () => {
 .tripCategoryCount {
   font-weight: 500;
   word-wrap: break-word;
-  color: inherit; 
+  color: inherit;
 }
 
 .tripCategoryCount {
-  font-size: 40px; 
+  font-size: 40px;
 }
 
 .selected {
-  background-color: #616B79; 
-  color: #FFFFFF !important; 
+  background-color: #616b79;
+  color: #ffffff !important;
 }
 
 /* 카테고리 css end*/
@@ -298,13 +373,12 @@ onMounted(async () => {
   height: 144px;
   object-fit: cover;
   margin-right: 27px; /* 이미지 오른쪽 여백 조정 */
-  margin-left: 48px; /* 왼쪽 여백 추가 */    
+  margin-left: 48px; /* 왼쪽 여백 추가 */
 }
-
 
 .useBox-detail {
   flex-grow: 0;
-  padding-right: 3em
+  padding-right: 3em;
 }
 
 .useBox-detail img {
@@ -312,7 +386,6 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  
 }
 
 .useBox-txt-main {

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class ExchangeRate {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeRateId;
 
     @Column(nullable = false)

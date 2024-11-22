@@ -28,12 +28,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = resolveToken(request);
 
-        // JWT 토큰이 유효한지 확인
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            Long userId = jwtTokenProvider.getUserIdFromJWT(token);
+            Long userId = jwtTokenProvider.getUserIdFromJWT(token); // userId 추출
 
-            // 유효한 토큰일 경우 사용자 정보 로드 후 SecurityContext에 인증 설정
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId.toString());
+            UserDetails userDetails = customUserDetailsService.loadUserByUserId(userId); // userId 기반 호출
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -43,6 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 
     // Request 헤더에서 JWT 토큰을 추출하는 메서드
     private String resolveToken(HttpServletRequest request) {
