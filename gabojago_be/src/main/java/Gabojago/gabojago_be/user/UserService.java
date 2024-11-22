@@ -29,7 +29,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserByLoginId(String userLoginId) {
+    public Optional<User> getUserByUserId(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    public Optional<User> getUserByUserLoginId(String userLoginId) {
         return userRepository.findByUserLoginId(userLoginId);
     }
 

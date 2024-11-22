@@ -12,15 +12,37 @@ import java.sql.Date;
 @Setter
 public class Trip {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tripId;
+
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
     private Date startPeriod;
+
+    @Column(nullable = false)
     private Date endPeriod;
+
+    @Column(nullable = false)
     private Integer tripPurpose;
+
+    @Column
     private String description;
+
+    @Column(nullable = false)
     private Integer headCount;
+
+    @Column(nullable = false)
     private Integer tripBudget;
+
+    @Column(nullable = false)
     private String tripCountry;
-    private Integer tripExchangeBudget; // 환율 반영한 후 소수점 제거하고 값 저장할 예정
+
+    @Column
+    private Integer tripExchangeBudget; // 환율 반영 값
+
+    @Column(nullable = false)
+    private Integer tripStatus; // 0: 다가오는 여행, 1: 여행 중, 2: 완료
 }
+
