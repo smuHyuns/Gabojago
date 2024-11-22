@@ -7,17 +7,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class ExchangeRate {
+public class ExchangeRateTemp {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeRateId;
 
-    @Column(nullable = false)
+    @Column
     private String country;
 
-    @Column(nullable = false)
+    @Column
     private String currency;
 
-    @Column(nullable = false)
+    @Column
     private Double rate;
 }
