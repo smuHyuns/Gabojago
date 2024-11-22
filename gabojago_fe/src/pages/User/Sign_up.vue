@@ -15,7 +15,7 @@
         <span class="header-title">회원가입</span>
       </header>
 
-      <form @submit.prevent class="form">
+      <form @submit.prevent="submitForm" class="form">
         <!-- 이름 -->
         <div class="form-group">
           <label for="name" class="label">이름</label>
@@ -23,7 +23,7 @@
             id="name"
             class="input"
             type="text"
-            v-model="User.name"
+            v-model="User.userUsername"
             placeholder="이름을 입력하세요"
             required
           />
@@ -58,11 +58,11 @@
             class="input"
             id="password"
             type="password"
-            v-model="User.password"
+            v-model="User.userPassword"
             placeholder="비밀번호를 입력하세요"
             required
           />
-          <p class="notification" v-if="passwordError && User.password">
+          <p class="notification" v-if="passwordError && User.userPassword">
             비밀번호는 영문, 숫자, 특수문자를 포함한 8자 이상이어야 합니다.
           </p>
         </div>
@@ -90,20 +90,20 @@
             class="input"
             id="nickname"
             type="text"
-            v-model="User.nickname"
+            v-model="User.userNickname"
             placeholder="닉네임을 입력해주세요"
             @input="nicknameDupCheckAPI"
             required
           />
           <p
             class="notification"
-            v-if="nicknameDupCheckResult && User.nickname"
+            v-if="nicknameDupCheckResult && User.userNickname"
           >
             이미 사용 중인 닉네임입니다.
           </p>
           <p
             class="notification success"
-            v-if="nicknameDupCheckOk && User.nickname"
+            v-if="nicknameDupCheckOk && User.userNickname"
           >
             사용 가능한 닉네임입니다.
           </p>
@@ -116,13 +116,13 @@
             class="input"
             id="email"
             type="text"
-            v-model="User.email"
+            v-model="User.userEmail"
             placeholder="이메일을 입력해주세요"
             @input="validateEmail"
             @change="emailDupCheckAPI"
             required
           />
-          <p class="notification" v-if="emailError && User.email">
+          <p class="notification" v-if="emailError && User.userEmail">
             이메일 형식에 맞게 입력해주세요.
           </p>
           <p
@@ -144,12 +144,12 @@
           <label class="label">성별</label>
           <div class="radio-group">
             <label class="radio">
-              <input type="radio" v-model="User.gender" :value="false" />
-              남성
+              <input type="radio" v-model="User.userGender" :value="false" />
+              여성
             </label>
             <label class="radio">
-              <input type="radio" v-model="User.gender" :value="true" />
-              여성
+              <input type="radio" v-model="User.userGender" :value="true" />
+              남성
             </label>
           </div>
         </div>
@@ -161,19 +161,21 @@
             class="input"
             id="birth"
             type="text"
-            v-model="User.birth"
+            v-model="User.userBirth"
             placeholder="YYYY-MM-DD"
             @input="validateBirthInput"
             required
           />
-          <p class="notification" v-if="birthError && User.birth">
+          <p class="notification" v-if="birthError && User.userBirth">
             올바른 형식(YYYY-MM-DD)으로 입력해주세요.
           </p>
         </div>
 
         <!-- 가입하기 버튼 -->
         <div class="form-group">
-          <button class="submit-button">가입하기</button>
+          <button class="submit-button" @click.prevent="submitForm">
+            가입하기
+          </button>
         </div>
       </form>
     </div>
@@ -183,18 +185,20 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
+const BASEURL = 'http://localhost:8080';
 
+// User 객체를 RequestSignUpDto에 맞게 정의
 const User = reactive({
-  name: '',
-  nickname: '',
+  userNickname: '',
+  userPassword: '',
   userLoginId: '',
-  password: '',
-  email: '',
-  gender: '',
-  birth: '',
-  userLoginType: 'general',
+  userUsername: '',
+  userEmail: '',
+  userGender: null, // true = 여성, false = 남성
+  userBirth: '',
 });
 
 const checkPassword = ref('');
@@ -212,43 +216,72 @@ const goBack = () => {
   router.push('./login');
 };
 
+// 비밀번호 일치 확인
 const pwdChecking = computed(() => {
   return (
-    User.password !== checkPassword.value && checkPassword.value.length > 0
+    User.userPassword !== checkPassword.value && checkPassword.value.length > 0
   );
 });
 
+// 비밀번호 검증
 const validatePassword = () => {
   const pattern =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  passwordError.value = !pattern.test(User.password);
+  passwordError.value = !pattern.test(User.userPassword);
 };
 
+// 이메일 검증
 const validateEmail = () => {
   const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  emailError.value = !pattern.test(User.email);
+  emailError.value = !pattern.test(User.userEmail);
 };
 
+// 생년월일 검증
 const validateBirthInput = () => {
   const pattern = /^\d{4}-\d{2}-\d{2}$/;
-  birthError.value = !pattern.test(User.birth);
+  birthError.value = !pattern.test(User.userBirth);
 };
 
-const isFormValid = computed(() => {
-  return (
-    User.name &&
-    User.userLoginId &&
-    validatePassword() &&
-    User.password &&
-    checkPassword.value &&
-    User.nickname &&
-    User.email &&
-    !emailError.value &&
-    User.gender !== '' &&
-    User.birth &&
-    !birthError.value
-  );
-});
+// 회원가입 요청
+const submitForm = async () => {
+  try {
+    // 입력값 검증
+    validatePassword();
+    validateEmail();
+    validateBirthInput();
+
+    if (
+      passwordError.value ||
+      emailError.value ||
+      birthError.value ||
+      pwdChecking.value
+    ) {
+      alert('입력값을 확인해주세요.');
+      return;
+    }
+
+    // 서버로 데이터 전송
+    const response = await axios.post(`${BASEURL}/user/sign-up`, {
+      user_nickname: User.userNickname,
+      user_password: User.userPassword,
+      user_login_id: User.userLoginId,
+      user_username: User.userUsername,
+      user_email: User.userEmail,
+      user_gender: User.userGender ? 1 : 0,
+      user_birth: User.userBirth,
+    });
+
+    console.log(response);
+
+    if (response.status === 200) {
+      alert('회원가입이 완료되었습니다!');
+      router.push('/login'); // 성공 시 로그인 페이지로 이동
+    }
+  } catch (error) {
+    console.error(error);
+    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+  }
+};
 </script>
 
 <style scoped>

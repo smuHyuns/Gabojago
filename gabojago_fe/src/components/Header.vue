@@ -1,6 +1,10 @@
 <template>
   <div class="header">
-    <img class="logoBox" src="../assets/logo.png" @click="navigateToHyunsoo" />
+    <img
+      class="logoBox"
+      src="../assets/logo.png"
+      @click="navigateToDashboard"
+    />
     <div class="icon-container">
       <img
         class="infoIcon"
@@ -20,8 +24,8 @@ const navigateToIsu = () => {
   router.push('/isu');
 };
 
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
+const navigateToDashboard = () => {
+  router.push('/dashboard');
 };
 </script>
 <style scoped>

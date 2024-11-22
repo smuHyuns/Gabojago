@@ -2,7 +2,7 @@
   <div class="BlueBox">
     <Header class="header" style="z-index: 9999;" />
     <div class="imgContainer">
-      <img src="../assets/비행기토끼.png" class="rabbitImg" />
+      <img src="@/assets/비행기토끼.png" class="rabbitImg" />
     </div>
     <InfoBox
       class="infoBox"
