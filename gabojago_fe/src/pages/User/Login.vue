@@ -19,7 +19,7 @@
         <input
           type="password"
           class="input"
-          v-model="loginUser.password"
+          v-model="loginUser.userPassword"
           placeholder="비밀번호를 입력하세요"
           id="password"
         />
@@ -27,9 +27,7 @@
 
       <div class="button-group">
         <button class="button" @click="GoSignUp">회원가입</button>
-        <button class="button" :disabled="disableSubmit" @click="login">
-          로그인
-        </button>
+        <button class="button" @click="handleLogin">로그인</button>
       </div>
 
       <div class="link-group">
@@ -42,15 +40,36 @@
 
 <script setup>
 import { useRouter } from 'vue-router'; // useRouter 훅 가져오기
+import { login } from '@/services/AuthService'; // AuthService의 login 함수 가져오기
 
 const router = useRouter(); // useRouter 훅 사용
 const loginUser = {
   userLoginId: '',
-  password: '',
+  userPassword: '',
 };
 
+// 로그인 버튼 클릭 핸들러
+const handleLogin = async () => {
+  try {
+    await login(loginUser); // AuthService의 login 함수 호출
+  } catch (error) {
+    console.error('로그인 처리 중 오류 발생:', error);
+  }
+};
+
+// 회원가입 페이지로 이동
 const GoSignUp = () => {
-  router.push('./sign-up');
+  router.push('/sign-up');
+};
+
+// 아이디 찾기 페이지로 이동
+const GoFindId = () => {
+  router.push('/find-id');
+};
+
+// 비밀번호 찾기 페이지로 이동
+const GoFindPwd = () => {
+  router.push('/find-password');
 };
 </script>
 

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
 import Isu from '@/pages/Isu.vue';
-import Hyunsoo from '@/pages/Hyunsoo.vue';
+import DashBoard from '@/pages/Dashboard/dashboard.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
 import TravelName from '@/pages/TravelName.vue';
@@ -12,13 +12,13 @@ import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
 import DeletePage from '@/pages/DeletePage.vue';
-import Start from '@/pages/home/Start.vue';
+import Start from '@/pages/User/Start.vue';
 import Tokyo_calendar from '@/pages/Tokyo_calendar.vue';
 import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
 import Siwan_test_full from '@/pages/Siwan_test_full.vue';
 import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
-import Login from '@/pages/home/Login.vue';
-import Sign_up from '@/pages/home/Sign_up.vue';
+import Login from '@/pages/User/Login.vue';
+import Sign_up from '@/pages/User/Sign_up.vue';
 
 const routes = [
   {
@@ -37,9 +37,9 @@ const routes = [
     component: Isu,
   },
   {
-    path: '/hyunsoo',
-    name: 'hyunsoo',
-    component: Hyunsoo,
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashBoard,
   },
   {
     path: '/gun',
