@@ -1,7 +1,9 @@
 package Gabojago.gabojago_be.user;
 
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
+import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
+import Gabojago.gabojago_be.file.S3FileServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,10 @@ public class UserUtilService {
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
 
+    @Value("${default.profile.img.src : https://gabojago.s3.ap-northeast-2.amazonaws.com/%EB%8C%95%EB%8C%95%EC%93%B0.jpg}")
+    private String defaultProfileImageSrc;
+    private final S3FileServiceImpl s3FileService;
+
     public Date stringToDate(String date) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -28,7 +34,7 @@ public class UserUtilService {
         }
     }
 
-    public User setUser(RequestSignUpDto dto){
+    public User setUser(RequestSignUpDto dto) {
         User user = new User();
         String password = dto.getUserPassword();
         String encodedPassword = passwordEncoder.encode(password);
@@ -41,5 +47,26 @@ public class UserUtilService {
         user.setUserBirth(stringToDate(dto.getUserBirth()));
         user.setUserGender(dto.getUserGender());
         return user;
+    }
+
+    public ResponseProfileDto setProfileDto(User user) {
+        ResponseProfileDto response = new ResponseProfileDto();
+        response.setUserPassword(user.getUserPassword());
+        response.setUserNickname(user.getUserNickname());
+
+        if (user.getUserProfileImg().equals("none")) {
+            String imgUrl = defaultProfileImageSrc;
+            response.setUserProfileImg(imgUrl);
+        } else {
+            response.setUserProfileImg(user.getUserProfileImg());
+        }
+
+        response.setUserEmail(user.getUserEmail());
+        response.setUserUsername(user.getUserUsername());
+        return response;
+    }
+
+    public void deleteExistingProfileImg(String existingImg) {
+        s3FileService.delete(existingImg);
     }
 }

@@ -1,11 +1,16 @@
 package Gabojago.gabojago_be.user;
 
 import Gabojago.gabojago_be.dto.request.RequestLoginDto;
+import Gabojago.gabojago_be.dto.request.RequestProfileDto;
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
+import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
 import Gabojago.gabojago_be.exception.InvalidCredentialsException;
+import Gabojago.gabojago_be.file.S3FileServiceImpl;
 import Gabojago.gabojago_be.jwt.JwtTokenProvider;
+import Gabojago.gabojago_be.jwt.JwtUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +26,7 @@ public class UserService {
     private final UserUtilService userUtilService;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
@@ -65,4 +71,41 @@ public class UserService {
         return response;
     }
 
+    public ResponseProfileDto getProfile(String token) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+        User user = userRepository.findById(userId).orElseThrow();
+        ResponseProfileDto response = userUtilService.setProfileDto(user);
+        return response;
+    }
+
+    @Transactional
+    public void updateUser(String token, RequestProfileDto dto) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 발견되지 않았습니다."));
+
+        //패스워드 암호화 후 업데이트
+        String password = dto.getUserPassword();
+        password = passwordEncoder.encode(password);
+
+        if(dto.isImgChanged()){
+            userUtilService.deleteExistingProfileImg(user.getUserProfileImg());
+        }
+        user.setUserProfileImg(dto.getUserProfileImg());
+
+        user.setUserPassword(password);
+        user.setUserNickname(dto.getUserNickname());
+    }
+
+    public boolean checkUserProfileImg(String token, String userProfileImg) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+        User user = userRepository.findById(userId).orElseThrow();
+        return user.getUserProfileImg().equals(userProfileImg);
+    }
+
+    public String getUserProfileImg(String token) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+        User user = userRepository.findById(userId).orElseThrow();
+        return user.getUserProfileImg();
+    }
 }

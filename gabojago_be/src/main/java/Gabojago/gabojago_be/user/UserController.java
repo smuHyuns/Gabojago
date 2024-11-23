@@ -1,8 +1,11 @@
 package Gabojago.gabojago_be.user;
 
 import Gabojago.gabojago_be.dto.request.RequestLoginDto;
+import Gabojago.gabojago_be.dto.request.RequestProfileCheckDto;
+import Gabojago.gabojago_be.dto.request.RequestProfileDto;
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
+import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
 import Gabojago.gabojago_be.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +36,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginDto> login(@RequestBody RequestLoginDto dto) {
-        try{
+        try {
             ResponseLoginDto response = userService.login(dto);
             return ResponseEntity.ok(response);
-        }catch(InvalidCredentialsException e){
+        } catch (InvalidCredentialsException e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
@@ -67,4 +70,36 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ResponseProfileDto> getProfile(@RequestHeader("Authorization") String token) {
+        try {
+            return ResponseEntity.ok(userService.getProfile(token));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity updateProfile(@RequestHeader("Authorization") String token, @RequestBody RequestProfileDto request) {
+        try {
+            userService.updateUser(token, request);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+//    @PostMapping("/check-profileImg")
+//    public ResponseEntity<Boolean> checkProfileImg(@RequestHeader("Authorization") String token, @RequestBody RequestProfileCheckDto request) {
+//        try {
+//            boolean isDifferent = userService.checkUserProfileImg(token, request.getUserProfileImg());
+//            return ResponseEntity.ok(isDifferent);
+//        } catch (Exception e) {
+//            log.info(e.getMessage());
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
 }

@@ -1,5 +1,6 @@
-package com.kdt.firststep.file;
+package Gabojago.gabojago_be.file;
 
+import Gabojago.gabojago_be.dto.response.UploadResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,16 +22,15 @@ public class FileController {
             return ResponseEntity.ok(s3FileService.upload(file));
         } catch (Exception e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
-                    body(new UploadResponseDto(null, "업로드 실패"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteFile(@RequestParam("fileName") String fileName) {
+    public ResponseEntity<String> deleteFile(@RequestParam("fileUrl") String fileUrl) {
         try {
             // S3에서 파일 삭제
-            s3FileService.delete(fileName);
+            s3FileService.delete(fileUrl);
             return ResponseEntity.ok("파일 삭제 성공");
         } catch (Exception e) {
             log.info(e.getMessage());

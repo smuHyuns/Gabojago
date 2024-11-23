@@ -1,4 +1,4 @@
-package com.kdt.firststep.config;
+package Gabojago.gabojago_be.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3Config {
-    @Value("${cloud.aws.credentials.accessKey}")
+    @Value("${s3.accessKey}")
     private String accessKey;
-    @Value("${cloud.aws.credentials.secret-key}")
+    @Value("${s3.secretKey}")
     private String secretKey;
-    @Value("${cloud.aws.region.static}")
+    @Value("${s3.region}")
     private String region;
 
     @Bean
