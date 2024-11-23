@@ -55,7 +55,7 @@ watch(
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 30px;
+  margin: 20px;
 }
 
 .header-input {
@@ -69,17 +69,16 @@ watch(
   font-family: Pretendard;
   font-style: normal;
   font-weight: 600;
-  font-size: 52px;
+  font-size: 45px;
   line-height: 1;
   text-align: left;
   color: #353b43;
-  margin-right: 10px;
-  width: 90px;
+  width: 150px;
   height: 52px;
 }
 
 .inputBox {
-  width: 737px;
+  width: 680px;
   height: 138px;
   background: #f5f6f7;
   border-radius: 28.8px;

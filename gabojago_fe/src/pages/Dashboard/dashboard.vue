@@ -141,7 +141,9 @@ const isFaded = (trip) => {
   const currentDate = new Date();
   const startPeriod = new Date(trip.startPeriod);
   const endPeriod = new Date(trip.endPeriod);
-  return !(currentDate >= startPeriod && currentDate <= endPeriod);
+  if (currentDate >= startPeriod && currentDate <= endPeriod) return false;
+  if (currentDate <= startPeriod && currentDate <= startPeriod) return false;
+  return true;
 };
 
 // 모든 여행 데이터를 가져오는 API 호출
