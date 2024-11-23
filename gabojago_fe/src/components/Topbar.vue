@@ -4,7 +4,7 @@
       <img
         class="icon"
         src="../assets/chevron-right.png"
-        @click="navigateToHyunsoo"
+        @click="navigateToDashboard"
       />
       <div class="title">{{ titleText }}</div>
     </div>
@@ -22,9 +22,8 @@ const props = defineProps({
 });
 
 const router = useRouter();
-
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
+const navigateToDashboard = () => {
+  router.push('/dashboard');
 };
 </script>
 

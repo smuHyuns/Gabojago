@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
-import Isu from '@/pages/Isu.vue';
+import Profile from '@/pages/Dashboard/Profile.vue';
 import DashBoard from '@/pages/Dashboard/dashboard.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
@@ -32,9 +32,9 @@ const routes = [
     component: Login,
   },
   {
-    path: '/isu',
-    name: 'isu',
-    component: Isu,
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
   },
   {
     path: '/dashboard',

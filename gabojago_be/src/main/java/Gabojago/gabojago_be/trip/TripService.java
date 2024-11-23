@@ -21,7 +21,7 @@ public class TripService {
     public List<ResponseTripDto> getTrips(String token) {
         try {
             Long userId = jwtUtil.extractUserIdFromToken(token);
-            List<Trip> trips = tripRepository.findByUserId(userId);
+            List<Trip> trips = tripRepository.findByUserIdOrderByStartPeriodAscEndPeriodAsc(userId);
 
             return trips.stream()
                     .map(trip -> new ResponseTripDto(
@@ -42,7 +42,7 @@ public class TripService {
     public List<ResponseTripDto> getTripsByStatus(String token, Integer status) {
         try {
             Long userId = jwtUtil.extractUserIdFromToken(token);
-            List<Trip> trips = tripRepository.findByUserId(userId);
+            List<Trip> trips = tripRepository.findByTripStatusAndUserIdOrderByStartPeriodAscEndPeriodAsc(status, userId);
             return trips.stream()
                     .map(trip -> new ResponseTripDto(
                             trip.getTripId(),

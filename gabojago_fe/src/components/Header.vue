@@ -9,7 +9,7 @@
       <img
         class="infoIcon"
         src="../assets/userInfoIcon.png"
-        @click="navigateToIsu"
+        @click="navigateToProfile"
       />
     </div>
   </div>
@@ -17,13 +17,10 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
-
-const navigateToIsu = () => {
-  router.push('/isu');
+const navigateToProfile = () => {
+  router.push('/profile');
 };
-
 const navigateToDashboard = () => {
   router.push('/dashboard');
 };
