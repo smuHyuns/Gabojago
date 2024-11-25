@@ -1,5 +1,8 @@
 package Gabojago.gabojago_be.trip;
 
+import Gabojago.gabojago_be.dto.request.RequestTripDetailDayDto;
+import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
+import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDto;
 import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.jwt.JwtUtil;
@@ -8,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -36,6 +40,7 @@ public class TripController {
     public ResponseEntity<List<ResponseTripDto>> getUserTrips(@RequestHeader("Authorization") String token) {
         try {
             List<ResponseTripDto> response = tripService.getTrips(token);
+            log.info(response.toString());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -53,4 +58,33 @@ public class TripController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+//    @PostMapping("/trip-detail")
+//    public ResponseEntity<ResponseTripDetailDayDto> getTripDetailByDay(@RequestHeader("Authorization") String token,
+//                                                                       @RequestParam Long tripId, @RequestParam Date tripDate) {
+//        try {
+//            ResponseTripDetailDayDto response = tripService.getTripExAndRes(token, new RequestTripDetailDayDto(tripId, tripDate));
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            log.info(e.getMessage());
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
+    @GetMapping("/detail-all/{tripId}")
+    public ResponseEntity<ResponseTripDetailEntireDto> getTripDetailEntire(@RequestHeader("Authorization") String token,
+                                                                           @PathVariable("tripId") Long tripId) {
+        log.info("trip-detail-all 환영");
+        log.info("token : {}", token);
+        log.info("tripId : {}", tripId);
+
+        try {
+            ResponseTripDetailEntireDto response = tripService.getEntireTripDetail(token, tripId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

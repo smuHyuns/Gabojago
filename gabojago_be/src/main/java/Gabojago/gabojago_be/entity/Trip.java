@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
-
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,5 +44,7 @@ public class Trip {
 
     @Column(nullable = false)
     private Integer tripStatus; // 0: 다가오는 여행, 1: 여행 중, 2: 완료
-}
 
+    @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER)
+    private List<Transaction> transactions;
+}
