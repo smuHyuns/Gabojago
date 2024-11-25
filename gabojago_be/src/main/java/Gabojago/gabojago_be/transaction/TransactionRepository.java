@@ -1,4 +1,7 @@
 package Gabojago.gabojago_be.transaction;
 
-public interface TransactionRepository {
+import Gabojago.gabojago_be.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 }
