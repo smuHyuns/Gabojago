@@ -1,14 +1,23 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" @click="navigateToHyunsoo" />
+      <img
+        class="icon"
+        src="../assets/chevron-right.png"
+        @click="navigateToDashBoard"
+      />
       <div class="title">{{ titleText }}</div>
       <!-- <button class="Changeicon">
         <img src="../assets/리포트2.png" alt="Icon" class="icon2" @click="navigateToFullCalendar" />
       </button> -->
     </div>
     <button class="changeIcon">
-      <img src="../assets/리포트2.png" alt="Icon" class="icon2" @click="navigateToFullCalendar" />
+      <img
+        src="../assets/리포트2.png"
+        alt="Icon"
+        class="icon2"
+        @click="navigateToFullCalendar"
+      />
     </button>
   </div>
 </template>
@@ -29,8 +38,8 @@ const props = defineProps({
 
 const router = useRouter();
 
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
+const navigateToDashBoard = () => {
+  router.push('/dashboard');
 };
 
 const navigateToFullCalendar = () => {
@@ -68,6 +77,7 @@ const navigateToFullCalendar = () => {
   height: 75px;
   object-fit: contain;
   overflow: visible;
+  cursor: pointer;
 }
 
 .title {

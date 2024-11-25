@@ -26,6 +26,7 @@
             empty: date.empty,
             highlight: highlightDates.includes(date.key),
             today: date.key === todayKey,
+            selected: date.key === selectedDateKey,
           },
         ]"
         @click="dateClick(date)"
@@ -38,35 +39,25 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 
 const props = defineProps({
-  startPeriod: {
-    type: String,
-    required: true,
-  },
-  endPeriod: {
-    type: String,
-    required: true,
-  },
-  tripId: {
-    type: Number,
-    required: true,
-  },
+  startPeriod: { type: String, required: true },
+  endPeriod: { type: String, required: true },
+  tripId: { type: Number, required: true },
 });
 
-const router = useRouter();
+const emit = defineEmits(['date-click']); // 부모에게 날짜 전달
+
 const today = new Date();
 const currentMonth = ref(today.getMonth());
 const currentYear = ref(today.getFullYear());
-const todayKey = `date-${today.getDate()}`;
+const todayKey = ref(`date-${today.getDate()}`); // 오늘 날짜
+const selectedDateKey = ref(null); // 선택된 날짜의 키
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-
 const currentMonthYear = computed(
   () => `${currentYear.value}년 ${currentMonth.value + 1}월`
 );
-
 const calendarDates = ref([]);
 const highlightDates = ref([]);
 
@@ -90,7 +81,12 @@ function renderCalendar() {
   }
 
   calendarDates.value = dates;
-  updateHighlightDates();
+
+  // 오늘 날짜가 현재 달에 해당하는지 확인
+  const isCurrentMonth =
+    today.getFullYear() === currentYear.value &&
+    today.getMonth() === currentMonth.value;
+  todayKey.value = isCurrentMonth ? `date-${today.getDate()}` : null;
 }
 
 function prevMonth() {
@@ -111,56 +107,16 @@ function nextMonth() {
   renderCalendar();
 }
 
-function updateHighlightDates() {
-  const startDate = new Date(props.startPeriod);
-  const endDate = new Date(props.endPeriod);
-
-  highlightDates.value = [];
-
-  if (
-    (startDate.getFullYear() === currentYear.value &&
-      startDate.getMonth() === currentMonth.value) ||
-    (endDate.getFullYear() === currentYear.value &&
-      endDate.getMonth() === currentMonth.value) ||
-    (startDate < new Date(currentYear.value, currentMonth.value + 1, 0) &&
-      endDate > new Date(currentYear.value, currentMonth.value, 1))
-  ) {
-    const startHighlight =
-      startDate.getFullYear() === currentYear.value &&
-      startDate.getMonth() === currentMonth.value
-        ? startDate.getDate()
-        : 1;
-    const endHighlight =
-      endDate.getFullYear() === currentYear.value &&
-      endDate.getMonth() === currentMonth.value
-        ? endDate.getDate()
-        : new Date(currentYear.value, currentMonth.value + 1, 0).getDate();
-
-    for (let i = startHighlight; i <= endHighlight; i++) {
-      highlightDates.value.push(`date-${i}`);
-    }
-  }
-}
-
 function dateClick(date) {
   if (!date.empty) {
+    selectedDateKey.value = date.key; // 선택된 날짜 업데이트
     const selectedDate = new Date(
       currentYear.value,
       currentMonth.value,
       date.value
     );
-    selectedDate.setHours(12); // 타임존 문제를 해결하기 위해 시간 설정
-    console.log('Navigating to siwan_test with params:', {
-      date: selectedDate.toISOString().split('T')[0],
-      tripId: props.tripId,
-    });
-    router.push({
-      name: 'siwan_test',
-      params: {
-        date: selectedDate.toISOString().split('T')[0],
-        tripId: props.tripId,
-      },
-    });
+    console.log(selectedDate.toISOString().split('T')[0]);
+    emit('date-click', selectedDate.toISOString().split('T')[0]); // 부모로 날짜 전달
   }
 }
 
@@ -250,6 +206,7 @@ watch([currentMonth, currentYear], renderCalendar);
 .date:hover,
 .date.selected {
   background: #5d8bff;
+  color: whitesmoke;
   border-radius: 288px;
 }
 

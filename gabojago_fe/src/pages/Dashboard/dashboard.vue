@@ -131,9 +131,12 @@ const filteredTrips = computed(() => {
   });
 });
 
-// 여행 상세 페이지로 이동
 const goToAccountCalendar = (tripId) => {
-  router.push({ name: 'Tokyo_calendar', params: { tripId } });
+  if (!tripId) {
+    console.error('Invalid tripId:', tripId);
+    return;
+  }
+  router.push({ name: 'Trip_Detail', params: { tripId } });
 };
 
 // 여행이 활성화 상태인지 확인

@@ -13,7 +13,7 @@ import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
 import DeletePage from '@/pages/DeletePage.vue';
 import Start from '@/pages/User/Start.vue';
-import Tokyo_calendar from '@/pages/Tokyo_calendar.vue';
+import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
 import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
 import Siwan_test_full from '@/pages/Siwan_test_full.vue';
 import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
@@ -99,16 +99,16 @@ const routes = [
     component: Start,
   },
   {
-    path: '/accountCalendar',
-    name: 'Tokyo_calendar',
-    component: Tokyo_calendar,
+    path: '/detail/:tripId',
+    name: 'Trip_Detail',
+    component: Trip_Detail,
   },
-  {
-    path: '/accountCalendar/:tripId',
-    name: 'Tokyo_calendar',
-    component: Tokyo_calendar,
-    props: true,
-  },
+  // {
+  //   path: '/accountCalendar/:tripId',
+  //   name: 'Tokyo_calendar',
+  //   component: Tokyo_calendar,
+  //   props: true,
+  // },
   {
     path: '/addPaymentFromDate',
     name: 'AddPaymentFromDate',
