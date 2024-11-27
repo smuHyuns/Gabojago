@@ -2,13 +2,13 @@
   <div class="calendar-container">
     <div class="calendar-header">
       <img
-        src="../assets/chevron-right.png"
+        src="@/assets/chevron-right.png"
         @click="prevMonth"
         class="left-btn"
       />
       <h2>{{ currentMonthYear }}</h2>
       <img
-        src="../assets/chevron-left.png"
+        src="@/assets/chevron-left.png"
         @click="nextMonth"
         class="right-btn"
       />
@@ -115,7 +115,7 @@ function dateClick(date) {
       currentMonth.value,
       date.value
     );
-    console.log(selectedDate.toISOString().split('T')[0]);
+    // console.log(selectedDate.toISOString().split('T')[0]);
     emit('date-click', selectedDate.toISOString().split('T')[0]); // 부모로 날짜 전달
   }
 }

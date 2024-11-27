@@ -4,6 +4,8 @@
     <div v-if="isDataLoaded">
       <TopbarWithIcon
         :titleText="trip.describe || '여행 정보 없음'"
+        :tripId="trip.id"
+        :selectedDate="selectedDate"
         class="topbar"
       />
       <div class="calendar-box">
@@ -39,14 +41,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import TopbarWithIcon from '@/components/TopbarWithIcon.vue';
-import Calendar from '@/components/Calendar.vue';
+import TopbarWithIcon from '@/components/Trip/TopbarWithIcon.vue';
+import Calendar from '@/components/Trip/Calendar.vue';
 import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 
 // API Base URL
-const BASEURL = 'http://localhost:8080/trip';
+const BASEURL = 'http://localhost:8080';
 
 // 라우터 정보 및 인증 스토어
 const route = useRoute();
@@ -55,7 +57,7 @@ const authStore = useAuthStore();
 // 여행 정보 초기값
 const trip = ref({
   id: null,
-  describe: 'Loading...', // 기본 설명 설정
+  describe: ref(null), // 기본 설명 설정
   startPeriod: '0000-00-00', // 기본 날짜 설정
   endPeriod: '0000-00-00', // 기본 날짜 설정
   usedBudget: 0,
@@ -89,11 +91,9 @@ const fetchTripInfo = async () => {
   console.log(authStore.token);
 
   try {
+    console.log(route.params.tripId);
     const response = await axios.get(
-      `${BASEURL}/detail-all/${route.params.tripId}`,
-      {
-        headers: { Authorization: `Bearer ${authStore.token}` },
-      }
+      `${BASEURL}/trip/test/${route.params.tripId}`
     );
 
     console.log('초기 여행정보 불러오기');
@@ -105,8 +105,8 @@ const fetchTripInfo = async () => {
         describe: response.data.description || '여행 설명이 없습니다',
         startPeriod: response.data.startPeriod || '',
         endPeriod: response.data.endPeriod || '',
-        usedBudget: response.data.expense || 0,
-        remainingBudget: response.data.balance || 0,
+        usedBudget: response.data.totalExpense || 0,
+        remainingBudget: response.data.tripBudget || 0,
       });
       isDataLoaded.value = true;
     }
@@ -115,27 +115,43 @@ const fetchTripInfo = async () => {
   }
 };
 
-// // 특정 날짜의 지출 데이터를 가져오는 함수
-// const fetchTripExpense = async (date) => {
-//   try {
-//     const response = await axios.post(
-//       `${BASEURL}/trip-detail`,
-//       { tripId: route.params.tripId, tripDate: date },
-//       { headers: { Authorization: `Bearer ${authStore.token}` } }
-//     );
-//     if (response.data) {
-//       trip.value.usedBudget = response.data.expense || 0;
-//       trip.value.remainingBudget = response.data.balance || 0;
-//     }
-//   } catch (error) {
-//     console.error('날짜별 데이터 불러오기 실패:', error);
-//   }
-// };
+const fetchTripExpense = async (date) => {
+  try {
+    // 날짜를 yyyy-MM-dd 형식으로 변환 (타임존 영향 제거)
+    const formattedDate = `${new Date(date).getFullYear()}-${String(
+      new Date(date).getMonth() + 1
+    ).padStart(2, '0')}-${String(new Date(date).getDate() + 1).padStart(
+      2,
+      '0'
+    )}`;
+    selectedDate.value = formattedDate;
+    console.log('선택한 날짜:', formattedDate);
+
+    const response = await axios.get(`${BASEURL}/transaction/detail-day`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+      params: {
+        tripId: route.params.tripId,
+        tripDate: formattedDate,
+      },
+    });
+
+    if (response.data) {
+      Object.assign(trip.value, {
+        usedBudget: response.data.totalExpense || 0,
+      });
+    }
+  } catch (error) {
+    console.log(
+      '선택 날짜 정보 불러오기 실패 : ',
+      error.response?.data || error.message
+    );
+  }
+};
 
 // 날짜 클릭 이벤트 핸들러
 const handleDateClick = async (date) => {
   selectedDate.value = date;
-  console.log('선택된 날짜:', date);
+  await fetchTripExpense(date);
 };
 
 // 컴포넌트 로드 시 여행 정보 가져오기

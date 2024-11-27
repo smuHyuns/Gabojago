@@ -36,7 +36,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import TopbarWithIcontokyo from '@/components/TopbarWithIcon-tokyo.vue';
+import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon-tokyo.vue';
 import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
 import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 

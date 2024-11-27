@@ -3,7 +3,7 @@
     <div class="imgbox">
       <img
         class="icon"
-        src="../assets/chevron-right.png"
+        src="@/assets/chevron-right.png"
         @click="navigateToDashBoard"
       />
       <div class="title">{{ titleText }}</div>
@@ -13,7 +13,7 @@
     </div>
     <button class="changeIcon">
       <img
-        src="../assets/리포트2.png"
+        src="@/assets/리포트2.png"
         alt="Icon"
         class="icon2"
         @click="navigateToFullCalendar"
@@ -24,32 +24,38 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
+// Props 정의
 const props = defineProps({
   titleText: {
     type: String,
     required: true,
   },
-  tripId: {
-    type: Number,
-    required: true,
-  },
+  selectedDate: { type: String, required: false }, // Props 추가
+  tripId: { type: Number, required: true },
 });
 
+// 라우터 설정
 const router = useRouter();
 
 const navigateToDashBoard = () => {
-  router.push('/dashboard');
+  router.push('/dashboard'); // 대시보드로 이동
 };
 
 const navigateToFullCalendar = () => {
+  if (!props.selectedDate) {
+    console.error('선택된 날짜가 없습니다.');
+    return;
+  }
+
   router.push({
-    name: 'siwan_test_full',
-    query: { tripId: props.tripId },
+    name: 'Detail_transaction',
+    params: { tripId: props.tripId }, // 여행 ID 전달
+    query: { date: props.selectedDate }, // 선택된 날짜 전달
   });
 };
 </script>
-
 <style scoped>
 .topbarBox {
   width: 100%;

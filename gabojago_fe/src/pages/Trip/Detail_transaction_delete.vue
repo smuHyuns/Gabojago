@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Siwan_test_full_delete
+    <TopbarWithIcontokyo
       :titleText="trip?.describe || '지출 내역'"
       :tripId="tripId"
       class="topbar"
@@ -8,13 +8,14 @@
     <div class="print-box">
       <div v-for="(expenses, date) in groupedExpenses" :key="date">
         <div class="date">{{ date }}</div>
-        <div v-for="expense in expenses" :key="expense.description">
-          <HistoryListItemNoCheck
-            :list="expense.description"
-            :number="expense.amount"
-            :number2="expense.convertedAmount"
-            :img="getCategoryImage(expense.category)"
-            :type="expense.type"
+        <div v-for="expense in expenses" :key="expense.id">
+          <DeleteButtonSiwan
+            :countryName="expense.description"
+            :flagSrc="getCategoryImage(expense.category)"
+            :isSelected="selectedExpenses.includes(expense.id)"
+            :number="expense.convertedAmount"
+            :number2="expense.amount"
+            @update:isSelected="updateSelectedExpenses(expense.id)"
           />
         </div>
       </div>
@@ -30,8 +31,8 @@
     </div>
     <CtaBarBlackSiwan
       class="ctabarblacksiwan"
-      inputname="추가하기"
-      @click="navigateToAddPayment"
+      inputname="삭제하기"
+      @click="deleteSelectedExpenses"
     />
   </div>
 </template>
@@ -40,16 +41,18 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import Siwan_test_full_delete from '@/components/TopbarWithIcon-deleteFull.vue';
-import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
+import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon-tokyo.vue';
+import DeleteButtonSiwan from '@/components/DeleteButton-siwan.vue';
 import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 
 const route = useRoute();
 const router = useRouter();
-const selectedDate = route.params.date; // route.params.date로 selectedDate를 가져옵니다.
-const tripId = route.params.tripId; // route.params.tripId로 tripId를 가져옵니다.
+const selectedDate = route.params.date;
+const tripId = route.params.tripId;
+const userId = '08ac';
 const trip = ref(null);
 const filteredExpenses = ref([]);
+const selectedExpenses = ref([]);
 const usedBudget = ref(0);
 
 const sortedExpenses = computed(() => {
@@ -58,10 +61,9 @@ const sortedExpenses = computed(() => {
   );
 });
 
-// selectedDate 기준으로 groupedExpenses를 계산합니다.
 const groupedExpenses = computed(() => {
   return sortedExpenses.value.reduce((groups, expense) => {
-    const date = expense.date.split('T')[0]; // date 값을 'YYYY-MM-DD' 형식으로 사용
+    const date = expense.date.split('T')[0];
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -72,14 +74,13 @@ const groupedExpenses = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:3000/users/08ac');
+    const response = await axios.get(`http://localhost:3000/users/${userId}`);
     const user = response.data;
     const userTrips = user.trips;
-    console.log('Trip ID:', tripId); // tripId가 올바르게 전달되는지 확인
-    trip.value = userTrips.find((trip) => trip.id == tripId); // tripId를 문자열로 비교합니다.
+    console.log('Trip ID:', tripId);
+    trip.value = userTrips.find((trip) => trip.id == tripId);
     if (trip.value) {
-      console.log('Trip found:', trip.value); // trip이 제대로 찾아졌는지 확인
-      // 모든 expenses를 날짜별로 정렬하여 filteredExpenses에 저장합니다.
+      console.log('Trip found:', trip.value);
       filteredExpenses.value = trip.value.expenses.sort(
         (a, b) => new Date(a.date) - new Date(b.date)
       );
@@ -87,28 +88,48 @@ onMounted(async () => {
       usedBudget.value = trip.value.expenses
         .filter((expense) => expense.type === '지출')
         .reduce((sum, expense) => sum + (expense.convertedAmount || 0), 0);
-
-      trip.value.usedBudget = usedBudget.value;
-      trip.value.remainingBudget =
-        trip.value.totalBudget - trip.value.usedBudget;
-
-      await axios.put(`http://localhost:3000/users/08ac`, user);
     } else {
-      console.error('Trip not found with ID:', tripId); // tripId에 해당하는 여행이 없을 때 오류 메시지 출력
+      console.error('Trip not found with ID:', tripId);
     }
   } catch (error) {
     console.error('Failed to fetch or update data:', error);
   }
 });
 
-function navigateToAddPayment() {
-  router.push({
-    name: 'AddPaymentFromDate',
-    query: {
-      tripId,
-      selectedDate,
-    },
-  });
+function updateSelectedExpenses(expenseId) {
+  if (selectedExpenses.value.includes(expenseId)) {
+    selectedExpenses.value = selectedExpenses.value.filter(
+      (id) => id !== expenseId
+    );
+  } else {
+    selectedExpenses.value.push(expenseId);
+  }
+}
+
+async function deleteSelectedExpenses() {
+  try {
+    const user = (await axios.get(`http://localhost:3000/users/${userId}`))
+      .data;
+    const tripToUpdate = user.trips.find((t) => t.id === parseInt(tripId));
+
+    if (tripToUpdate) {
+      const updatedExpenses = tripToUpdate.expenses.filter(
+        (expense) => !selectedExpenses.value.includes(expense.id)
+      );
+      tripToUpdate.expenses = updatedExpenses;
+
+      await axios.put(`http://localhost:3000/users/${userId}`, user);
+
+      alert('선택된 지출 내역이 삭제되었습니다.');
+      filteredExpenses.value = updatedExpenses;
+      selectedExpenses.value = [];
+    } else {
+      console.error('Trip not found for updating expenses');
+    }
+  } catch (error) {
+    console.error('Error deleting expenses:', error);
+    alert('지출 내역 삭제 중 오류가 발생했습니다.');
+  }
 }
 
 function formatAmount(amount) {

@@ -4,7 +4,7 @@
       <img
         class="history-img"
         :src="img"
-        alt="Selected Icon"
+        :alt="list || 'No image available'"
         :style="{
           filter:
             type === '추가'
@@ -32,15 +32,14 @@
 <script setup>
 import { defineProps } from 'vue';
 
+// Props 정의
 const props = defineProps({
-  list: String,
-  number: Number,
-  number2: Number,
-  img: String,
-  type: String,
+  list: { type: String, required: true },
+  number: { type: Number, required: true },
+  number2: { type: Number, required: true },
+  img: { type: String, required: true }, // 이미지 경로를 전달받음
+  type: { type: String, default: '지출' },
 });
-
-console.log(props.type); // type이 올바르게 전달되는지 확인하는 디버그 로그
 </script>
 
 <style scoped>
@@ -86,10 +85,11 @@ console.log(props.type); // type이 올바르게 전달되는지 확인하는 �
 }
 
 .history-money-won.income {
-  color: var(--blue-300);
+  color: var(--blue-300); /* 수입 금액 색상 */
 }
 
 .history-money-won.expense {
+  color: var(--red-300); /* 지출 금액 색상 */
 }
 
 .history-money-local {
