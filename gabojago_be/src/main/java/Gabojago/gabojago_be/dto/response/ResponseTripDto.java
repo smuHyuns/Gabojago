@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,8 +15,8 @@ import java.sql.Date;
 public class ResponseTripDto {
     private Long tripId;
     private String tripCountry;
-    private Date startPeriod;
-    private Date endPeriod;
+    private LocalDate startPeriod;
+    private LocalDate endPeriod;
     private Integer tripStatus;
     private String description;
 }

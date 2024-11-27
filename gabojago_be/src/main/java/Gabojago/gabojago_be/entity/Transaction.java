@@ -1,26 +1,43 @@
 package Gabojago.gabojago_be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "transaction")
 public class Transaction {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
     private Long transactionId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip; // Trip 엔터티와 연관 관계 설정
+    @JsonIgnore
+    private Trip trip;
 
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
+
+    @Column(name = "expense_type", nullable = false)
     private Integer expenseType;
-    private Date expenseDate;
+
+    @Column(name = "expense_date", nullable = false)
+    private LocalDate expenseDate;
+
+    @Column(name = "expense_amount", nullable = false)
     private Integer expenseAmount;
+
+    @Column(name = "exchange_amount")
     private Integer exchangeAmount;
 }

@@ -44,7 +44,7 @@ public class UserUtilService {
         user.setUserProfileImg(defaultProfileImage);
         user.setUserEmail(dto.getUserEmail());
         user.setUserUsername(dto.getUserUsername());
-        user.setUserBirth(stringToDate(dto.getUserBirth()));
+        user.setUserBirth(LocalDate.parse(dto.getUserBirth()));
         user.setUserGender(dto.getUserGender());
         return user;
     }
