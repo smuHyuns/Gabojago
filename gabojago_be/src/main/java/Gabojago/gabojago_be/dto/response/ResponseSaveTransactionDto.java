@@ -5,18 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseTripDto {
+public class ResponseSaveTransactionDto {
+    private Long transactionId;
     private Long tripId;
-    private String tripCountry;
-    private LocalDate startPeriod;
-    private LocalDate endPeriod;
-    private Integer tripStatus;
-    private String description;
+    private Long userId;
+    private Integer expenseType;
+    private LocalDate expenseDate;
+    private Integer expenseAmount;
+    private Integer exchangeAmount;
 }

@@ -87,4 +87,9 @@ public class TripController {
         }
     }
 
+    @GetMapping("/test/{tripId}")
+    public ResponseEntity<ResponseTripDetailEntireDto> doTest(@PathVariable ("tripId") Long tripId){
+        return ResponseEntity.ok(tripService.test(tripId));
+    }
+
 }

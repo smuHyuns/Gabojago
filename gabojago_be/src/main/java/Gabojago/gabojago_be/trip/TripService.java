@@ -1,35 +1,41 @@
 package Gabojago.gabojago_be.trip;
 
-import Gabojago.gabojago_be.dto.request.RequestTripDetailDayDto;
-import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDto;
+import Gabojago.gabojago_be.entity.Transaction;
 import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.transaction.TransactionRepository;
+import Gabojago.gabojago_be.transaction.TransactionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class TripService {
+
     private final TripRepository tripRepository;
-    private final TransactionRepository transactionRepository;
+    private final TransactionService transactionService;
     private final JwtUtil jwtUtil;
+
 
     public List<ResponseTripDto> getTrips(String token) {
         try {
             Long userId = jwtUtil.extractUserIdFromToken(token);
-            List<Trip> trips = tripRepository.findByUserIdOrderByStartPeriodAscEndPeriodAsc(userId);
+            List<Trip> trips = tripRepository.findByUserUserIdOrderByStartPeriodAscEndPeriodAsc(userId);
 
             return trips.stream()
                     .map(trip -> new ResponseTripDto(
@@ -50,7 +56,7 @@ public class TripService {
     public List<ResponseTripDto> getTripsByStatus(String token, Integer status) {
         try {
             Long userId = jwtUtil.extractUserIdFromToken(token);
-            List<Trip> trips = tripRepository.findByTripStatusAndUserIdOrderByStartPeriodAscEndPeriodAsc(status, userId);
+            List<Trip> trips = tripRepository.findByTripStatusAndUserUserIdOrderByStartPeriodAscEndPeriodAsc(status, userId);
             return trips.stream()
                     .map(trip -> new ResponseTripDto(
                             trip.getTripId(),
@@ -67,43 +73,37 @@ public class TripService {
         }
     }
 
-//    public ResponseTripDetailDayDto getTripExAndRes(String token, RequestTripDetailDayDto request) {
-//        try {
-//            Long userId = jwtUtil.extractUserIdFromToken(token);
-//            Object result = tripRepository.findBudgetAndExpenses(request.getTripId(), request.getTripDate());
-//            if (result != null) {
-//                Object[] data = (Object[]) result;
-//                return new ResponseTripDetailDayDto(
-//                        String.valueOf(data[0]), // Description
-//                        data[1] != null ? (Integer) data[1] : 0, // Expense
-//                        data[2] != null ? (Integer) data[2] : 0  // Balance
-//                );
-//            }
-//            return new ResponseTripDetailDayDto("No data", 0, 0);
-//        } catch (Exception e) {
-//            log.error("유효하지 않은 토큰 혹은 요청입니다 : {}", e.getMessage());
-//            throw new RuntimeException("Error processing trip detail request");
-//        }
-//    }
-
-
+    @Transactional
     public ResponseTripDetailEntireDto getEntireTripDetail(String token, Long tripId) {
-        Long userId = jwtUtil.extractUserIdFromToken(token);
-
-        Trip trip = tripRepository.findById(tripId).orElse(null);
-        //Integer totalExpense = tripRepository.findTotalExpenseByTripId(tripId);
-
-        ResponseTripDetailEntireDto responseTripDetailDayDto = new ResponseTripDetailEntireDto(
-                trip.getDescription(),
-                trip.getStartPeriod(),
-                trip.getEndPeriod(),
-                30000,
-                trip.getTripBudget()
-        );
-
-        log.info(responseTripDetailDayDto.toString());
-        return responseTripDetailDayDto;
+        //Long userId = jwtUtil.extractUserIdFromToken(token);
+        //logger.info("userId = {}", userId);
+        log.info("tripId = {}", tripId);
+        return test(tripId);
     }
+
+    @Transactional
+    public ResponseTripDetailEntireDto test(Long tripId) {
+        ResponseTripDetailEntireDto dto = new ResponseTripDetailEntireDto();
+        Long totalExpense = Optional.ofNullable(transactionService.getSum(tripId)).orElse(0L);
+
+        Trip t = tripRepository.findById(tripId)
+                .orElseThrow(() -> new IllegalArgumentException("Trip not found with ID: " + tripId));
+
+        dto.setTripBudget(Long.valueOf(Optional.ofNullable(t.getTripBudget()).orElse(0)));
+        dto.setDescription(t.getDescription());
+        dto.setStartPeriod(t.getStartPeriod());
+        dto.setEndPeriod(t.getEndPeriod());
+        dto.setTotalExpense(totalExpense);
+
+        log.info("Trip Budget = {}", dto.getTripBudget());
+        log.info("Description = {}", dto.getDescription());
+        log.info("Start Period = {}", dto.getStartPeriod());
+        log.info("End Period = {}", dto.getEndPeriod());
+        log.info("Total Expense = {}", dto.getTotalExpense());
+
+        return dto;
+    }
+
 
 
 }

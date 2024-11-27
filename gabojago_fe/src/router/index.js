@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
 import Profile from '@/pages/Dashboard/Profile.vue';
-import DashBoard from '@/pages/Dashboard/dashboard.vue';
 import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
 import TravelName from '@/pages/TravelName.vue';
@@ -15,10 +14,11 @@ import DeletePage from '@/pages/DeletePage.vue';
 import Start from '@/pages/User/Start.vue';
 import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
 import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
-import Siwan_test_full from '@/pages/Siwan_test_full.vue';
-import Siwan_test_full_delete from '@/pages/Siwan_test_full_delete.vue';
+import DetailTransactionPage from '@/pages/Trip/Detail_transaction.vue';
+import DetailTransaction_delete_Page from '@/pages/Trip/Detail_transaction_delete.vue';
 import Login from '@/pages/User/Login.vue';
 import Sign_up from '@/pages/User/Sign_up.vue';
+import Dashboard from '@/pages/Dashboard/Dashboard.vue';
 
 const routes = [
   {
@@ -39,7 +39,7 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: DashBoard,
+    component: Dashboard,
   },
   {
     path: '/gun',
@@ -115,15 +115,18 @@ const routes = [
     component: AddPaymentFromDate,
   },
   {
-    path: '/siwan_test_full/:tripId',
-    name: 'siwan_test_full',
-    component: Siwan_test_full,
-    props: true,
+    path: '/detail-transaction/:tripId',
+    name: 'Detail_transaction',
+    component: DetailTransactionPage,
+    props: (route) => ({
+      tripId: Number(route.params.tripId), // 여행 ID
+      selectedDate: route.query.date, // 선택된 날짜
+    }),
   },
   {
-    path: '/siwan_test_full_delete/:tripId',
-    name: 'siwan_test_full_delete',
-    component: Siwan_test_full_delete,
+    path: '/detail-transaction/:tripId',
+    name: 'detail_transaction_delete',
+    component: DetailTransaction_delete_Page,
     props: true,
   },
 ];

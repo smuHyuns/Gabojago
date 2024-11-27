@@ -1,11 +1,11 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
+      <img class="icon" src="@/assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
     </div>
     <button class="changeIcon" @click="navigateToDeletePage">
-      <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
+      <img src="@/assets/휴지통.png" alt="Icon" class="icon2" />
     </button>
   </div>
   <div></div>

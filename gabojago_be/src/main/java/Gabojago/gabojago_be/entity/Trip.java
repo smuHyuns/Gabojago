@@ -1,50 +1,57 @@
 package Gabojago.gabojago_be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "trip")
 public class Trip {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "trip_id")
     private Long tripId;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(nullable = false)
-    private Date startPeriod;
+    @Column(name = "start_period", nullable = false)
+    private LocalDate startPeriod;
 
-    @Column(nullable = false)
-    private Date endPeriod;
+    @Column(name = "end_period", nullable = false)
+    private LocalDate endPeriod;
 
-    @Column(nullable = false)
+    @Column(name = "trip_purpose", nullable = false)
     private Integer tripPurpose;
 
-    @Column
+    @Column(name = "description")
     private String description;
 
-    @Column(nullable = false)
-    private Integer headCount;
-
-    @Column(nullable = false)
+    @Column(name = "trip_budget", nullable = false)
     private Integer tripBudget;
 
-    @Column(nullable = false)
+    @Column(name = "trip_country")
     private String tripCountry;
 
-    @Column
-    private Integer tripExchangeBudget; // 환율 반영 값
+    @Column(name = "trip_exchange_budget")
+    private Integer tripExchangeBudget;
 
-    @Column(nullable = false)
-    private Integer tripStatus; // 0: 다가오는 여행, 1: 여행 중, 2: 완료
+    @Column(name = "headcount", nullable = false)
+    private Integer headcount;
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER)
+    @Column(name = "trip_status")
+    private Integer tripStatus;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Transaction> transactions;
+
 }

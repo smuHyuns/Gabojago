@@ -30,7 +30,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import TopbarWithIconTokyo from '@/components/TopbarWithIcon-tokyo.vue';
+import TopbarWithIconTokyo from '@/components/Trip/TopbarWithIcon-tokyo.vue';
 import DeleteButtonSiwan from '@/components/DeleteButton-siwan.vue';
 import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
 

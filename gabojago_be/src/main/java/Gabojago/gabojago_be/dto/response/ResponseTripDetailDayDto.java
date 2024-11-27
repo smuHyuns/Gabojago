@@ -10,7 +10,5 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseTripDetailDayDto {
-    private String description;
-    private Integer expense;
-    private Integer balance;
+    private Long totalExpense;
 }
