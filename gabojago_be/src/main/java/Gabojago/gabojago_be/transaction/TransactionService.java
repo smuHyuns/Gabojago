@@ -1,5 +1,6 @@
 package Gabojago.gabojago_be.transaction;
 
+import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.entity.Transaction;
@@ -11,7 +12,11 @@ import Gabojago.gabojago_be.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -69,4 +74,28 @@ public class TransactionService {
         System.out.println("transactions 크기 : " + transactions.size());
         return transactions;
     }
+
+
+    @Transactional
+    public void deleteTransaction(String token, RequestTransactionDeleteDto request) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+
+        long[] transactionIds = request.getTransactionIds();
+        long tripId = request.getTripId();
+
+        // 트립 조회
+        Trip trip = tripRepository.findById(tripId).orElseThrow(() ->
+                new IllegalArgumentException("해당 여행이 존재하지 않습니다: " + tripId));
+
+        for (long transactionId : transactionIds) {
+            Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() ->
+                    new IllegalArgumentException("없는 트랜잭션 아이디입니다: " + transactionId));
+            trip.setTripBudget(trip.getTripBudget() + transaction.getExpenseAmount());
+            // 트랜잭션 삭제
+            transactionRepository.deleteById(transactionId);
+        }
+
+        tripRepository.save(trip);
+    }
+
 }
