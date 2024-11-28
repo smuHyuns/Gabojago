@@ -4,14 +4,20 @@
     <div class="calendar-box">
       <Cal @dateSelected="handleDateSelected" />
     </div>
-    <CtaBar class="ctabar" inputname="다음으로" :on="isblack" @click="navigateToMember" :style="{ cursor: isblack ? 'pointer' : 'auto' }" />
+    <CtaBar
+      class="ctabar"
+      inputname="다음으로"
+      :on="isblack"
+      @click="navigateToMember"
+      :style="{ cursor: isblack ? 'pointer' : 'auto' }"
+    />
   </div>
 </template>
 
 <script setup>
-import Topbar from '@/components/Topbar.vue';
-import Cal from '@/components/Cal.vue';
-import CtaBar from '@/components/CtaBar.vue';
+import Topbar from '@/components/compo/Topbar.vue';
+import Cal from '@/components/compo/Cal.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 
@@ -20,7 +26,9 @@ const route = useRoute();
 
 const selectedDates = ref([]);
 const isblack = ref(false);
-const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
 
 const handleDateSelected = (dates) => {
   isblack.value = dates.length > 0;

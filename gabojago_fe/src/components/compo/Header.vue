@@ -1,14 +1,10 @@
 <template>
   <div class="header">
-    <img
-      class="logoBox"
-      src="../assets/logo.png"
-      @click="navigateToDashboard"
-    />
+    <img class="logoBox" src="@/assets/logo.png" @click="navigateToDashboard" />
     <div class="icon-container">
       <img
         class="infoIcon"
-        src="../assets/userInfoIcon.png"
+        src="@/assets/userInfoIcon.png"
         @click="navigateToProfile"
       />
     </div>

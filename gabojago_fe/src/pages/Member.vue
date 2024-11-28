@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/Topbar.vue';
-import MemberAdd from '@/components/MemberAdd.vue';
+import Topbar from '@/components/compo/Topbar.vue';
+import MemberAdd from '@/components/compo/MemberAdd.vue';
 // import CtaBar from '@/components/CtaBar.vue';
-import CtaBarBlack from '@/components/CtaBarBlack.vue';
+import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
 
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
@@ -23,8 +23,12 @@ import { ref } from 'vue';
 const router = useRouter();
 const route = useRoute();
 
-const selectedCountries = ref(route.query.countries ? route.query.countries.split(',') : []);
-const selectedDates = ref(route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []);
+const selectedCountries = ref(
+  route.query.countries ? route.query.countries.split(',') : []
+);
+const selectedDates = ref(
+  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
+);
 const memberCount = ref(0);
 
 const updateMemberCount = (count) => {

@@ -6,7 +6,7 @@ import Siwan from '@/pages/Siwan.vue';
 import TravelName from '@/pages/TravelName.vue';
 import AddPayment from '@/pages/AddPayment.vue';
 import Calendar from '@/pages/Calendar.vue';
-import Modal from '@/components/Modal.vue';
+import Modal from '@/components/compo/Modal.vue';
 import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
@@ -125,9 +125,12 @@ const routes = [
   },
   {
     path: '/detail-transaction/:tripId',
-    name: 'detail_transaction_delete',
+    name: 'Detail_transaction_delete',
     component: DetailTransaction_delete_Page,
-    props: true,
+    props: (route) => ({
+      tripId: Number(route.params.tripId), // 여행 ID
+      selectedDate: route.query.date, // 선택된 날짜
+    }),
   },
 ];
 

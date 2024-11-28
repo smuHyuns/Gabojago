@@ -1,7 +1,7 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/xsign.png" @click="navigateToHyunsoo" />
+      <img class="icon" src="@/assets/xsign.png" @click="navigateToHyunsoo" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>

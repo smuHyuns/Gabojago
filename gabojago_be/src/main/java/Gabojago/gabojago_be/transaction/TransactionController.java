@@ -1,8 +1,10 @@
 package Gabojago.gabojago_be.transaction;
 
+import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.entity.Transaction;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,19 @@ public class TransactionController {
             return ResponseEntity.ok(transactionService.getTripDetailTransaction(token, tripId, tripDate));
         } catch (Exception e) {
             log.info("날짜별 거래 가져오기 에러 발생 : {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    //거래내역 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteTransaction(@RequestHeader("Authorization") String token,
+                                            @RequestBody RequestTransactionDeleteDto request) {
+        try{
+            transactionService.deleteTransaction(token, request);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            log.info("거래 삭제 에러 발생 : {}", e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

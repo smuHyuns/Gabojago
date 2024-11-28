@@ -92,4 +92,6 @@ public class TripController {
         return ResponseEntity.ok(tripService.test(tripId));
     }
 
+
+
 }

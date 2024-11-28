@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import CtaBar from '@/components/CtaBar.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
 import { ref } from 'vue';
 CtaBar;
 </script>

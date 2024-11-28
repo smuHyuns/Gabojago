@@ -3,7 +3,7 @@
     <div class="history-img-box">
       <img class="history-icon" v-bind:src="flagSrc" alt="Selected Icon" />
     </div>
-    <div class="histroy-list">{{ countryName }}</div>
+    <div class="histroy-list">{{ description }}</div>
     <div class="history-money">
       <div class="history-money-won">{{ number }}원</div>
       <div class="history-money-local">{{ number2 }}JPY</div>
@@ -12,7 +12,7 @@
       <img
         class="history-check-icon"
         :class="{ visible: isSelected, selected: isSelected }"
-        src="../assets/check-circle.png"
+        src="@/assets/check-circle.png"
         alt="Selected Icon"
       />
     </div>
@@ -24,7 +24,7 @@ import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
   isSelected: Boolean,
-  countryName: String,
+  description: String,
   number: Number,
   number2: Number,
   flagSrc: String,

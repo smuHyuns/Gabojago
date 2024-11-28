@@ -81,8 +81,8 @@
 
 <script setup>
 import axios from '@/api/axios'; // Axios 인스턴스
-import Header from '@/components/Header.vue';
-import InfoBox from '@/components/InfoBox.vue';
+import Header from '@/components/compo/Header.vue';
+import InfoBox from '@/components/compo/InfoBox.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';

@@ -25,7 +25,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import CtaBar from '@/components/CtaBar.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
 
 const isblack = ref(false);
 let inputname = ref('');

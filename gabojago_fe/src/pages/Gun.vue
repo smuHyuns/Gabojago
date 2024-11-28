@@ -44,10 +44,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import TopbarXSign from '@/components/TopbarXSign.vue';
-import CountrySearch from '@/components/CountrySearch.vue';
-import CountryButton from '@/components/CountryButton.vue';
-import CtaBar from '@/components/CtaBar.vue';
+import TopbarXSign from '@/components/compo/TopbarXSign.vue';
+import CountrySearch from '@/components/compo/CountrySearch.vue';
+import CountryButton from '@/components/compo/CountryButton.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
 
 const searchQuery = ref('');
 const selectedCategory = ref('전체');

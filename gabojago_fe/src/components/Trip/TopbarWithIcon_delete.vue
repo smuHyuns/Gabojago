@@ -37,10 +37,12 @@ function goBack() {
 
 function navigateToDeletePage() {
   router.push({
-    name: 'deletepage',
+    name: 'Detail_transaction_delete',
     params: {
       tripId: props.tripId,
-      date: props.selectedDate,
+    },
+    query: {
+      date: props.selectedDate, // 선택된 날짜 전달
     },
   });
 }

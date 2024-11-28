@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon-tokyo.vue';
-import HistoryListItem from '@/components/HistoryListItem.vue';
-import CtaBarSiwan from '@/components/CtaBar-siwan.vue';
-import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon_delete.vue';
+import HistoryListItem from '@/components/compo/HistoryListItem.vue';
+import CtaBarSiwan from '@/components/compo/CtaBar-siwan.vue';
+import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
 </script>
 
 <style scoped></style>

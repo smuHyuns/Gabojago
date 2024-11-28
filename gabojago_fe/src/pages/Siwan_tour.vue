@@ -21,7 +21,7 @@
 // import TopbarXSign test from "@/components/TopbarXSign.vue";
 
 // import Tokyo from "@/components/Tokyo.vue";
-import HistoryListItem from "@/components/HistoryListItem.vue";
+import HistoryListItem from '@/components/compo/HistoryListItem.vue';
 // import DeleteButton-siwan from "@/componets/DeleteButton-siwan.vue";
 </script>
 

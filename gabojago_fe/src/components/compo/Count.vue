@@ -4,10 +4,10 @@
 
     <div class="action-bar">
       <div class="logo-container">
-        <img src="../assets/가계부.png" alt="가계부" />
+        <img src="@/assets/가계부.png" alt="가계부" />
       </div>
       <div class="logo-container">
-        <img src="../assets/리포트.png" alt="리포트" />
+        <img src="@/assets/리포트.png" alt="리포트" />
       </div>
     </div>
   </div>

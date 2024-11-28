@@ -10,7 +10,7 @@
     <img
       class="check-icon"
       :class="{ visible: isSelected }"
-      src="../assets/check-circle.png"
+      src="@/assets/check-circle.png"
       alt="Selected Icon"
     />
   </div>

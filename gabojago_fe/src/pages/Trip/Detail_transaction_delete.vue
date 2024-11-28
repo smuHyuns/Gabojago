@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <TopbarWithIcontokyo
+  <div class="viewport">
+    <TopbarWithIcon
       :titleText="trip?.describe || '지출 내역'"
       :tripId="tripId"
       class="topbar"
@@ -8,14 +8,14 @@
     <div class="print-box">
       <div v-for="(expenses, date) in groupedExpenses" :key="date">
         <div class="date">{{ date }}</div>
-        <div v-for="expense in expenses" :key="expense.id">
+        <div v-for="expense in expenses" :key="expense.transactionId">
           <DeleteButtonSiwan
-            :countryName="expense.description"
-            :flagSrc="getCategoryImage(expense.category)"
-            :isSelected="selectedExpenses.includes(expense.id)"
-            :number="expense.convertedAmount"
-            :number2="expense.amount"
-            @update:isSelected="updateSelectedExpenses(expense.id)"
+            :description="mapExpenseType(expense.expenseType)"
+            :flagSrc="getCategoryImage(expense.expenseType)"
+            :isSelected="selectedExpenses.includes(expense.transactionId)"
+            :number="expense.exchangeAmount"
+            :number2="expense.expenseAmount"
+            @update:isSelected="updateSelectedExpenses(expense.transactionId)"
           />
         </div>
       </div>
@@ -25,7 +25,7 @@
       <div class="spent-money">
         <div class="spent-money-title">사용한 금액</div>
         <div class="spent-money-amount">
-          {{ usedBudget.toLocaleString() }}원
+          {{ totalExpense.toLocaleString() }}원
         </div>
       </div>
     </div>
@@ -41,29 +41,88 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon-tokyo.vue';
-import DeleteButtonSiwan from '@/components/DeleteButton-siwan.vue';
-import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+import TopbarWithIcon from '@/components/Trip/TopbarWithIcon-deleteFull.vue';
+import DeleteButtonSiwan from '@/components/compo/DeleteButton-siwan.vue';
+import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
-const selectedDate = route.params.date;
-const tripId = route.params.tripId;
-const userId = '08ac';
-const trip = ref(null);
-const filteredExpenses = ref([]);
-const selectedExpenses = ref([]);
-const usedBudget = ref(0);
+const authStore = useAuthStore();
 
-const sortedExpenses = computed(() => {
-  return filteredExpenses.value.sort(
-    (a, b) => new Date(a.date) - new Date(b.date)
-  );
-});
+const BASEURL = 'http://localhost:8080/transaction';
+const tripId = route.params.tripId; // 여행 ID 가져오기
+const selectedDate = route.query.date; // 선택된 날짜 가져오기
 
+const expenses = ref([]); // 백엔드에서 받아온 거래 데이터 저장
+const totalExpense = ref(0);
+const selectedExpenses = ref([]); // 선택된 항목 ID 저장
+
+// 백엔드 데이터 요청
+const fetchTripExpense = async () => {
+  try {
+    const response = await axios.get(`${BASEURL}/detail-day-transaction`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+      params: {
+        tripId: tripId,
+        tripDate: selectedDate,
+      },
+    });
+    expenses.value = response.data;
+    console.log(response);
+    // 총 지출 계산
+    totalExpense.value = response.data.reduce(
+      (sum, expense) => sum + (expense.expenseAmount || 0),
+      0
+    );
+  } catch (error) {
+    console.error('정보 불러오기 실패:', error.response?.data || error.message);
+  }
+};
+
+async function deleteLog() {
+  console.log('tripId : ', tripId);
+  console.log('transactionIds : ', transactionIds.value);
+  console.log();
+}
+
+//백엔드 삭제요청
+// 선택된 지출 항목 삭제
+async function deleteSelectedExpenses() {
+  try {
+    // 선택된 항목 삭제 요청
+    await axios.delete(`${BASEURL}/delete`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+      data: {
+        tripId: tripId, // 여행 ID
+        transactionIds: selectedExpenses.value, // 선택된 transactionId 배열 전달
+      },
+    });
+
+    // 로컬 상태 업데이트: 선택된 항목 제거
+    expenses.value = expenses.value.filter(
+      (expense) => !selectedExpenses.value.includes(expense.transactionId)
+    );
+
+    // 총 지출 업데이트
+    totalExpense.value = expenses.value.reduce(
+      (sum, expense) => sum + (expense.expenseAmount || 0),
+      0
+    );
+
+    // 성공 알림 및 초기화
+    alert('선택된 지출 내역이 삭제되었습니다.');
+    selectedExpenses.value = [];
+  } catch (error) {
+    console.error('지출 삭제 실패:', error.response?.data || error.message);
+    alert('삭제 중 오류가 발생했습니다.');
+  }
+}
+
+// 날짜별로 데이터를 그룹화
 const groupedExpenses = computed(() => {
-  return sortedExpenses.value.reduce((groups, expense) => {
-    const date = expense.date.split('T')[0];
+  return expenses.value.reduce((groups, expense) => {
+    const date = expense.expenseDate;
     if (!groups[date]) {
       groups[date] = [];
     }
@@ -72,30 +131,7 @@ const groupedExpenses = computed(() => {
   }, {});
 });
 
-onMounted(async () => {
-  try {
-    const response = await axios.get(`http://localhost:3000/users/${userId}`);
-    const user = response.data;
-    const userTrips = user.trips;
-    console.log('Trip ID:', tripId);
-    trip.value = userTrips.find((trip) => trip.id == tripId);
-    if (trip.value) {
-      console.log('Trip found:', trip.value);
-      filteredExpenses.value = trip.value.expenses.sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
-      );
-
-      usedBudget.value = trip.value.expenses
-        .filter((expense) => expense.type === '지출')
-        .reduce((sum, expense) => sum + (expense.convertedAmount || 0), 0);
-    } else {
-      console.error('Trip not found with ID:', tripId);
-    }
-  } catch (error) {
-    console.error('Failed to fetch or update data:', error);
-  }
-});
-
+// 선택된 지출 항목 업데이트
 function updateSelectedExpenses(expenseId) {
   if (selectedExpenses.value.includes(expenseId)) {
     selectedExpenses.value = selectedExpenses.value.filter(
@@ -106,46 +142,42 @@ function updateSelectedExpenses(expenseId) {
   }
 }
 
-async function deleteSelectedExpenses() {
+// ExpenseType을 사용자 친화적인 이름으로 매핑
+const mapExpenseType = (type) => {
+  const expenseTypes = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
+  return expenseTypes[type] || '알 수 없음';
+};
+
+const getCategoryImage = (type) => {
+  const mappedCategory = mapExpenseType(type);
   try {
-    const user = (await axios.get(`http://localhost:3000/users/${userId}`))
-      .data;
-    const tripToUpdate = user.trips.find((t) => t.id === parseInt(tripId));
-
-    if (tripToUpdate) {
-      const updatedExpenses = tripToUpdate.expenses.filter(
-        (expense) => !selectedExpenses.value.includes(expense.id)
-      );
-      tripToUpdate.expenses = updatedExpenses;
-
-      await axios.put(`http://localhost:3000/users/${userId}`, user);
-
-      alert('선택된 지출 내역이 삭제되었습니다.');
-      filteredExpenses.value = updatedExpenses;
-      selectedExpenses.value = [];
-    } else {
-      console.error('Trip not found for updating expenses');
-    }
+    return new URL(`/src/assets/icons/${mappedCategory}.png`, import.meta.url)
+      .href;
   } catch (error) {
-    console.error('Error deleting expenses:', error);
-    alert('지출 내역 삭제 중 오류가 발생했습니다.');
+    return new URL('/src/assets/icons/기타.png', import.meta.url).href;
   }
-}
+};
 
-function formatAmount(amount) {
-  return amount ? `${amount.toLocaleString()}` : '0';
-}
-
-function getCategoryImage(category) {
-  try {
-    return new URL(`/src/assets/${category}.png`, import.meta.url).href;
-  } catch (e) {
-    return new URL(`/src/assets/default.png`, import.meta.url).href;
-  }
-}
+// 컴포넌트 로드 시 데이터 요청
+onMounted(() => {
+  fetchTripExpense();
+});
 </script>
 
 <style scoped>
+.viewport {
+  width: 1080px;
+  height: 2340px;
+  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
+  border: 1px solid black;
+}
+
 .print-box {
   height: 1600px;
   overflow-y: scroll;
