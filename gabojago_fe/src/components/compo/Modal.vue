@@ -2,7 +2,7 @@
   <div v-if="showModal" class="modal-overlay" @click="closeModal(false)">
     <div class="modal-content" @click.stop>
       <video class="modal-video" autoplay muted playsinline loop>
-        <source src="../assets/coin_spin.webm" type="video/webm" />
+        <source src="@/assets/coin_spin.webm" type="video/webm" />
         Your browser does not support the video tag.
       </video>
       <h1 class="modal-title">여행 경비를 추가해보세요</h1>

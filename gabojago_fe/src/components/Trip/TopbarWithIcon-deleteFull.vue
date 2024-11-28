@@ -1,10 +1,15 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="../assets/chevron-right.png" @click="goBack" />
+      <img class="icon" src="@/assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
-      <button class="Changeicon" @click="navigateToFullDeletePage">
-        <img src="../assets/휴지통.png" alt="Icon" class="icon2" />
+      <button class="Changeicon" @click="navigateToDetailPage">
+        <img
+          src="@/assets/휴지통.png"
+          alt="Icon"
+          class="icon2"
+          @click="goBack"
+        />
       </button>
     </div>
   </div>
@@ -24,19 +29,14 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  selectedDate: {
+    type: String,
+    required: true,
+  },
 });
 
 function goBack() {
   router.back();
-}
-
-function navigateToFullDeletePage() {
-  router.push({
-    name: 'siwan_test_full_delete',
-    params: {
-      tripId: props.tripId,
-    },
-  });
 }
 </script>
 

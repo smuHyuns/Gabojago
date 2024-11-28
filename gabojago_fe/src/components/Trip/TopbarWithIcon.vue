@@ -25,6 +25,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 
 // Props 정의
 const props = defineProps({
@@ -38,6 +39,7 @@ const props = defineProps({
 
 // 라우터 설정
 const router = useRouter();
+const authStore = useAuthStore();
 
 const navigateToDashBoard = () => {
   router.push('/dashboard'); // 대시보드로 이동

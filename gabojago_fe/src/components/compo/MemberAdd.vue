@@ -3,11 +3,11 @@
     <div class="Member-add">
       <div class="icon-container">
         <div class="icon-left" @click="decrement">
-          <img src="../assets/minus.png" alt="minus-icon" />
+          <img src="@/assets/minus.png" alt="minus-icon" />
         </div>
         <div class="value-box">{{ displayValue }}</div>
         <div class="icon-right" @click="increment">
-          <img src="../assets/plus.png" alt="plus-icon" />
+          <img src="@/assets/plus.png" alt="plus-icon" />
         </div>
       </div>
     </div>

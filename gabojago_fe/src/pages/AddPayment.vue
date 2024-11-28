@@ -610,12 +610,12 @@ function getCategoryImage(category) {
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import Topbar from '@/components/Topbar.vue';
+import Topbar from '@/components/compo/Topbar.vue';
 // import CtaBar from '@/components/CtaBar.vue';
-import CtaBarBlack from '@/components/CtaBarBlack.vue';
-import TopSelect from '@/components/TopSelect.vue';
+import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
+import TopSelect from '@/components/compo/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
-import Modal from '@/components/Modal.vue';
+import Modal from '@/components/compo/Modal.vue';
 
 const router = useRouter();
 const route = useRoute();

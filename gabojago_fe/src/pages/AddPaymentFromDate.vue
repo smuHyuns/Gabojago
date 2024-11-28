@@ -84,9 +84,9 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import Topbar from '@/components/Topbar.vue';
-import CtaBar from '@/components/CtaBar.vue';
-import TopSelect from '@/components/TopSelect.vue';
+import Topbar from '@/components/compo/Topbar.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
+import TopSelect from '@/components/compo/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();

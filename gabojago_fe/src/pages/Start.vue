@@ -16,7 +16,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import CtaBarBlack from '@/components/CtaBarBlack.vue';
+import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
 
 const router = useRouter();
 

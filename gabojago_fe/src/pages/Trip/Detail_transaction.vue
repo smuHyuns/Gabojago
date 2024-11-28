@@ -1,8 +1,9 @@
 <template>
   <div class="viewport">
-    <Siwan_test_full_delete
+    <TopbarWithIcon
       :titleText="trip?.describe || '지출 내역'"
       :tripId="tripId"
+      :selectedDate="selectedDate"
       class="topbar"
     />
     <div class="print-box">
@@ -38,9 +39,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import Siwan_test_full_delete from '@/components/TopbarWithIcon-deleteFull.vue';
-import HistoryListItemNoCheck from '@/components/HistoryListItemNoCheck.vue';
-import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+import TopbarWithIcon from '@/components/Trip/TopbarWithIcon_delete.vue';
+import HistoryListItemNoCheck from '@/components/compo/HistoryListItemNoCheck.vue';
+import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();

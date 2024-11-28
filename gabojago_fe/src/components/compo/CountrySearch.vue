@@ -3,7 +3,7 @@
     <div class="header-input">
       <div class="input-container">
         <div class="search-icon">
-          <img src="../assets/search.png" alt="Search Icon" />
+          <img src="@/assets/search.png" alt="Search Icon" />
         </div>
         <input
           class="inputBox"

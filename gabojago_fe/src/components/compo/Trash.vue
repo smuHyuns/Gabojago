@@ -1,30 +1,19 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img
-        class="icon"
-        src="../assets/chevron-right.png"
-        @click="navigateToDashboard"
-      />
+      <img class="icon" src="@/assets/chevron-right.png" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-
-const props = defineProps({
+defineProps({
   titleText: {
     type: String,
     required: true,
   },
 });
-
-const router = useRouter();
-const navigateToDashboard = () => {
-  router.push('/dashboard');
-};
 </script>
 
 <style scoped>
@@ -37,6 +26,22 @@ const navigateToDashboard = () => {
   margin-top: 127px; /* 항상 top 부분을 127px 띄움 */
 }
 
+.Changeicon {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.Changeicon .icon2 {
+  display: block;
+  position: absolute;
+  left: 0px;
+}
+
 .imgbox {
   display: flex;
   align-items: center;
@@ -47,7 +52,6 @@ const navigateToDashboard = () => {
 .icon {
   width: 69px;
   height: 69px;
-  cursor: pointer;
 }
 
 .title {

@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import CtaBarBlack from '@/components/CtaBarBlack.vue';
+import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
 </script>
 
 <style scoped>

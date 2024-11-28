@@ -18,9 +18,9 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/Topbar.vue';
-import TextInput2 from '@/components/TextInput2.vue';
-import CtaBar from '@/components/CtaBar.vue';
+import Topbar from '@/components/compo/Topbar.vue';
+import TextInput2 from '@/components/compo/TextInput2.vue';
+import CtaBar from '@/components/compo/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ref } from 'vue';
 

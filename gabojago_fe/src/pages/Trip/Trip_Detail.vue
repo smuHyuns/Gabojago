@@ -43,7 +43,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import TopbarWithIcon from '@/components/Trip/TopbarWithIcon.vue';
 import Calendar from '@/components/Trip/Calendar.vue';
-import CtaBarBlackSiwan from '@/components/CtaBarBlack-siwan.vue';
+import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 
