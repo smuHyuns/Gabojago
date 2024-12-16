@@ -1,5 +1,6 @@
 package Gabojago.gabojago_be.transaction;
 
+import Gabojago.gabojago_be.dto.request.RequestTransactionAddDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
@@ -24,6 +25,17 @@ public class TransactionController {
     public ResponseEntity<Transaction> addTransaction(@RequestBody RequestTransactionDto request) {
         try {
             Transaction transaction = transactionService.saveTransaction(request);
+            return ResponseEntity.ok(transaction);
+        } catch (Exception e) {
+            log.info("에러발생 : {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/save-from-trip")
+    public ResponseEntity<Transaction> addTransactionFromTrip(@RequestHeader("Authorization") String token, @RequestBody RequestTransactionAddDto request) {
+        try {
+            Transaction transaction = transactionService.saveTransactionFromTrip(token, request);
             return ResponseEntity.ok(transaction);
         } catch (Exception e) {
             log.info("에러발생 : {}", e.getMessage());
@@ -66,10 +78,10 @@ public class TransactionController {
     @DeleteMapping("/delete")
     public ResponseEntity deleteTransaction(@RequestHeader("Authorization") String token,
                                             @RequestBody RequestTransactionDeleteDto request) {
-        try{
+        try {
             transactionService.deleteTransaction(token, request);
             return ResponseEntity.ok().build();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info("거래 삭제 에러 발생 : {}", e.getMessage());
             return ResponseEntity.badRequest().build();
         }

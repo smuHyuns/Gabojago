@@ -5,6 +5,7 @@ import Gabojago.gabojago_be.dto.request.RequestProfileDto;
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
 import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
+import Gabojago.gabojago_be.dto.response.ResponseUserDto;
 import Gabojago.gabojago_be.entity.User;
 import Gabojago.gabojago_be.exception.InvalidCredentialsException;
 import Gabojago.gabojago_be.file.S3FileServiceImpl;
@@ -31,9 +32,15 @@ public class UserService {
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
 
+    //테스트구간
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public List<ResponseUserDto> getAllUsersWithoutTrips() {
+        return userRepository.findAllUserDto();
+    }
+    //테스트용
 
     public Optional<User> getUserByUserId(Long userId) {
         return userRepository.findById(userId);
@@ -88,7 +95,7 @@ public class UserService {
         String password = dto.getUserPassword();
         password = passwordEncoder.encode(password);
 
-        if(dto.isImgChanged()){
+        if (dto.isImgChanged()) {
             userUtilService.deleteExistingProfileImg(user.getUserProfileImg());
         }
         user.setUserProfileImg(dto.getUserProfileImg());

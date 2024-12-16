@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,10 +35,28 @@ public class ExchangeRateService {
      */
 
     @Transactional
+    public void clear() {
+        exchangeRateTempRepository.deleteAll();
+        exchangeRateRepository.deleteAll();
+    }
+
+
+    @Transactional
     public void updateExchangeRate() {
         Map<String, Object> rates = getAllExchangeRates();
 
         List<ExchangeRateTemp> tempRates = mapToExchangeRateTempEntities(rates);
+
+        for (ExchangeRateTemp tempRate : tempRates) {
+            ExchangeRateTemp existingRate = exchangeRateTempRepository.findByCountryAndCurrency(
+                    tempRate.getCountry(), tempRate.getCurrency()
+            );
+            if (existingRate != null) {
+                tempRate.setExchangeRateId(existingRate.getExchangeRateId());
+            }
+        }
+
+        // 업데이트 또는 삽입
         exchangeRateTempRepository.saveAll(tempRates);
 
         switchTables();
@@ -103,5 +122,9 @@ public class ExchangeRateService {
             e.printStackTrace();
             throw new RuntimeException("환율 API 호출 실패: " + e.getMessage());
         }
+    }
+
+    public Optional<ExchangeRate> getExchangeRateByTripId(String country) {
+        return exchangeRateRepository.findExchangeRateByCountry(country);
     }
 }

@@ -92,6 +92,8 @@ public class UserController {
         }
     }
 
+
+
 //    @PostMapping("/check-profileImg")
 //    public ResponseEntity<Boolean> checkProfileImg(@RequestHeader("Authorization") String token, @RequestBody RequestProfileCheckDto request) {
 //        try {
