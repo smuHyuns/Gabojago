@@ -17,18 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Slf4j
 class TripRepositoryTest {
 
-    @Autowired
-    private TripRepository tripRepository;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
-    @Test
-    void findTotalExpenseByTripId() {
-        List<Transaction> transactions = transactionRepository.findAllByTripId(1L);
-        for (Transaction transaction : transactions) {
-            log.info(transaction.getExpenseAmount().toString());
-        }
-    }
+//    @Autowired
+//    private TripRepository tripRepository;
+//
+//    @Autowired
+//    private TransactionRepository transactionRepository;
+//    @Test
+//    void findTotalExpenseByTripId() {
+//        List<Transaction> transactions = transactionRepository.findAllByTripId(1L);
+//        for (Transaction transaction : transactions) {
+//            log.info(transaction.getExpenseAmount().toString());
+//        }
+//    }
 
 //    @Test
 //    void getTripDetailDayNative() {

@@ -1,9 +1,12 @@
 package Gabojago.gabojago_be.trip;
 
+import Gabojago.gabojago_be.dto.response.ResponseExchangeRateDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDto;
+import Gabojago.gabojago_be.entity.ExchangeRate;
 import Gabojago.gabojago_be.entity.Transaction;
 import Gabojago.gabojago_be.entity.Trip;
+import Gabojago.gabojago_be.exchangeRate.ExchangeRateService;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.transaction.TransactionRepository;
 import Gabojago.gabojago_be.transaction.TransactionService;
@@ -29,8 +32,14 @@ public class TripService {
 
     private final TripRepository tripRepository;
     private final TransactionService transactionService;
+    private final ExchangeRateService exchangeRateService;
     private final JwtUtil jwtUtil;
 
+
+    public String getCountry(long tripId) {
+        Trip trip = tripRepository.findByTripId(tripId);
+        return trip.getTripCountry();
+    }
 
     public List<ResponseTripDto> getTrips(String token) {
         try {
@@ -105,5 +114,14 @@ public class TripService {
     }
 
 
+    public ResponseExchangeRateDto getExchange(String token, Long tripId) {
+        String country = getCountry(tripId);
 
+        Optional<ExchangeRate> exchangeRate = exchangeRateService.getExchangeRateByTripId(country);
+
+        ResponseExchangeRateDto response = new ResponseExchangeRateDto();
+        response.setCurrency(exchangeRate.get().getCurrency());
+        response.setRate(exchangeRate.get().getRate());
+        return response;
+    }
 }

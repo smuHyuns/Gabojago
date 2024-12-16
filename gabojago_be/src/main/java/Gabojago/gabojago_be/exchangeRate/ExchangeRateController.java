@@ -21,4 +21,5 @@ public class ExchangeRateController {
     public void updateExchangeRate() {
         exchangeRateService.updateExchangeRate();
     }
+
 }

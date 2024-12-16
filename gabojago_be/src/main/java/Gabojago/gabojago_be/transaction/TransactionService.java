@@ -1,5 +1,6 @@
 package Gabojago.gabojago_be.transaction;
 
+import Gabojago.gabojago_be.dto.request.RequestTransactionAddDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
@@ -29,6 +30,7 @@ public class TransactionService {
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final TransactionUtilService transactionUtilService;
 
     @Transactional
     public Transaction saveTransaction(RequestTransactionDto requestTransactionDto) {
@@ -98,4 +100,25 @@ public class TransactionService {
         tripRepository.save(trip);
     }
 
+    public Transaction saveTransactionFromTrip(String token, RequestTransactionAddDto request) {
+        Long userId = jwtUtil.extractUserIdFromToken(token);
+
+        // Trip과 User를 데이터베이스에서 가져옴
+        Trip trip = tripRepository.findById(request.getTripId())
+                .orElseThrow(() -> new IllegalArgumentException("Trip not found with ID: " + request.getTripId()));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
+        Transaction transaction = new Transaction();
+        transaction.setTrip(trip);
+        transaction.setUser(user);
+        transaction.setExpenseType(transactionUtilService.convertExpenseType(request.getExpenseType()));
+        transaction.setExpenseDate(request.getExpenseDate());
+        transaction.setExpenseAmount(request.getExpenseAmount());
+        transaction.setExchangeAmount(request.getExchangeAmount());
+
+        Transaction response = transactionRepository.save(transaction);
+        return response;
+    }
 }

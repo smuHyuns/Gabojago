@@ -1,6 +1,7 @@
 package Gabojago.gabojago_be.trip;
 
 import Gabojago.gabojago_be.dto.request.RequestTripDetailDayDto;
+import Gabojago.gabojago_be.dto.response.ResponseExchangeRateDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDto;
@@ -59,18 +60,6 @@ public class TripController {
         }
     }
 
-//    @PostMapping("/trip-detail")
-//    public ResponseEntity<ResponseTripDetailDayDto> getTripDetailByDay(@RequestHeader("Authorization") String token,
-//                                                                       @RequestParam Long tripId, @RequestParam Date tripDate) {
-//        try {
-//            ResponseTripDetailDayDto response = tripService.getTripExAndRes(token, new RequestTripDetailDayDto(tripId, tripDate));
-//            return ResponseEntity.ok(response);
-//        } catch (Exception e) {
-//            log.info(e.getMessage());
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     @GetMapping("/detail-all/{tripId}")
     public ResponseEntity<ResponseTripDetailEntireDto> getTripDetailEntire(@RequestHeader("Authorization") String token,
                                                                            @PathVariable("tripId") Long tripId) {
@@ -87,11 +76,14 @@ public class TripController {
         }
     }
 
-    @GetMapping("/test/{tripId}")
-    public ResponseEntity<ResponseTripDetailEntireDto> doTest(@PathVariable ("tripId") Long tripId){
-        return ResponseEntity.ok(tripService.test(tripId));
+    //trip Id 나라 조회 -> 해당 나라에 맞는 화폐단위와 exchange-rate 조회 -> 전달
+    @GetMapping("/get-country")
+    public ResponseEntity<ResponseExchangeRateDto> getCountry(String token, @RequestBody Long tripId) {
+        try {
+            return ResponseEntity.ok(tripService.getExchange(token, tripId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-
-
 
 }
