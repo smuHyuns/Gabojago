@@ -42,7 +42,7 @@ function navigateToDeletePage() {
       tripId: props.tripId,
     },
     query: {
-      date: props.selectedDate, // 선택된 날짜 전달
+      date: props.selectedDate,
     },
   });
 }

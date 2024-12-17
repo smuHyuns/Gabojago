@@ -19,6 +19,7 @@ import DetailTransaction_delete_Page from '@/pages/Trip/Detail_transaction_delet
 import Login from '@/pages/User/Login.vue';
 import Sign_up from '@/pages/User/Sign_up.vue';
 import Dashboard from '@/pages/Dashboard/Dashboard.vue';
+import Detail_AddPayment from '@/pages/Trip/Detail_AddPayment.vue';
 
 const routes = [
   {
@@ -130,6 +131,15 @@ const routes = [
     props: (route) => ({
       tripId: Number(route.params.tripId), // 여행 ID
       selectedDate: route.query.date, // 선택된 날짜
+    }),
+  },
+  {
+    path: '/detail/:tripId/addpayment',
+    name: 'Detail_AddPayment',
+    component: Detail_AddPayment,
+    props: (route) => ({
+      tripId: Number(route.params.tripId),
+      selectedDate: route.query.date,
     }),
   },
 ];

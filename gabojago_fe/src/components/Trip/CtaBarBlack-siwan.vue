@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="cta-bar" @click="addSomething">
+    <button class="cta-bar">
       <span class="add">{{ inputname }}</span>
     </button>
   </div>
@@ -12,10 +12,6 @@ import { defineProps } from 'vue';
 const props = defineProps({
   inputname: String,
 });
-
-function addSomething() {
-  console.log(props.inputname);
-}
 </script>
 
 <style scoped>

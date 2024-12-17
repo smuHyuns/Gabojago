@@ -1,11 +1,7 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img
-        class="icon"
-        src="@/assets/chevron-right.png"
-        @click="navigateToDashboard"
-      />
+      <img class="icon" src="@/assets/chevron-right.png" @click="goBack" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
@@ -22,8 +18,8 @@ const props = defineProps({
 });
 
 const router = useRouter();
-const navigateToDashboard = () => {
-  router.push('/dashboard');
+const goBack = () => {
+  router.back();
 };
 </script>
 

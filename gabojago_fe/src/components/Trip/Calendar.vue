@@ -27,6 +27,7 @@
             highlight: highlightDates.includes(date.key),
             today: date.key === todayKey,
             selected: date.key === selectedDateKey,
+            during: highlightDates.includes(date.key),
           },
         ]"
         @click="dateClick(date)"
@@ -41,18 +42,39 @@
 import { ref, computed, watch, onMounted } from 'vue';
 
 const props = defineProps({
-  startPeriod: { type: String, required: true },
-  endPeriod: { type: String, required: true },
+  startPeriod: { type: [Date, String], required: true },
+  endPeriod: { type: [Date, String], required: true },
   tripId: { type: Number, required: true },
 });
 
-const emit = defineEmits(['date-click']); // 부모에게 날짜 전달
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+const startPeriodDate = computed(() =>
+  formatDate(
+    typeof props.startPeriod === 'string'
+      ? new Date(props.startPeriod)
+      : props.startPeriod
+  )
+);
+const endPeriodDate = computed(() =>
+  formatDate(
+    typeof props.endPeriod === 'string'
+      ? new Date(props.endPeriod)
+      : props.endPeriod
+  )
+);
+const emit = defineEmits(['date-click']);
 
 const today = new Date();
 const currentMonth = ref(today.getMonth());
 const currentYear = ref(today.getFullYear());
-const todayKey = ref(`date-${today.getDate()}`); // 오늘 날짜
-const selectedDateKey = ref(null); // 선택된 날짜의 키
+const todayKey = ref(`date-${today.getDate()}`);
+const selectedDateKey = ref(null);
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 const currentMonthYear = computed(
@@ -60,6 +82,23 @@ const currentMonthYear = computed(
 );
 const calendarDates = ref([]);
 const highlightDates = ref([]);
+
+function calculateHighlightDates() {
+  const start = new Date(startPeriodDate.value);
+  const end = new Date(endPeriodDate.value);
+  const highlight = [];
+
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    if (
+      d.getFullYear() === currentYear.value &&
+      d.getMonth() === currentMonth.value
+    ) {
+      highlight.push(`date-${d.getDate()}`);
+    }
+  }
+
+  highlightDates.value = highlight;
+}
 
 function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear.value, currentMonth.value, 1);
@@ -82,11 +121,12 @@ function renderCalendar() {
 
   calendarDates.value = dates;
 
-  // 오늘 날짜가 현재 달에 해당하는지 확인
   const isCurrentMonth =
     today.getFullYear() === currentYear.value &&
     today.getMonth() === currentMonth.value;
   todayKey.value = isCurrentMonth ? `date-${today.getDate()}` : null;
+
+  calculateHighlightDates();
 }
 
 function prevMonth() {
@@ -107,16 +147,17 @@ function nextMonth() {
   renderCalendar();
 }
 
+// 날짜 클릭
 function dateClick(date) {
   if (!date.empty) {
-    selectedDateKey.value = date.key; // 선택된 날짜 업데이트
+    selectedDateKey.value = date.key;
     const selectedDate = new Date(
       currentYear.value,
       currentMonth.value,
       date.value
     );
-    // console.log(selectedDate.toISOString().split('T')[0]);
-    emit('date-click', selectedDate.toISOString().split('T')[0]); // 부모로 날짜 전달
+    const formattedDate = formatDate(selectedDate);
+    emit('date-click', formattedDate);
   }
 }
 
@@ -149,7 +190,7 @@ watch([currentMonth, currentYear], renderCalendar);
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
+  box-sizing: border-box;
 }
 
 .calendar-header {
@@ -182,9 +223,9 @@ watch([currentMonth, currentYear], renderCalendar);
 .calendar-dates {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: 1fr; /* 모든 행의 높이를 동일하게 설정 */
+  grid-auto-rows: 1fr;
   grid-gap: 5px;
-  flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+  flex-grow: 1;
   text-align: center;
 }
 
@@ -203,13 +244,6 @@ watch([currentMonth, currentYear], renderCalendar);
   word-wrap: break-word;
 }
 
-.date:hover,
-.date.selected {
-  background: #5d8bff;
-  color: whitesmoke;
-  border-radius: 288px;
-}
-
 .date.highlight {
   background: #eff4ff;
   border-radius: 50%;
@@ -223,5 +257,24 @@ watch([currentMonth, currentYear], renderCalendar);
   background: #5d8bff;
   border-radius: 288px;
   color: white;
+}
+
+date:hover,
+.date.selected {
+  background: #5d8bff;
+  color: whitesmoke;
+  border-radius: 288px;
+}
+
+.date.during {
+  background: #eff4ff;
+  border-radius: 288px;
+  color: black;
+}
+
+.date:hover.during,
+.date.selected.during {
+  background: #5d8bff;
+  color: whitesmoke;
 }
 </style>
