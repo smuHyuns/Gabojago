@@ -78,12 +78,18 @@ public class TripController {
 
     //trip Id 나라 조회 -> 해당 나라에 맞는 화폐단위와 exchange-rate 조회 -> 전달
     @GetMapping("/get-country")
-    public ResponseEntity<ResponseExchangeRateDto> getCountry(String token, @RequestBody Long tripId) {
+    public ResponseEntity<ResponseExchangeRateDto> getCountry(@RequestHeader("Authorization") String token, @RequestParam("tripId") Long tripId) {
         try {
             return ResponseEntity.ok(tripService.getExchange(token, tripId));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    // trip-detail
+    @GetMapping("/detail/{tripId}")
+    public ResponseEntity<ResponseTripDetailEntireDto> getTripDetail(@PathVariable("tripId") Long tripId) {
+        return ResponseEntity.ok(tripService.getDetail(tripId));
     }
 
 }

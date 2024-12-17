@@ -87,11 +87,11 @@ public class TripService {
         //Long userId = jwtUtil.extractUserIdFromToken(token);
         //logger.info("userId = {}", userId);
         log.info("tripId = {}", tripId);
-        return test(tripId);
+        return getDetail(tripId);
     }
 
     @Transactional
-    public ResponseTripDetailEntireDto test(Long tripId) {
+    public ResponseTripDetailEntireDto getDetail(Long tripId) {
         ResponseTripDetailEntireDto dto = new ResponseTripDetailEntireDto();
         Long totalExpense = Optional.ofNullable(transactionService.getSum(tripId)).orElse(0L);
 
@@ -117,7 +117,7 @@ public class TripService {
     public ResponseExchangeRateDto getExchange(String token, Long tripId) {
         String country = getCountry(tripId);
 
-        Optional<ExchangeRate> exchangeRate = exchangeRateService.getExchangeRateByTripId(country);
+        Optional<ExchangeRate> exchangeRate = exchangeRateService.getExchangeRateByCountry(country);
 
         ResponseExchangeRateDto response = new ResponseExchangeRateDto();
         response.setCurrency(exchangeRate.get().getCurrency());
