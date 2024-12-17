@@ -43,7 +43,7 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import TopbarWithIcon from '@/components/Trip/TopbarWithIcon-deleteFull.vue';
 import DeleteButtonSiwan from '@/components/compo/DeleteButton-siwan.vue';
-import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
+import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();

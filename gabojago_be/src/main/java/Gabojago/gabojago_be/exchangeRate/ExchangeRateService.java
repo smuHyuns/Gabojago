@@ -124,7 +124,7 @@ public class ExchangeRateService {
         }
     }
 
-    public Optional<ExchangeRate> getExchangeRateByTripId(String country) {
+    public Optional<ExchangeRate> getExchangeRateByCountry(String country) {
         return exchangeRateRepository.findExchangeRateByCountry(country);
     }
 }

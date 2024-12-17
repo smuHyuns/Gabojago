@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
+import { API_BASE_URL } from '@/config/config';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080', // 백엔드 URL
+  baseURL: `${API_BASE_URL}`, // 백엔드 URL
   timeout: 10000, // 10초 타임아웃
 });
 

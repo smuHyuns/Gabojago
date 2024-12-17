@@ -17,7 +17,7 @@
 import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon_delete.vue';
 import HistoryListItem from '@/components/compo/HistoryListItem.vue';
 import CtaBarSiwan from '@/components/compo/CtaBar-siwan.vue';
-import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
+import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 </script>
 
 <style scoped></style>

@@ -38,7 +38,7 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import TopbarWithIcontokyo from '@/components/Trip/TopbarWithIcon_delete.vue';
 import HistoryListItemNoCheck from '@/components/compo/HistoryListItemNoCheck.vue';
-import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
+import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 
 const route = useRoute();
 const router = useRouter();

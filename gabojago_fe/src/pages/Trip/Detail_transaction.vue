@@ -30,7 +30,7 @@
     <CtaBarBlackSiwan
       class="ctabarblacksiwan"
       inputname="추가하기"
-      @click="navigateToAddPayment"
+      @click="navigateToTripAddPayment"
     />
   </div>
 </template>
@@ -41,7 +41,7 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import TopbarWithIcon from '@/components/Trip/TopbarWithIcon_delete.vue';
 import HistoryListItemNoCheck from '@/components/compo/HistoryListItemNoCheck.vue';
-import CtaBarBlackSiwan from '@/components/compo/CtaBarBlack-siwan.vue';
+import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
@@ -127,14 +127,11 @@ const getCategoryImage = (category) => {
   }
 };
 
-// 결제 추가 페이지로 이동
-const navigateToAddPayment = () => {
+const navigateToTripAddPayment = () => {
   router.push({
-    name: 'AddPaymentFromDate',
-    query: {
-      tripId,
-      selectedDate,
-    },
+    name: 'Detail_AddPayment',
+    params: { tripId: tripId.value }, // 여행 ID
+    query: { date: route.query.date }, // 선택된 날짜
   });
 };
 

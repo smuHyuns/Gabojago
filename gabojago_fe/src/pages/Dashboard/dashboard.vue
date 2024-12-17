@@ -205,10 +205,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* 기존 스타일 유지 */
-</style>
-
-<style scoped>
 .faded {
   opacity: 0.7;
 }
