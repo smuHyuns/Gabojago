@@ -128,13 +128,14 @@ const getRateAndCurrency = async () => {
 
 const registerExpense = async () => {
   const request = {
-    expenseType: expenseType.value,
-    paymentMethod: paymentMethod.value,
-    description: expenseDetail.value,
-    category: selectedCategory.value,
-    Budget: parseInt(displayBudget.value.replace(' JPY', '')),
-    convertedBudget: parseInt(conversionResult.value.KRW),
-    date: selectedDate.value,
+    tripId: tripId.value,
+    paymentMethod: paymentMethod.value == '현금' ? 0 : 1,
+    transactionType: expenseType.value,
+    expenseDate: selectedDate.value,
+    expenseDetail: expenseDetail.value,
+    expenseAmount: parseInt(displayBudget.value.replace(` ${currency}`, '')),
+    exchangeAmount: parseInt(conversionResult.value.KRW),
+    expenseType: selectedCategory.value,
   };
 
   console.log('request : ', request);
@@ -183,6 +184,7 @@ function getCategoryImage(category) {
 
 function updateExpenseType(type) {
   expenseType.value = type;
+  console.log(expenseType.value);
 }
 
 // 컴포넌트 로드 시 여행 정보 가져오기
