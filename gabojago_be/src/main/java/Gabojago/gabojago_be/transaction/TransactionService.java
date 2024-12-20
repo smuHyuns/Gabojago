@@ -7,12 +7,17 @@ import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.entity.Transaction;
 import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.entity.User;
+import Gabojago.gabojago_be.exception.TransactionNotFoundException;
+import Gabojago.gabojago_be.exception.TripNotFoundException;
+import Gabojago.gabojago_be.exception.UserNotFoundException;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.trip.TripRepository;
+import Gabojago.gabojago_be.trip.TripService;
 import Gabojago.gabojago_be.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,15 +36,15 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final TransactionUtilService transactionUtilService;
+    private final TransactionTripCoordinator transactionTripCoordinator;
 
     @Transactional
     public Transaction saveTransaction(RequestTransactionDto requestTransactionDto) {
-        // Trip과 User를 데이터베이스에서 가져옴
         Trip trip = tripRepository.findById(requestTransactionDto.getTripId())
-                .orElseThrow(() -> new IllegalArgumentException("Trip not found with ID: " + requestTransactionDto.getTripId()));
+                .orElseThrow(() -> new TripNotFoundException(requestTransactionDto.getTripId()));
 
         User user = userRepository.findById(requestTransactionDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + requestTransactionDto.getUserId()));
+                .orElseThrow(() -> new UserNotFoundException(requestTransactionDto.getUserId()));
 
         // Transaction 엔티티 생성 및 값 설정
         Transaction transaction = new Transaction();
@@ -85,40 +90,50 @@ public class TransactionService {
         long[] transactionIds = request.getTransactionIds();
         long tripId = request.getTripId();
 
-        // 트립 조회
-        Trip trip = tripRepository.findById(tripId).orElseThrow(() ->
-                new IllegalArgumentException("해당 여행이 존재하지 않습니다: " + tripId));
+        Integer curBudget = 0;
+        Integer curExchangeBudget = 0;
 
         for (long transactionId : transactionIds) {
             Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() ->
-                    new IllegalArgumentException("없는 트랜잭션 아이디입니다: " + transactionId));
-            trip.setTripBudget(trip.getTripBudget() + transaction.getExpenseAmount());
+                    new TransactionNotFoundException(transactionId));
+
             // 트랜잭션 삭제
             transactionRepository.deleteById(transactionId);
+
+            //지출 -> + , 추가 + -> -
+            if (transaction.getTransactionType().equals("지출")) {
+                curBudget += transaction.getExpenseAmount();
+                curExchangeBudget += transaction.getExchangeAmount();
+            } else {
+                curBudget -= transaction.getExpenseAmount();
+                curExchangeBudget -= transaction.getExpenseAmount();
+            }
         }
 
-        tripRepository.save(trip);
+        String transactionType = curBudget >= 0 ? "추가" : "지출";
+        curBudget = Math.abs(curBudget);
+        curExchangeBudget = Math.abs(curExchangeBudget);
+
+        transactionTripCoordinator.updateBudget(tripId, curBudget, curExchangeBudget,
+                transactionType);
     }
 
+    @Transactional
     public Transaction saveTransactionFromTrip(String token, RequestTransactionAddDto request) {
         Long userId = jwtUtil.extractUserIdFromToken(token);
 
-        // Trip과 User를 데이터베이스에서 가져옴
         Trip trip = tripRepository.findById(request.getTripId())
-                .orElseThrow(() -> new IllegalArgumentException("Trip not found with ID: " + request.getTripId()));
+                .orElseThrow(() -> new TripNotFoundException(request.getTripId()));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
-        Transaction transaction = new Transaction();
-        transaction.setTrip(trip);
-        transaction.setUser(user);
-        transaction.setExpenseType(transactionUtilService.convertExpenseType(request.getExpenseType()));
-        transaction.setExpenseDate(request.getExpenseDate());
-        transaction.setExpenseAmount(request.getExpenseAmount());
-        transaction.setExchangeAmount(request.getExchangeAmount());
-
+        Transaction transaction = transactionUtilService.setTransaction(trip, user, request);
         Transaction response = transactionRepository.save(transaction);
+
+        transactionTripCoordinator.updateBudget(request.getTripId(),
+                request.getExpenseAmount(), request.getExchangeAmount(), request.getTransactionType());
+
         return response;
     }
 }
