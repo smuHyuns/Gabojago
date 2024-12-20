@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class RequestTransactionAddDto {
     private Long tripId;
     private Integer paymentMethod;
+    private String transactionType;
     private LocalDate expenseDate;
     private String expenseDetail;
     private Integer expenseAmount;

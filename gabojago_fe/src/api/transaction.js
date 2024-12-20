@@ -28,7 +28,7 @@ export const postTransaction = async (request) => {
   try {
     const authStore = useAuthStore();
     const token = authStore.token;
-    const response = await axios.post(BASEURL, request, {
+    const response = await axios.post(`${BASEURL}/save-from-trip`, request, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

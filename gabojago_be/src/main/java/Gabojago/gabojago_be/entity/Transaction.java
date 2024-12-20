@@ -41,4 +41,7 @@ public class Transaction {
 
     @Column(name = "exchange_amount")
     private Integer exchangeAmount;
+
+    @Column(name = "transaction_type")
+    private String transactionType;
 }

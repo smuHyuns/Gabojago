@@ -32,6 +32,7 @@ public class TransactionController {
         }
     }
 
+    // tirp-detail에서 거래내역 갱신
     @PostMapping("/save-from-trip")
     public ResponseEntity<Transaction> addTransactionFromTrip(@RequestHeader("Authorization") String token, @RequestBody RequestTransactionAddDto request) {
         try {
