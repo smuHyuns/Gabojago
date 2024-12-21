@@ -92,4 +92,5 @@ public class TripController {
         return ResponseEntity.ok(tripService.getDetail(tripId));
     }
 
+
 }
