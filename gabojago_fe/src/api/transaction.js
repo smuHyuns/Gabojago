@@ -39,3 +39,20 @@ export const postTransaction = async (request) => {
     throw error;
   }
 };
+
+export const getDetailDayTransaction = async (tripId, selectedDate) => {
+  try {
+    const authStore = useAuthStore();
+    const response = await axios.get(`${BASEURL}/detail-day-transaction`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+      params: {
+        tripId: tripId,
+        tripDate: selectedDate,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('정보 불러오기 실패:', error.response?.data || error.message);
+  }
+};

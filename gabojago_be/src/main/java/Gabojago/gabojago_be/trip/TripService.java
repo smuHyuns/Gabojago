@@ -88,25 +88,19 @@ public class TripService {
 
     @Transactional
     public ResponseTripDetailEntireDto getDetail(Long tripId) {
-        ResponseTripDetailEntireDto dto = new ResponseTripDetailEntireDto();
+        ResponseTripDetailEntireDto response = new ResponseTripDetailEntireDto();
         Long totalExpense = Optional.ofNullable(transactionService.getSum(tripId)).orElse(0L);
 
         Trip t = tripRepository.findById(tripId)
                 .orElseThrow(() -> new IllegalArgumentException("Trip not found with ID: " + tripId));
 
-        dto.setTripBudget(Long.valueOf(Optional.ofNullable(t.getTripBudget()).orElse(0)));
-        dto.setDescription(t.getDescription());
-        dto.setStartPeriod(t.getStartPeriod());
-        dto.setEndPeriod(t.getEndPeriod());
-        dto.setTotalExpense(totalExpense);
+        response.setTripBudget(Long.valueOf(Optional.ofNullable(t.getTripBudget()).orElse(0)));
+        response.setDescription(t.getDescription());
+        response.setStartPeriod(t.getStartPeriod());
+        response.setEndPeriod(t.getEndPeriod());
+        response.setTotalExpense(totalExpense);
 
-        log.info("Trip Budget = {}", dto.getTripBudget());
-        log.info("Description = {}", dto.getDescription());
-        log.info("Start Period = {}", dto.getStartPeriod());
-        log.info("End Period = {}", dto.getEndPeriod());
-        log.info("Total Expense = {}", dto.getTotalExpense());
-
-        return dto;
+        return response;
     }
 
 

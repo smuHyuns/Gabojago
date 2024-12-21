@@ -15,6 +15,7 @@
             :number="expense.exchangeAmount"
             :number2="expense.expenseAmount"
             :img="getCategoryImage(mapExpenseType(expense.expenseType))"
+            :type="expense.transactionType"
           />
         </div>
       </div>
@@ -43,6 +44,7 @@ import TopbarWithIcon from '@/components/Trip/TopbarWithIcon_delete.vue';
 import HistoryListItemNoCheck from '@/components/compo/HistoryListItemNoCheck.vue';
 import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
+import { getDetailDayTransaction } from '@/api/transaction';
 
 const route = useRoute();
 const router = useRouter();
@@ -55,23 +57,13 @@ const selectedDate = route.query.date; // 선택된 날짜 가져오기
 const expenses = ref([]); // 백엔드에서 받아온 거래 데이터 저장
 const totalExpense = ref(0);
 
-// 백엔드 데이터 요청
 const fetchTripExpense = async () => {
   try {
-    const response = await axios.get(BASEURL, {
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      params: {
-        tripId: tripId,
-        tripDate: selectedDate,
-      },
-    });
-    expenses.value = response.data;
-
-    // 총 지출 계산
-    totalExpense.value = response.data.reduce(
-      (sum, expense) => sum + (expense.expenseAmount || 0),
-      0
-    );
+    const response = await getDetailDayTransaction(tripId, selectedDate);
+    expenses.value = response;
+    totalExpense.value = response
+      .filter((expense) => expense.transactionType === '지출')
+      .reduce((sum, expense) => sum + (expense.expenseAmount || 0), 0);
   } catch (error) {
     console.error('정보 불러오기 실패:', error.response?.data || error.message);
   }
@@ -199,5 +191,10 @@ onMounted(() => {
   text-align: center;
   font-size: 60px;
   font-weight: 700;
+}
+
+.category-box .selected {
+  filter: hue-rotate(371deg) brightness(1) saturate(7);
+  color: white;
 }
 </style>

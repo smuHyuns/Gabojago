@@ -12,11 +12,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("SELECT t FROM Transaction t WHERE t.trip.tripId = :tripId")
     List<Transaction> findAllByTripId(@Param("tripId") Long tripId);
 
-    @Query("select sum (expenseAmount) from Transaction where trip.tripId = :tripId group by trip.tripId")
+    @Query("select sum (expenseAmount) from Transaction where trip.tripId = :tripId and transactionType= '지출' group by trip.tripId")
     Long findSumByTripId(@Param("tripId") Long tripId);
 
-    @Query("select sum (expenseAmount) from Transaction where trip.tripId = :tripId and expenseDate = :expenseDate group by trip.tripId")
+    @Query("select sum (expenseAmount) from Transaction where trip.tripId = :tripId and expenseDate = :expenseDate and transactionType='지출' group by trip.tripId")
     Long findSumByTripIdAndExpenseDate(@Param("tripId") Long tripId, @Param("expenseDate") LocalDate expenseDate);
 
-    List<Transaction> findAllByTripTripIdAndExpenseDate(@Param("tripId") Long tripId , @Param("expenseDate") LocalDate expenseDate);
+    List<Transaction> findAllByTripTripIdAndExpenseDate(@Param("tripId") Long tripId, @Param("expenseDate") LocalDate expenseDate);
 }
