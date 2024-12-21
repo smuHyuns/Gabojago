@@ -9,12 +9,13 @@
       <div v-for="(expenses, date) in groupedExpenses" :key="date">
         <div class="date">{{ date }}</div>
         <div v-for="expense in expenses" :key="expense.transactionId">
-          <DeleteButtonSiwan
+          <TransactionDeleteBtn
             :description="mapExpenseType(expense.expenseType)"
             :flagSrc="getCategoryImage(expense.expenseType)"
             :isSelected="selectedExpenses.includes(expense.transactionId)"
             :number="expense.exchangeAmount"
             :number2="expense.expenseAmount"
+            :type="expense.transactionType"
             @update:isSelected="updateSelectedExpenses(expense.transactionId)"
           />
         </div>
@@ -42,9 +43,10 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import TopbarWithIcon from '@/components/Trip/TopbarWithIcon-deleteFull.vue';
-import DeleteButtonSiwan from '@/components/compo/DeleteButton-siwan.vue';
+import TransactionDeleteBtn from '@/components/compo/TransactionDeleteBtn.vue';
 import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
+import { getDetailDayTransaction } from '@/api/transaction';
 
 const route = useRoute();
 const router = useRouter();
@@ -61,14 +63,8 @@ const selectedExpenses = ref([]); // 선택된 항목 ID 저장
 // 백엔드 데이터 요청
 const fetchTripExpense = async () => {
   try {
-    const response = await axios.get(`${BASEURL}/detail-day-transaction`, {
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      params: {
-        tripId: tripId,
-        tripDate: selectedDate,
-      },
-    });
-    expenses.value = response.data;
+    const response = await getDetailDayTransaction(tripId, selectedDate);
+    expenses.value = response;
     console.log(response);
     // 총 지출 계산
     totalExpense.value = response.data.reduce(

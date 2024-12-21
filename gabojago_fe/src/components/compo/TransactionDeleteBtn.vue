@@ -1,7 +1,17 @@
 <template>
   <div class="history-list-container" @click="toggleSelection">
     <div class="history-img-box">
-      <img class="history-icon" v-bind:src="flagSrc" alt="Selected Icon" />
+      <img
+        class="history-icon"
+        v-bind:src="flagSrc"
+        :style="{
+          filter:
+            type === '추가'
+              ? 'hue-rotate(371deg) brightness(1) saturate(7)'
+              : 'none',
+        }"
+        alt="Selected Icon"
+      />
     </div>
     <div class="histroy-list">{{ description }}</div>
     <div class="history-money">
@@ -28,6 +38,7 @@ const props = defineProps({
   number: Number,
   number2: Number,
   flagSrc: String,
+  type: String,
 });
 
 const emit = defineEmits(['update:isSelected']);
