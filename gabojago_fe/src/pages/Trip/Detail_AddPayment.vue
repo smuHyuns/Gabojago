@@ -10,6 +10,7 @@
       />
       <div class="price-box">
         <div class="price-details">
+          <!-- 외화 입력 필드 -->
           <input
             v-model="displayBudget"
             @input="updateBudget"
@@ -19,7 +20,8 @@
           />
         </div>
         <div class="type-of-money" style="margin-left: 75px">{{}}</div>
-        <div class="print-small-price">={{ conversionResult.KRW }} 원</div>
+        <!-- KRW 환전 값 표시 -->
+        <div class="print-small-price">{{ conversionResult.KRW }} 원</div>
       </div>
       <div class="payType">
         <span class="title">{{
@@ -85,20 +87,18 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 import Topbar from '@/components/compo/Topbar.vue';
 import CtaBar from '@/components/compo/CtaBar.vue';
 import TopSelect from '@/components/compo/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getCurrency, postTransaction } from '@/api/transaction';
-import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
 const route = useRoute();
 
-const Budget = ref(0);
-const displayBudget = ref('');
-const conversionResult = ref({ KRW: 0 });
+const Budget = ref(0); // 외화 입력 값
+const displayBudget = ref(''); // 외화 입력 표시값
+const conversionResult = ref({ KRW: 0 }); // 환전 결과
 const expenseType = ref('지출');
 const paymentMethod = ref('현금');
 const expenseDetail = ref('');
@@ -112,13 +112,13 @@ const tripId = ref(route.params.tripId || '');
 
 const getRateAndCurrency = async () => {
   try {
-    console.log('tripId : ', tripId.value);
-    const authStore = useAuthStore();
-    console.log('token : ', authStore.token);
-    const response = await getCurrency(tripId);
-    exchangeRate.value = response.rate;
+    console.log('tripId는 : ', tripId.value);
+
+    const response = await getCurrency(tripId.value);
     currency.value = response.currency;
-    console.log('환율:', exchangeRate.value, '통화:', currency.value);
+    exchangeRate.value = response.rate;
+    console.log('currency : ', response.currency);
+    console.log('exchangeRate : ', response.rate);
     console.log('선택일자 : ', selectedDate.value);
     convertCurrency(); // 환율을 가져온 후 즉시 변환 실행
   } catch (error) {
@@ -129,12 +129,12 @@ const getRateAndCurrency = async () => {
 const registerExpense = async () => {
   const request = {
     tripId: tripId.value,
-    paymentMethod: paymentMethod.value == '현금' ? 0 : 1,
+    paymentMethod: paymentMethod.value === '현금' ? 0 : 1,
     transactionType: expenseType.value,
     expenseDate: selectedDate.value,
     expenseDetail: expenseDetail.value,
-    expenseAmount: parseInt(displayBudget.value.replace(` ${currency}`, '')),
-    exchangeAmount: parseInt(conversionResult.value.KRW),
+    expenseAmount: parseFloat(conversionResult.value.KRW),
+    exchangeAmount: parseFloat(displayBudget.value.replace(/\D/g, '')) || 0,
     expenseType: selectedCategory.value,
   };
 
@@ -151,19 +151,19 @@ const registerExpense = async () => {
 };
 
 async function convertCurrency() {
-  if (Budget.value > 0 && exchangeRate.value) {
-    const exchangeRateToKRW = exchangeRate.value;
-    conversionResult.value.KRW = (Budget.value * exchangeRateToKRW).toFixed(2);
+  if (displayBudget.value && exchangeRate.value) {
+    const inputAmount = parseFloat(displayBudget.value.replace(/\D/g, '')) || 0;
+    const exchangeRateToKRW = 1 / parseFloat(exchangeRate.value); // 1 KRW -> 외화 기준 환율 반전
+    conversionResult.value.KRW = (inputAmount * exchangeRateToKRW).toFixed(2); // 외화 → KRW 변환
   } else {
     conversionResult.value.KRW = 0;
   }
 }
 
 function updateBudget(event) {
-  const value = event.target.value.replace(/\D/g, '');
-  Budget.value = value ? parseFloat(value) : 0;
-  displayBudget.value = value ? `${value} ${currency.value}` : '';
-  convertCurrency();
+  const value = event.target.value.replace(/\D/g, ''); // 숫자만 추출
+  displayBudget.value = value ? `${value} ${currency.value}` : ''; // 외화 입력값 표시
+  convertCurrency(); // 환율 계산 실행
 }
 
 function selectPaymentMethod(method) {

@@ -12,7 +12,7 @@ export const getCurrency = async (tripId) => {
     const token = authStore.token;
 
     const response = await axios.get(`${API_BASE_URL}/trip/get-country`, {
-      params: { tripId: tripId.value },
+      params: { tripId: tripId },
       headers: {
         Authorization: `Bearer ${token}`,
       },

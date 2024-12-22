@@ -24,7 +24,9 @@
         {{ type === '추가' ? '+' : '-' }}
         {{ Math.abs(number2).toLocaleString() }}원
       </div>
-      <div class="history-money-local">{{ number.toLocaleString() }} JPY</div>
+      <div class="history-money-local">
+        {{ number.toLocaleString() }} {{ currency }}
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +41,7 @@ const props = defineProps({
   number2: { type: Number, required: true },
   img: { type: String, required: true }, // 이미지 경로를 전달받음
   type: { type: String, default: '지출' },
+  currency: { type: String, required: true, default: 'KRW' },
 });
 </script>
 
