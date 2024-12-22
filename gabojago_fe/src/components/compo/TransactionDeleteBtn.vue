@@ -15,8 +15,15 @@
     </div>
     <div class="histroy-list">{{ description }}</div>
     <div class="history-money">
-      <div class="history-money-won">{{ number }}원</div>
-      <div class="history-money-local">{{ number2 }}JPY</div>
+      <div class="history-money">
+        <div
+          :class="['history-money-won', type === '추가' ? 'income' : 'expense']"
+        >
+          {{ type === '추가' ? '+' : '-' }}
+          {{ Math.abs(number).toLocaleString() }}원
+        </div>
+      </div>
+      <div class="history-money-local">{{ number2 }} {{ currency }}</div>
     </div>
     <div class="history-check-box">
       <img
@@ -39,6 +46,7 @@ const props = defineProps({
   number2: Number,
   flagSrc: String,
   type: String,
+  currency: String,
 });
 
 const emit = defineEmits(['update:isSelected']);
@@ -121,5 +129,13 @@ function toggleSelection() {
 .selected {
   /* 클릭 시 배경색을 변경하지 않도록 설정 */
   background-color: transparent;
+}
+
+.history-money-won.income {
+  color: var(--blue-300); /* 수입 금액 색상 */
+}
+
+.history-money-won.expense {
+  color: var(--red-300);
 }
 </style>

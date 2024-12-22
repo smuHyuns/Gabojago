@@ -13,9 +13,10 @@
             :description="mapExpenseType(expense.expenseType)"
             :flagSrc="getCategoryImage(expense.expenseType)"
             :isSelected="selectedExpenses.includes(expense.transactionId)"
-            :number="expense.exchangeAmount"
-            :number2="expense.expenseAmount"
+            :number="expense.expenseAmount"
+            :number2="expense.exchangeAmount"
             :type="expense.transactionType"
+            :currency="currency"
             @update:isSelected="updateSelectedExpenses(expense.transactionId)"
           />
         </div>
@@ -46,7 +47,7 @@ import TopbarWithIcon from '@/components/Trip/TopbarWithIcon-deleteFull.vue';
 import TransactionDeleteBtn from '@/components/compo/TransactionDeleteBtn.vue';
 import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
-import { getDetailDayTransaction } from '@/api/transaction';
+import { getCurrency, getDetailDayTransaction } from '@/api/transaction';
 
 const route = useRoute();
 const router = useRouter();
@@ -57,20 +58,24 @@ const tripId = route.params.tripId; // 여행 ID 가져오기
 const selectedDate = route.query.date; // 선택된 날짜 가져오기
 
 const expenses = ref([]); // 백엔드에서 받아온 거래 데이터 저장
-const totalExpense = ref(0);
 const selectedExpenses = ref([]); // 선택된 항목 ID 저장
 
-// 백엔드 데이터 요청
+const totalExpense = ref(0);
+const currency = ref('');
+
 const fetchTripExpense = async () => {
   try {
+    console.log(tripId);
+
     const response = await getDetailDayTransaction(tripId, selectedDate);
+    const data = await getCurrency(tripId);
+
+    currency.value = data.currency;
     expenses.value = response;
-    console.log(response);
-    // 총 지출 계산
-    totalExpense.value = response.data.reduce(
-      (sum, expense) => sum + (expense.expenseAmount || 0),
-      0
-    );
+
+    totalExpense.value = response
+      .filter((expense) => expense.transactionType === '지출')
+      .reduce((sum, expense) => sum + (expense.expenseAmount || 0), 0);
   } catch (error) {
     console.error('정보 불러오기 실패:', error.response?.data || error.message);
   }
