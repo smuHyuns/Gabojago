@@ -41,5 +41,4 @@ application-aws.properties
 application.properties
 
 #docker
-docker-elements.env
-ssh-keys/
+docker-compose.yml
