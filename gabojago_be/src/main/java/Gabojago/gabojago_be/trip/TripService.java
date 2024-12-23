@@ -1,18 +1,27 @@
 package Gabojago.gabojago_be.trip;
 
+import Gabojago.gabojago_be.dto.request.RequestTripSaveDto;
 import Gabojago.gabojago_be.dto.response.ResponseExchangeRateDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
 import Gabojago.gabojago_be.dto.response.ResponseTripDto;
+import Gabojago.gabojago_be.dto.response.ResponseTripSaveDto;
 import Gabojago.gabojago_be.entity.ExchangeRate;
 import Gabojago.gabojago_be.entity.Trip;
+import Gabojago.gabojago_be.entity.User;
 import Gabojago.gabojago_be.exception.TripNotFoundException;
+import Gabojago.gabojago_be.exception.UserNotFoundException;
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateService;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.transaction.TransactionService;
-import jakarta.persistence.EntityNotFoundException;
+import Gabojago.gabojago_be.user.UserService;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -29,7 +38,9 @@ public class TripService {
     private final TripRepository tripRepository;
     private final TransactionService transactionService;
     private final ExchangeRateService exchangeRateService;
+    private final TripUtilService tripUtilService;
     private final JwtUtil jwtUtil;
+    private final UserService userService;
 
 
     public String getCountry(long tripId) {
@@ -139,4 +150,78 @@ public class TripService {
     }
 
 
+    public ResponseTripSaveDto saveTrip(String token, RequestTripSaveDto request) {
+        long userId = jwtUtil.extractUserIdFromToken(token);
+
+        // 사용자 조회
+        User user = userService.getUserByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        // 요청 데이터 유효성 검사
+        if (request.getCountry() == null || request.getHeadcount() == null ||
+                request.getStartPeriod() == null || request.getEndPeriod() == null) {
+            throw new IllegalArgumentException("Missing required fields in request");
+        }
+
+
+        log.info("reqeuest의 description  : {}", request.getDescription());
+
+        // Trip 객체 초기화
+        Trip trip = new Trip();
+        trip.setTripCountry(request.getCountry());
+        trip.setHeadcount(request.getHeadcount());
+        trip.setStartPeriod(request.getStartPeriod());
+        trip.setEndPeriod(request.getEndPeriod());
+        trip.setTripBudget(0);
+        trip.setTripExchangeBudget(0);
+        trip.setDescription(request.getDescription());
+        // Trip 상태 설정
+        trip.setTripStatus(tripUtilService.calculateTripStatus(
+                request.getStartPeriod(), request.getEndPeriod()
+        ));
+        trip.setUser(user);
+
+        // Trip 저장
+        Trip savedTrip = tripRepository.save(trip);
+
+        // Response 반환
+        return new ResponseTripSaveDto(savedTrip.getTripId());
+    }
+
+    @Transactional
+    public void updateTripStatus() {
+        int page = 0;
+        int size = 100;
+        int totalUpdatedCount = 0;
+
+        Page<Trip> tripPage;
+
+        do {
+            Pageable pageable = PageRequest.of(page, size);
+            tripPage = tripRepository.findAll(pageable);
+            List<Trip> trips = tripPage.getContent();
+
+            int updatedCount = updateTrips(trips);
+            totalUpdatedCount += updatedCount;
+
+            page++;
+        } while (!tripPage.isLast());
+
+        log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
+    }
+
+    private int updateTrips(List<Trip> trips) {
+        int updatedCount = 0;
+
+        for (Trip trip : trips) {
+            int newStatus = tripUtilService.calculateTripStatus(trip.getStartPeriod(), trip.getEndPeriod());
+            if (newStatus != trip.getTripStatus()) {
+                trip.setTripStatus(newStatus);
+                tripRepository.save(trip);
+                updatedCount++;
+            }
+        }
+
+        return updatedCount;
+    }
 }

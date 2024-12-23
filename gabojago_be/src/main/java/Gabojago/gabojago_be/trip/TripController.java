@@ -1,10 +1,8 @@
 package Gabojago.gabojago_be.trip;
 
 import Gabojago.gabojago_be.dto.request.RequestTripDetailDayDto;
-import Gabojago.gabojago_be.dto.response.ResponseExchangeRateDto;
-import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
-import Gabojago.gabojago_be.dto.response.ResponseTripDetailEntireDto;
-import Gabojago.gabojago_be.dto.response.ResponseTripDto;
+import Gabojago.gabojago_be.dto.request.RequestTripSaveDto;
+import Gabojago.gabojago_be.dto.response.*;
 import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -92,5 +90,14 @@ public class TripController {
         return ResponseEntity.ok(tripService.getDetail(tripId));
     }
 
+    // save 저장
+    @PostMapping("/save")
+    public ResponseEntity<ResponseTripSaveDto> saveTrip(@RequestHeader("Authorization") String token, @RequestBody RequestTripSaveDto request){
+        try{
+            return ResponseEntity.ok(tripService.saveTrip(token, request));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 }
