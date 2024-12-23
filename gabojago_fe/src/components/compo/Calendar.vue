@@ -3,13 +3,13 @@
     <!-- <h1 style="color: black">{{ selectedDateValue }}</h1> -->
     <div class="calendar-header">
       <img
-        src="../assets/chevron-right.png"
+        src="@/assets/chevron-right.png"
         @click="prevMonth"
         class="right-btn"
       />
       <h2>{{ currentMonthYear }}</h2>
       <img
-        src="../assets/chevron-left.png"
+        src="@/assets/chevron-left.png"
         @click="nextMonth"
         class="left-btn"
       />

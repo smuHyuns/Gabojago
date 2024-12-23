@@ -32,8 +32,8 @@
           :key="country.name"
           :countryName="country.name"
           :flagSrc="getFlagSrc(country.flag)"
-          :isSelected="selectedCountries.includes(country.name)"
-          @update:isSelected="updateSelectedCountries(country.name)"
+          :isSelected="selectedCountries === country.name"
+          @update:isSelected="updateSelectedCountry(country)"
         />
       </div>
     </div>
@@ -42,95 +42,28 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import TopbarXSign from '@/components/compo/TopbarXSign.vue';
 import CountrySearch from '@/components/compo/CountrySearch.vue';
 import CountryButton from '@/components/compo/CountryButton.vue';
 import CtaBar from '@/components/compo/CtaBar.vue';
+import { categories, countries } from '@/config/CountryConfig';
+import { useAddTripStore } from '@/stores/tripStore';
+import { useAuthStore } from '@/stores/auth';
+
+const tripStore = useAddTripStore();
+const authStore = useAuthStore();
 
 const searchQuery = ref('');
 const selectedCategory = ref('전체');
-const selectedCountries = ref([]);
+const selectedCountries = ref('');
+const selectedCountry = ref('');
 const isblack = ref(false);
 const router = useRouter();
 
-const categories = [
-  '전체',
-  '아시아',
-  '유럽',
-  '북아메리카',
-  '남아메리카',
-  '아프리카',
-  '오세아니아',
-];
-
-const countries = {
-  전체: [
-    { name: '대한민국', flag: 'korea.png' },
-    { name: '일본', flag: 'japan.png' },
-    { name: '중국', flag: 'china.png' },
-    { name: '베트남', flag: 'vietnam.png' },
-    { name: '태국', flag: 'thailand.png' },
-    { name: '필리핀', flag: 'philippines.png' },
-    { name: '인도', flag: 'india.png' },
-    { name: '프랑스', flag: 'france.png' },
-    { name: '독일', flag: 'germany.png' },
-    { name: '미국', flag: 'usa.png' },
-    { name: '캐나다', flag: 'canada.png' },
-    { name: '브라질', flag: 'brazil.png' },
-    { name: '아르헨티나', flag: 'argentina.png' },
-    { name: '이집트', flag: 'egypt.png' },
-    { name: '남아프리카 공화국', flag: 'southafrica.png' },
-    { name: '호주', flag: 'australia.png' },
-    { name: '뉴질랜드', flag: 'newzealand.png' },
-    { name: '인도네시아', flag: 'indonesia.png' },
-    { name: '싱가포르', flag: 'singapore.png' },
-    { name: '라오스', flag: 'laos.png' },
-    // ... 다른 국가들 추가
-  ],
-  아시아: [
-    { name: '대한민국', flag: 'korea.png' },
-    { name: '일본', flag: 'japan.png' },
-    { name: '중국', flag: 'china.png' },
-    { name: '베트남', flag: 'vietnam.png' },
-    { name: '태국', flag: 'thailand.png' },
-    { name: '필리핀', flag: 'philippines.png' },
-    { name: '인도', flag: 'india.png' },
-    { name: '인도네시아', flag: 'indonesia.png' },
-    { name: '싱가포르', flag: 'singapore.png' },
-    { name: '라오스', flag: 'laos.png' },
-    // ... 나머지 아시아 국가들
-  ],
-  유럽: [
-    { name: '프랑스', flag: 'france.png' },
-    { name: '독일', flag: 'germany.png' },
-    // ... 나머지 유럽 국가들
-  ],
-  북아메리카: [
-    { name: '미국', flag: 'usa.png' },
-    { name: '캐나다', flag: 'canada.png' },
-    // ... 나머지 북아메리카 국가들
-  ],
-  남아메리카: [
-    { name: '브라질', flag: 'brazil.png' },
-    { name: '아르헨티나', flag: 'argentina.png' },
-    // ... 나머지 남아메리카 국가들
-  ],
-  아프리카: [
-    { name: '이집트', flag: 'egypt.png' },
-    { name: '남아프리카 공화국', flag: 'southafrica.png' },
-    // ... 나머지 아프리카 국가들
-  ],
-  오세아니아: [
-    { name: '호주', flag: 'australia.png' },
-    { name: '뉴질랜드', flag: 'newzealand.png' },
-    // ... 나머지 오세아니아 국가들
-  ],
-};
-
 function getFlagSrc(flag) {
-  return new URL(`../assets/country_flag/${flag}`, import.meta.url).href;
+  return new URL(`/src/assets/country_flag/${flag}`, import.meta.url).href;
 }
 
 const filteredCountries = computed(() => {
@@ -143,36 +76,58 @@ const filteredCountries = computed(() => {
   return filtered;
 });
 
-function filterCountries() {
-  // 이 함수는 @search 이벤트 핸들러로 사용됩니다.
-}
+function filterCountries() {}
 
 function selectCategory(category) {
   selectedCategory.value = category;
-  searchQuery.value = ''; // 새로운 카테고리를 선택하면 검색어를 초기화합니다.
+  searchQuery.value = '';
 }
 
-function updateSelectedCountries(countryName) {
-  const index = selectedCountries.value.indexOf(countryName);
-  if (index === -1) {
-    selectedCountries.value.push(countryName);
+function updateSelectedCountry(country) {
+  if (selectedCountries.value !== country.name) {
+    selectedCountries.value = country.name;
+    selectedCountry.value = country.translatedName;
   } else {
-    selectedCountries.value.splice(index, 1);
+    selectedCountries.value = '';
+    selectedCountry.value = '';
   }
-  isblack.value = selectedCountries.value.length >= 1;
+  isblack.value = !!selectedCountries.value;
 }
 
 function navigateToCalendar() {
+  tripStore.setCountry(selectedCountry.value);
+  console.log('선택된 국가 : ', tripStore.country);
   if (isblack.value) {
     router.push({
-      path: '/calendar',
-      query: { countries: selectedCountries.value.join(',') },
+      path: '/add-calendar',
     });
   }
 }
+
+onMounted(async () => {
+  if (!authStore.token) {
+    router.push('/login');
+    return;
+  }
+  tripStore.setCountry(null);
+});
 </script>
 
 <style scoped>
+.viewport {
+  width: 1080px;
+  height: 2340px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
+  border: 1px solid black;
+}
+
 .search-container {
   margin-top: 10px;
 }
@@ -253,6 +208,7 @@ function navigateToCalendar() {
   height: 1350.72px;
   overflow-y: scroll;
   padding-bottom: 70px;
+  margin-bottom: 30px;
 }
 
 .country-buttons {

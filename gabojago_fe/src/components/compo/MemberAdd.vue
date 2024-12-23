@@ -16,20 +16,20 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
-const value = ref(0);
+const value = ref(1);
 
 const increment = () => {
   value.value++;
 };
 
 const decrement = () => {
-  if (value.value > 0) {
+  if (value.value > 1) {
     value.value--;
   }
 };
 
 const displayValue = computed(() => {
-  return value.value === 0 ? '혼자' : value.value;
+  return value.value === 1 ? '혼자' : value.value;
 });
 
 const emit = defineEmits(['update:memberCount']);

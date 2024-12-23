@@ -1,13 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../pages/Home.vue';
 import Profile from '@/pages/Dashboard/Profile.vue';
-import Gun from '@/pages/Gun.vue';
 import Siwan from '@/pages/Siwan.vue';
-import TravelName from '@/pages/TravelName.vue';
-import AddPayment from '@/pages/AddPayment.vue';
-import Calendar from '@/pages/Calendar.vue';
+import Trip_AddDescription from '@/pages/Trip/Trip_AddDescription.vue';
 import Modal from '@/components/compo/Modal.vue';
-import Member from '@/pages/Member.vue';
 import Err from '@/pages/Err.vue';
 import Siwan_test from '@/pages/Siwan_test.vue';
 import DeletePage from '@/pages/DeletePage.vue';
@@ -20,6 +16,10 @@ import Login from '@/pages/User/Login.vue';
 import Sign_up from '@/pages/User/Sign_up.vue';
 import Dashboard from '@/pages/Dashboard/Dashboard.vue';
 import Detail_AddPayment from '@/pages/Trip/Detail_AddPayment.vue';
+import Trip_AddCountry from '@/pages/Trip/Trip_AddCountry.vue';
+import Trip_AddCalendar from '@/pages/Trip/Trip_AddCalendar.vue';
+import Trip_AddMember from '@/pages/Trip/Trip_AddMember.vue';
+import Trip_AddPayment from '@/pages/Trip/Trip_AddPayment.vue';
 
 const routes = [
   {
@@ -43,11 +43,6 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: '/gun',
-    name: 'gun',
-    component: Gun,
-  },
-  {
     path: '/siwan',
     name: 'siwan',
     component: Siwan,
@@ -65,11 +60,6 @@ const routes = [
     props: true,
   },
   {
-    path: '/member',
-    name: 'member',
-    component: Member,
-  },
-  {
     path: '/err',
     name: 'err',
     component: Err,
@@ -79,37 +69,42 @@ const routes = [
     name: 'modal',
     component: Modal,
   },
-  {
-    path: '/TravelName',
-    name: 'TravelName',
-    component: TravelName,
-  },
-  {
-    path: '/addpayment',
-    name: 'AddPayment',
-    component: AddPayment,
-  },
-  {
-    path: '/calendar',
-    name: 'Calendar',
-    component: Calendar,
-  },
+
   {
     path: '/',
     name: 'Start',
     component: Start,
   },
   {
+    path: '/add-trip',
+    name: 'Trip_AddCountry',
+    component: Trip_AddCountry,
+  },
+  {
+    path: '/add-calendar',
+    name: 'Trip_AddCalendar',
+    component: Trip_AddCalendar,
+  },
+  {
+    path: '/add-Member',
+    name: 'Trip_AddMember',
+    component: Trip_AddMember,
+  },
+  {
+    path: '/add-description',
+    name: 'Trip_AddDescription',
+    component: Trip_AddDescription,
+  },
+  {
+    path: '/add-payment',
+    name: 'Trip_AddPayment',
+    component: Trip_AddPayment,
+  },
+  {
     path: '/detail/:tripId',
     name: 'Trip_Detail',
     component: Trip_Detail,
   },
-  // {
-  //   path: '/accountCalendar/:tripId',
-  //   name: 'Tokyo_calendar',
-  //   component: Tokyo_calendar,
-  //   props: true,
-  // },
   {
     path: '/addPaymentFromDate',
     name: 'AddPaymentFromDate',

@@ -6,7 +6,6 @@
       <MemberAdd class="Member-add" @update:memberCount="updateMemberCount" />
     </div>
     <div class="spacer"></div>
-    <!-- <CtaBar inputname="다음으로" @click="navigateToTravelName" /> -->
     <CtaBarBlack inputname="다음으로" @click="navigateToTravelName" />
   </div>
 </template>
@@ -14,37 +13,39 @@
 <script setup>
 import Topbar from '@/components/compo/Topbar.vue';
 import MemberAdd from '@/components/compo/MemberAdd.vue';
-// import CtaBar from '@/components/CtaBar.vue';
 import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
 
 import { useRouter, useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { useAddTripStore } from '@/stores/tripStore';
 
+const authStore = useAuthStore();
+const tripStore = useAddTripStore();
 const router = useRouter();
 const route = useRoute();
 
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
-const selectedDates = ref(
-  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
-);
-const memberCount = ref(0);
+const memberCount = ref(1);
 
 const updateMemberCount = (count) => {
   memberCount.value = count;
 };
 
 const navigateToTravelName = () => {
+  tripStore.setHeadcount(memberCount.value);
+  console.log(memberCount.value);
   router.push({
-    path: '/TravelName',
-    query: {
-      countries: selectedCountries.value.join(','),
-      selectedDates: JSON.stringify(selectedDates.value),
-      memberCount: memberCount.value,
-    },
+    path: '/add-description',
   });
 };
+
+onMounted(async () => {
+  if (!authStore.token) {
+    router.push('/login');
+    return;
+  }
+  tripStore.setHeadcount(1);
+});
 </script>
 
 <style scoped>
@@ -55,9 +56,11 @@ const navigateToTravelName = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 auto;
   background-color: #fff;
+  position: relative;
+  border: 1px solid black;
 }
 
 .content {

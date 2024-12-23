@@ -194,13 +194,12 @@ const fetchTripsByCategory = async () => {
   }
 };
 
-// 컴포넌트 로드 시 초기 데이터 가져오기
 onMounted(async () => {
   if (!authStore.token) {
-    router.push('/login'); // 토큰이 없으면 로그인 페이지로 리다이렉트
+    router.push('/login');
     return;
   }
-  await fetchAllTrips(); // 전체 여행 데이터 가져오기
+  await fetchAllTrips();
 });
 </script>
 

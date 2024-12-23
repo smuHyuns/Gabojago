@@ -39,18 +39,18 @@ const isYesSelected = ref(false);
 function selectNo() {
   isNoSelected.value = true;
   isYesSelected.value = false;
-  emit('close', true); // true를 전달하여 안할래요를 선택했음을 알림
+  emit('close', true); // '안할래요' 버튼 동작: tripStore 초기화 및 dashboard 이동
 }
 
 function selectYes() {
   isYesSelected.value = true;
   isNoSelected.value = false;
-  closeModal(false); // 모달을 닫음
+  closeModal(false); // '추가할래요' 버튼 동작: 모달 닫기
 }
 
 function closeModal(value) {
   showModal.value = false;
-  emit('close', value);
+  emit('close', value); // value는 필요에 따라 부모에서 추가 처리 가능
 }
 </script>
 
