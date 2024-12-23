@@ -1,7 +1,7 @@
 <template>
   <div class="topbarBox">
     <div class="imgbox">
-      <img class="icon" src="@/assets/xsign.png" @click="navigateToHyunsoo" />
+      <img class="icon" src="@/assets/xsign.png" @click="navigateToDashBoard" />
       <div class="title">{{ titleText }}</div>
     </div>
   </div>
@@ -17,14 +17,13 @@ defineProps({
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const navigateToHyunsoo = () => {
-  router.push('/hyunsoo');
+const navigateToDashBoard = () => {
+  router.push('/dashboard');
 };
 </script>
 
 <style scoped>
 .topbarBox {
-  margin-top: 10%;
   width: 100%;
   padding-top: 19px;
   padding-bottom: 19px;

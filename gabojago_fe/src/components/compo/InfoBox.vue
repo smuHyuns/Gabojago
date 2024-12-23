@@ -3,7 +3,7 @@
     <div class="firstBox">{{ firstInput }}</div>
     <div class="secondBox">{{ secondInput }}</div>
     <div class="thirdBox">
-      <span class="content" @click="navigateToGun">{{ thirdInput }}</span>
+      <span class="content" @click="navigateToAddTrip">{{ thirdInput }}</span>
       <img src="@/assets/chevron-left.png" alt="Icon" />
     </div>
   </div>
@@ -14,8 +14,8 @@ import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-const navigateToGun = () => {
-  router.push('/gun');
+const navigateToAddTrip = () => {
+  router.push('/add-trip');
 };
 
 const props = defineProps({

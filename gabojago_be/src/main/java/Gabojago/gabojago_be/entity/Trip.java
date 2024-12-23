@@ -31,8 +31,8 @@ public class Trip {
     @Column(name = "end_period", nullable = false)
     private LocalDate endPeriod;
 
-    @Column(name = "trip_purpose", nullable = false)
-    private Integer tripPurpose;
+//    @Column(name = "trip_purpose", nullable = false)
+//    private Integer tripPurpose;
 
     @Column(name = "description")
     private String description;

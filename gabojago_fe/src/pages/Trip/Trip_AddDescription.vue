@@ -22,20 +22,16 @@ import Topbar from '@/components/compo/Topbar.vue';
 import TextInput2 from '@/components/compo/TextInput2.vue';
 import CtaBar from '@/components/compo/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useAddTripStore } from '@/stores/tripStore';
+import { useAuthStore } from '@/stores/auth';
+import { saveTrip } from '@/api/trip';
 
+const tripStore = useAddTripStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 const travelTitle = ref('');
-const selectedCountries = ref(
-  route.query.countries ? route.query.countries.split(',') : []
-);
-const selectedDates = ref(
-  route.query.selectedDates ? JSON.parse(route.query.selectedDates) : []
-);
-const memberCount = ref(
-  route.query.memberCount ? parseInt(route.query.memberCount) : 0
-);
 
 const isblack = ref(false);
 
@@ -46,29 +42,50 @@ const limitInput = () => {
   isblack.value = travelTitle.value.length >= 1;
 };
 
-const navigateToAddPayment = () => {
-  router.push({
-    path: '/addPayment',
-    query: {
-      countries: selectedCountries.value.join(','),
-      selectedDates: JSON.stringify(selectedDates.value),
-      memberCount: memberCount.value,
-      travelTitle: travelTitle.value,
-    },
-  });
+const navigateToAddPayment = async () => {
+  tripStore.setDescription(travelTitle.value);
+
+  const request = {
+    country: tripStore.country,
+    headcount: tripStore.headcount,
+    start_period: tripStore.start_period,
+    end_period: tripStore.end_period,
+    description: tripStore.description,
+  };
+
+  try {
+    const response = await saveTrip(request);
+    tripStore.setTripId(response.tripId);
+    router.push({
+      path: '/add-payment',
+    });
+  } catch (error) {
+    console.error('여행 저장 오류 발생 :', error);
+  }
 };
+
+onMounted(async () => {
+  if (!authStore.token) {
+    router.push('/login');
+    return;
+  }
+  tripStore.setDescription(null);
+});
 </script>
 
 <style scoped>
 .viewport {
   width: 1080px;
   height: 2340px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 0 auto;
   background-color: #fff;
+  position: relative;
+  border: 1px solid black;
 }
 
 .spacer {
