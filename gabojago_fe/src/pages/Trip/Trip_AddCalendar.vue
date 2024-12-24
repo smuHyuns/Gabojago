@@ -17,9 +17,9 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/compo/Topbar.vue';
-import Calendar from '@/components/compo/Calendar.vue';
-import CtaBar from '@/components/compo/CtaBar.vue';
+import Topbar from '@/components/used/Topbar.vue';
+import Calendar from '@/components/used/Calendar.vue';
+import CtaBar from '@/components/used/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useAddTripStore } from '@/stores/tripStore';
@@ -32,10 +32,6 @@ const route = useRoute();
 
 const selectedDates = ref([]);
 const isblack = ref(false);
-
-// const selectedCountries = ref(
-//   route.query.countries ? route.query.countries.split(',') : []
-// );
 
 const handleDateSelected = (dates) => {
   isblack.value = dates.length > 0;
@@ -76,7 +72,6 @@ onMounted(async () => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .ctabar {
@@ -87,12 +82,12 @@ onMounted(async () => {
 
 .calendar-box {
   width: 100%;
-  height: 100%; /* 원하는 높이로 조정하세요 */
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
+  box-sizing: border-box;
 }
 
 .calendar-container {
@@ -111,7 +106,7 @@ onMounted(async () => {
   align-items: center;
   padding: 20px;
   margin-left: 40px;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
-  aspect-ratio: 1 / 1; /* 1:1 비율을 유지 */
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
 }
 </style>

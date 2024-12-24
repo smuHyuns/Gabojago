@@ -19,7 +19,7 @@ export const getCurrency = async (tripId) => {
     });
     return response.data;
   } catch (error) {
-    console.log('currency 불러오기 요청 실패 : ', error);
+    console.log('getCurrency / 환율 불러오기 요청 실패 : ', error);
     throw error;
   }
 };
@@ -35,7 +35,7 @@ export const postTransaction = async (request) => {
     });
     return response.data;
   } catch (error) {
-    console.error('거래 추가(POST) 요청 실패:', error);
+    console.error('postTransaction / 거래 추가(POST) 요청 실패:', error);
     throw error;
   }
 };
@@ -53,6 +53,29 @@ export const getDetailDayTransaction = async (tripId, selectedDate) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error('정보 불러오기 실패:', error.response?.data || error.message);
+    console.error(
+      'getDetailDayTransaction / 하루 거래내역 불러오기 실패:',
+      error.response?.data || error.message
+    );
+  }
+};
+
+export const deleteTransaction = async (tripId, selectedExpenses) => {
+  try {
+    const authStore = useAuthStore();
+    await axios.delete(`${BASEURL}/delete`, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+      data: {
+        tripId: tripId,
+        transactionIds: selectedExpenses.value,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      'delete Transaction / 거래 삭제 실패:',
+      error.response?.data || error.message
+    );
   }
 };

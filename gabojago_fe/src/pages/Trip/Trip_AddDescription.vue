@@ -18,9 +18,9 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/compo/Topbar.vue';
-import TextInput2 from '@/components/compo/TextInput2.vue';
-import CtaBar from '@/components/compo/CtaBar.vue';
+import Topbar from '@/components/used/Topbar.vue';
+import TextInput2 from '@/components/used/TextInput2.vue';
+import CtaBar from '@/components/used/CtaBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useAddTripStore } from '@/stores/tripStore';
@@ -85,7 +85,6 @@ onMounted(async () => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .spacer {

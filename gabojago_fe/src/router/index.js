@@ -1,25 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../pages/Home.vue';
+
 import Profile from '@/pages/Dashboard/Profile.vue';
-import Siwan from '@/pages/Siwan.vue';
+import Dashboard from '@/pages/Dashboard/Dashboard.vue';
+
 import Trip_AddDescription from '@/pages/Trip/Trip_AddDescription.vue';
-import Modal from '@/components/compo/Modal.vue';
-import Err from '@/pages/Err.vue';
-import Siwan_test from '@/pages/Siwan_test.vue';
-import DeletePage from '@/pages/DeletePage.vue';
+import Modal from '@/components/used/Modal.vue';
+
 import Start from '@/pages/User/Start.vue';
-import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
-import AddPaymentFromDate from '@/pages/AddPaymentFromDate.vue';
-import DetailTransactionPage from '@/pages/Trip/Detail_transaction.vue';
-import DetailTransaction_delete_Page from '@/pages/Trip/Detail_transaction_delete.vue';
 import Login from '@/pages/User/Login.vue';
 import Sign_up from '@/pages/User/Sign_up.vue';
-import Dashboard from '@/pages/Dashboard/Dashboard.vue';
+
+import DetailTransactionPage from '@/pages/Trip/Detail_transaction.vue';
+import DetailTransaction_delete_Page from '@/pages/Trip/Detail_transaction_delete.vue';
 import Detail_AddPayment from '@/pages/Trip/Detail_AddPayment.vue';
 import Trip_AddCountry from '@/pages/Trip/Trip_AddCountry.vue';
 import Trip_AddCalendar from '@/pages/Trip/Trip_AddCalendar.vue';
 import Trip_AddMember from '@/pages/Trip/Trip_AddMember.vue';
 import Trip_AddPayment from '@/pages/Trip/Trip_AddPayment.vue';
+import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
 
 const routes = [
   {
@@ -41,28 +39,6 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
-  },
-  {
-    path: '/siwan',
-    name: 'siwan',
-    component: Siwan,
-  },
-  {
-    path: '/siwan_test/:date/:tripId',
-    name: 'siwan_test',
-    component: Siwan_test,
-    props: true,
-  },
-  {
-    path: '/deletepage/:date/:tripId',
-    name: 'deletepage',
-    component: DeletePage,
-    props: true,
-  },
-  {
-    path: '/err',
-    name: 'err',
-    component: Err,
   },
   {
     path: '/modal',
@@ -105,11 +81,7 @@ const routes = [
     name: 'Trip_Detail',
     component: Trip_Detail,
   },
-  {
-    path: '/addPaymentFromDate',
-    name: 'AddPaymentFromDate',
-    component: AddPaymentFromDate,
-  },
+
   {
     path: '/detail-transaction/:tripId',
     name: 'Detail_transaction',

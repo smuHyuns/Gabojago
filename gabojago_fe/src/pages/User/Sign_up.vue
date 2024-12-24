@@ -1,6 +1,5 @@
 <template>
   <div class="viewport">
-    <!-- 왼쪽 파란 배경 (웹에서만 적용) -->
     <div class="sidebar">
       <img
         src="@/assets/img/logo-blue.png"
@@ -16,7 +15,6 @@
       </header>
 
       <form @submit.prevent="submitForm" class="form">
-        <!-- 이름 -->
         <div class="form-group">
           <label for="name" class="label">이름</label>
           <input
@@ -28,7 +26,7 @@
             required
           />
         </div>
-        <!-- 아이디 -->
+
         <div class="form-group">
           <label for="id" class="label">아이디</label>
           <input
@@ -51,7 +49,6 @@
           </p>
         </div>
 
-        <!-- 비밀번호 -->
         <div class="form-group">
           <label for="password" class="label">비밀번호</label>
           <input
@@ -67,7 +64,6 @@
           </p>
         </div>
 
-        <!-- 비밀번호 확인 -->
         <div class="form-group">
           <label for="password_check" class="label">비밀번호 확인</label>
           <input
@@ -83,7 +79,6 @@
           </p>
         </div>
 
-        <!-- 닉네임 -->
         <div class="form-group">
           <label for="nickname" class="label">닉네임</label>
           <input
@@ -109,7 +104,6 @@
           </p>
         </div>
 
-        <!-- 이메일 -->
         <div class="form-group">
           <label for="email" class="label">이메일</label>
           <input
@@ -139,7 +133,6 @@
           </p>
         </div>
 
-        <!-- 성별 -->
         <div class="form-group">
           <label class="label">성별</label>
           <div class="radio-group">
@@ -154,7 +147,6 @@
           </div>
         </div>
 
-        <!-- 생년월일 -->
         <div class="form-group">
           <label for="birth" class="label">생년월일</label>
           <input
@@ -171,7 +163,6 @@
           </p>
         </div>
 
-        <!-- 가입하기 버튼 -->
         <div class="form-group">
           <button class="submit-button" @click.prevent="submitForm">
             가입하기
@@ -186,18 +177,18 @@
 import { ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { signUp } from '@/api/user';
 
 const router = useRouter();
 const BASEURL = 'http://localhost:8080';
 
-// User 객체를 RequestSignUpDto에 맞게 정의
 const User = reactive({
   userNickname: '',
   userPassword: '',
   userLoginId: '',
   userUsername: '',
   userEmail: '',
-  userGender: null, // true = 여성, false = 남성
+  userGender: null,
   userBirth: '',
 });
 
@@ -216,36 +207,30 @@ const goBack = () => {
   router.push('./login');
 };
 
-// 비밀번호 일치 확인
 const pwdChecking = computed(() => {
   return (
     User.userPassword !== checkPassword.value && checkPassword.value.length > 0
   );
 });
 
-// 비밀번호 검증
 const validatePassword = () => {
   const pattern =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   passwordError.value = !pattern.test(User.userPassword);
 };
 
-// 이메일 검증
 const validateEmail = () => {
   const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   emailError.value = !pattern.test(User.userEmail);
 };
 
-// 생년월일 검증
 const validateBirthInput = () => {
   const pattern = /^\d{4}-\d{2}-\d{2}$/;
   birthError.value = !pattern.test(User.userBirth);
 };
 
-// 회원가입 요청
 const submitForm = async () => {
   try {
-    // 입력값 검증
     validatePassword();
     validateEmail();
     validateBirthInput();
@@ -260,22 +245,21 @@ const submitForm = async () => {
       return;
     }
 
-    // 서버로 데이터 전송
-    const response = await axios.post(`${BASEURL}/user/sign-up`, {
-      user_nickname: User.userNickname,
-      user_password: User.userPassword,
-      user_login_id: User.userLoginId,
-      user_username: User.userUsername,
-      user_email: User.userEmail,
-      user_gender: User.userGender ? 1 : 0,
-      user_birth: User.userBirth,
-    });
+    const response = await signUp(
+      User.userNickname,
+      User.userPassword,
+      User.userLoginId,
+      User.userUsername,
+      User.userEmail,
+      User.userGender ? 1 : 0,
+      User.userBirth
+    );
 
     console.log(response);
 
     if (response.status === 200) {
       alert('회원가입이 완료되었습니다!');
-      router.push('/login'); // 성공 시 로그인 페이지로 이동
+      router.push('/login');
     }
   } catch (error) {
     console.error(error);
@@ -296,62 +280,60 @@ const submitForm = async () => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
-/* 로고 */
 .logo {
-  width: 600px; /* 로고 크기 확대 */
-  margin: 0 auto 70px auto; /* 여백 추가 */
+  width: 600px;
+  margin: 0 auto 70px auto;
 }
 
 .form-group {
-  margin-bottom: 24px; /* 입력 박스 사이 간격 */
+  margin-bottom: 24px;
   text-align: left;
 }
 
 .header {
-  font-size: 35px; /* 글자 크기 확대 */
-  font-weight: 500; /* 굵게 */
+  font-size: 35px;
+  font-weight: 500;
   margin-top: 30px;
   margin-bottom: 30px;
 }
 
 .radio-group {
   display: flex;
-  gap: 20px; /* 버튼 사이 간격 */
-  align-items: center; /* 수직 정렬 */
+  gap: 20px;
+  align-items: center;
 }
 
 .radio {
-  font-size: 30px; /* 텍스트 크기 확대 */
+  font-size: 30px;
   display: flex;
-  align-items: center; /* 텍스트와 버튼 수직 정렬 */
-  gap: 10px; /* 버튼과 텍스트 사이 간격 */
+  align-items: center;
+  gap: 10px;
 }
 
 .radio input[type='radio'] {
-  width: 25px; /* 버튼 크기 */
-  height: 25px; /* 버튼 크기 */
-  accent-color: #0056b3; /* 버튼 색상 */
-  cursor: pointer; /* 클릭 가능한 느낌 제공 */
+  width: 25px;
+  height: 25px;
+  accent-color: #0056b3;
+  cursor: pointer;
 }
 
 .radio input[type='radio']:hover {
-  transform: scale(1.2); /* 마우스 올릴 때 버튼 확대 */
+  transform: scale(1.2);
   transition: transform 0.2s ease-in-out;
 }
 
 .label {
   display: block;
-  font-size: 25px; /* 글자 크기 확대 */
-  font-weight: 500; /* 굵게 */
+  font-size: 25px;
+  font-weight: 500;
   color: #333;
-  margin-bottom: 10px; /* 여백 추가 */
+  margin-bottom: 10px;
 }
 
 .notification {
-  font-size: 25px; /* 글자 크기 확대 */
+  font-size: 25px;
   margin-top: 15px;
   color: red;
 }
@@ -362,29 +344,29 @@ const submitForm = async () => {
   font-size: 30px;
   border: 1px solid #ccc;
   border-radius: 15px;
-  box-sizing: border-box; /* 패딩 포함한 박스 크기 계산 */
+  box-sizing: border-box;
   transition: border-color 0.2s;
 }
 
 .submit-button {
-  position: absolute; /* 절대 위치 지정 */
-  bottom: 330px; /* viewport 하단에서 150px 위로 위치 */
-  left: 50%; /* 수평 중앙 정렬 */
-  transform: translateX(-50%); /* 수평 중앙 정렬 보정 */
-  width: 800px; /* 입력 필드와 동일한 너비 */
-  padding: 20px; /* 버튼 패딩 */
-  font-size: 30px; /* 버튼 텍스트 크기 */
+  position: absolute;
+  bottom: 330px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  padding: 20px;
+  font-size: 30px;
   color: #fff;
   background-color: #5d8bff;
   border: none;
-  border-radius: 30px; /* 둥근 모서리 */
+  border-radius: 30px;
   cursor: pointer;
   text-align: center;
-  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+  transition: background-color 0.3s ease;
 }
 
 .submit-button:disabled {
-  background-color: #ccc; /* 비활성화 상태 */
+  background-color: #ccc;
   cursor: not-allowed;
 }
 </style>

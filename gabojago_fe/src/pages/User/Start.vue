@@ -16,7 +16,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
+import CtaBarBlack from '@/components/used/CtaBarBlack.vue';
 
 const router = useRouter();
 
@@ -29,21 +29,21 @@ const GoLogin = () => {
 .viewport {
   width: 1080px;
   height: 2340px;
-  overflow: hidden; /* 콘텐츠가 고정된 크기를 초과할 경우 스크롤을 방지 */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* 상단에 배치하기 위해 flex-start로 설정 */
-  margin: 0 auto; /* 여유 공간이 있을 경우 뷰포트를 중앙에 배치 */
-  background-color: #fff; /* 선택 사항: 배경색 설정 */
-  position: relative; /* 자식 요소의 위치를 상대적으로 설정하기 위한 컨텍스트 확보 */
+  justify-content: flex-start;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
 }
 .textbox {
   text-align: center;
 }
 .start-msg {
   padding-top: 400px;
-  font-weight: bold; /* 두꺼운 글꼴 설정 */
+  font-weight: bold;
   font-size: 80px;
   line-height: 1.4;
   text-align: center;
@@ -56,14 +56,14 @@ const GoLogin = () => {
   line-height: 1.5;
   text-align: center;
   color: #8892a0;
-  margin-top: 16px; /* 텍스트 사이의 여백 설정 */
+  margin-top: 16px;
 }
 .spacer {
-  flex-grow: 1; /* Spacer element to push the button to the bottom */
+  flex-grow: 1;
 }
 
 .bottom-bar {
-  margin-bottom: 133px; /* 하단에서 약간의 공간 추가 */
+  margin-bottom: 133px;
   cursor: pointer;
   z-index: 8888;
 }
