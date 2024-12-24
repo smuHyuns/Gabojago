@@ -44,10 +44,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import TopbarXSign from '@/components/compo/TopbarXSign.vue';
-import CountrySearch from '@/components/compo/CountrySearch.vue';
-import CountryButton from '@/components/compo/CountryButton.vue';
-import CtaBar from '@/components/compo/CtaBar.vue';
+import TopbarXSign from '@/components/used/TopbarXSign.vue';
+import CountrySearch from '@/components/used/CountrySearch.vue';
+import CountryButton from '@/components/used/CountryButton.vue';
+import CtaBar from '@/components/used/CtaBar.vue';
 import { categories, countries } from '@/config/CountryConfig';
 import { useAddTripStore } from '@/stores/tripStore';
 import { useAuthStore } from '@/stores/auth';

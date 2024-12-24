@@ -47,9 +47,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import TopbarWithIcon from '@/components/Trip/TopbarWithIcon.vue';
-import Calendar from '@/components/Trip/Calendar.vue';
-import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
+import TopbarWithIcon from '@/components/used/TopbarWithIcon.vue';
+import Calendar from '@/components/used/TripCalendar.vue';
+import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 

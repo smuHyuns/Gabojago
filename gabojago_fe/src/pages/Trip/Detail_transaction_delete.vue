@@ -43,9 +43,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
-import TopbarWithIcon from '@/components/Trip/TopbarWithIcon-deleteFull.vue';
-import TransactionDeleteBtn from '@/components/compo/TransactionDeleteBtn.vue';
-import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
+import TopbarWithIcon from '@/components/used/TopbarWithIcon-deleteFull.vue';
+import TransactionDeleteBtn from '@/components/used/TransactionDeleteBtn.vue';
+import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 import { getCurrency, getDetailDayTransaction } from '@/api/transaction';
 

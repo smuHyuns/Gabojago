@@ -87,9 +87,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Topbar from '@/components/compo/Topbar.vue';
-import CtaBar from '@/components/compo/CtaBar.vue';
-import TopSelect from '@/components/compo/TopSelect.vue';
+import Topbar from '@/components/used/Topbar.vue';
+import CtaBar from '@/components/used/CtaBar.vue';
+import TopSelect from '@/components/used/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { getCurrency, postTransaction } from '@/api/transaction';
 

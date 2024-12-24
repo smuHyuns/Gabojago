@@ -40,11 +40,9 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
-import TopbarWithIcon from '@/components/Trip/TopbarWithIcon_delete.vue';
-import HistoryListItemNoCheck from '@/components/compo/HistoryListItemNoCheck.vue';
-import CtaBarBlackSiwan from '@/components/Trip/CtaBarBlack-siwan.vue';
-import { useAuthStore } from '@/stores/auth';
+import TopbarWithIcon from '@/components/used/TopbarWithIcon_delete.vue';
+import HistoryListItemNoCheck from '@/components/used/HistoryListItemNoCheck.vue';
+import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
 import { getCurrency, getDetailDayTransaction } from '@/api/transaction';
 
 const route = useRoute();

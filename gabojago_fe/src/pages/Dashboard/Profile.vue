@@ -70,9 +70,9 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/compo/Topbar.vue';
-import TextInput from '@/components/compo/TextInput.vue';
-import CtaBar from '@/components/compo/CtaBar.vue';
+import Topbar from '@/components/used/Topbar.vue';
+import TextInput from '@/components/used/TextInput.vue';
+import CtaBar from '@/components/used/CtaBar.vue';
 import { ref, reactive, onMounted, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
