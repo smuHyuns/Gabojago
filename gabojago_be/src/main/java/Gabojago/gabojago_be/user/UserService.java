@@ -88,19 +88,20 @@ public class UserService {
     @Transactional
     public void updateUser(String token, RequestProfileDto dto) {
         Long userId = jwtUtil.extractUserIdFromToken(token);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저가 발견되지 않았습니다."));
 
-        //패스워드 암호화 후 업데이트
-        String password = dto.getUserPassword();
-        password = passwordEncoder.encode(password);
+        if(dto.getUserPassword() != null) {
+            String password = dto.getUserPassword();
+            password = passwordEncoder.encode(password);
+            user.setUserPassword(password);
+        }
 
         if (dto.isImgChanged()) {
             userUtilService.deleteExistingProfileImg(user.getUserProfileImg());
         }
         user.setUserProfileImg(dto.getUserProfileImg());
-
-        user.setUserPassword(password);
         user.setUserNickname(dto.getUserNickname());
     }
 

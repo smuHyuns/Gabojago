@@ -11,9 +11,9 @@
 </template>
 
 <script setup>
-import Topbar from '@/components/compo/Topbar.vue';
-import MemberAdd from '@/components/compo/MemberAdd.vue';
-import CtaBarBlack from '@/components/compo/CtaBarBlack.vue';
+import Topbar from '@/components/used/Topbar.vue';
+import MemberAdd from '@/components/used/MemberAdd.vue';
+import CtaBarBlack from '@/components/used/CtaBarBlack.vue';
 
 import { useRouter, useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
@@ -60,7 +60,6 @@ onMounted(async () => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .content {

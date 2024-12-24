@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -32,5 +33,5 @@ public class RequestSignUpDto {
     private int userGender;
 
     @JsonProperty("user_birth")
-    private String userBirth;
+    private LocalDate userBirth;
 }

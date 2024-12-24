@@ -80,23 +80,23 @@
 </template>
 
 <script setup>
-import axios from '@/api/axios'; // Axios 인스턴스
-import Header from '@/components/compo/Header.vue';
-import InfoBox from '@/components/compo/InfoBox.vue';
+import axios from '@/api/axios';
+import Header from '@/components/used/Header.vue';
+import InfoBox from '@/components/used/InfoBox.vue';
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { getAllTrips, getTripStatus } from '@/api/trip';
 
 const totalTrips = ref(0);
 const ongoingTrips = ref(0);
 const upcomingTrips = ref(0);
 const completedTrips = ref(0);
-const trips = ref([]); // 모든 여행 데이터
-const selectedCategory = ref('전체'); // 현재 선택된 카테고리
+const trips = ref([]);
+const selectedCategory = ref('전체');
 const router = useRouter();
-const authStore = useAuthStore(); // 인증 스토어 사용
+const authStore = useAuthStore();
 
-// 날짜 포맷팅 함수
 const formatPeriod = (start, end) => {
   const formatDate = (date) => {
     const [year, month, day] = date.split('-');
@@ -105,7 +105,6 @@ const formatPeriod = (start, end) => {
   return `${formatDate(start)} ~ ${formatDate(end)}`;
 };
 
-// 여행 시작까지 남은 날짜 계산
 const calculateDaysUntilTrip = (startDate) => {
   const today = new Date();
   const start = new Date(startDate);
@@ -113,13 +112,11 @@ const calculateDaysUntilTrip = (startDate) => {
   return diff > 0 ? diff : 0;
 };
 
-// 현재 선택된 카테고리를 설정
 const selectCategory = async (category) => {
   selectedCategory.value = category;
-  await fetchTripsByCategory(); // 선택된 카테고리에 따라 API 호출
+  await fetchTripsByCategory();
 };
 
-// 선택된 카테고리에 따라 필터링된 여행 데이터를 반환
 const filteredTrips = computed(() => {
   if (selectedCategory.value === '전체') return trips.value;
   return trips.value.filter((trip) => {
@@ -139,7 +136,6 @@ const goToAccountCalendar = (tripId) => {
   router.push({ name: 'Trip_Detail', params: { tripId } });
 };
 
-// 여행이 활성화 상태인지 확인
 const isFaded = (trip) => {
   const currentDate = new Date();
   const startPeriod = new Date(trip.startPeriod);
@@ -149,13 +145,10 @@ const isFaded = (trip) => {
   return true;
 };
 
-// 모든 여행 데이터를 가져오는 API 호출
 const fetchAllTrips = async () => {
   try {
-    const response = await axios.get('/trip/all', {
-      headers: { Authorization: `Bearer ${authStore.token}` }, // Authorization 헤더 추가
-    });
-    trips.value = response.data; // 여행 데이터 저장
+    const response = await getAllTrips();
+    trips.value = response.data;
     totalTrips.value = trips.value.length;
     ongoingTrips.value = trips.value.filter(
       (trip) => trip.tripStatus === 1
@@ -171,10 +164,9 @@ const fetchAllTrips = async () => {
   }
 };
 
-// 선택된 카테고리의 여행 데이터를 가져오는 API 호출
 const fetchTripsByCategory = async () => {
   if (selectedCategory.value === '전체') {
-    await fetchAllTrips(); // "전체"를 선택하면 모든 데이터를 가져옴
+    await fetchAllTrips();
     return;
   }
 
@@ -184,13 +176,10 @@ const fetchTripsByCategory = async () => {
   if (selectedCategory.value === '완료') status = 2;
 
   try {
-    const response = await axios.get('/trip/status', {
-      params: { status },
-      headers: { Authorization: `Bearer ${authStore.token}` },
-    });
-    trips.value = response.data; // 선택된 카테고리의 여행 데이터 저장
+    const response = await getTripStatus(status);
+    trips.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch trips by category:', error);
+    console.error('category 패치 실패 :', error);
   }
 };
 
@@ -232,21 +221,21 @@ onMounted(async () => {
 
 .header {
   position: relative;
-  top: 126px; /* 기존에는 170px이었음 */
+  top: 126px;
 }
 
 .rabbitImg {
   width: 604px;
   height: auto;
   object-fit: contain;
-  margin-top: 300px; /* 헤더와의 간격을 조정 */
+  margin-top: 300px;
 }
 
 .infoBox {
   position: absolute;
   height: 476px;
   bottom: 0;
-  width: 100%; /* infoBox가 BlueBox의 전체 너비를 차지하도록 설정 */
+  width: 100%;
   margin: 0;
   background: linear-gradient(
     180deg,
@@ -260,11 +249,8 @@ onMounted(async () => {
   height: 1115px;
   width: 1080px;
   background-color: #fff;
-  /* margin: 0; */
-  position: relative; /* 버튼 위치 설정을 위한 기준 요소 */
+  position: relative;
 }
-
-/* 카테고리 css start*/
 
 .kindTripBox {
   max-width: 1080px;
@@ -273,8 +259,8 @@ onMounted(async () => {
   align-items: center;
   gap: 10px;
   padding: 0;
-  overflow-x: auto; /* 내용이 넘칠 경우 수평 스크롤 */
-  justify-content: flex-start; /* 좌측 정렬 */
+  overflow-x: auto;
+  justify-content: flex-start;
   margin: 0 58px;
 }
 
@@ -290,8 +276,8 @@ onMounted(async () => {
   height: 94px;
   padding: 0 34px;
   gap: 15px;
-  display: flex; /* 가로 정렬을 위해 flex로 설정 */
-  align-items: center; /* 텍스트를 수직 가운데 정렬 */
+  display: flex;
+  align-items: center;
   background: #f5f6f7;
   border-radius: 57px;
   font-size: 40px;
@@ -307,10 +293,10 @@ onMounted(async () => {
 
 .tripCategoryName {
   font-weight: 500;
-  overflow: hidden; /* 넘치는 텍스트 숨김 */
-  text-overflow: ellipsis; /* 넘치는 텍스트를 생략 부호로 표시 */
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: inherit;
-  white-space: nowrap; /* 한 줄로만 표시되도록 설정 */
+  white-space: nowrap;
 }
 
 .tripCategoryCount {
@@ -328,8 +314,6 @@ onMounted(async () => {
   color: #ffffff !important;
 }
 
-/* 카테고리 css end*/
-
 .planListBox {
   width: 964px;
   max-height: 950px;
@@ -339,8 +323,8 @@ onMounted(async () => {
   align-items: center;
   align-content: flex-start;
   gap: 35px;
-  overflow-x: hidden; /* 수평 스크롤 비활성화 */
-  overflow-y: scroll; /* 수직 스크롤 활성화 */
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .noneBox {
@@ -363,7 +347,7 @@ onMounted(async () => {
 }
 
 .useBox-txt {
-  margin: 0; /* 이전에 있던 여백 제거 */
+  margin: 0;
   padding: 0;
   flex-grow: 1;
 }
@@ -372,8 +356,8 @@ onMounted(async () => {
   width: 144px;
   height: 144px;
   object-fit: cover;
-  margin-right: 27px; /* 이미지 오른쪽 여백 조정 */
-  margin-left: 48px; /* 왼쪽 여백 추가 */
+  margin-right: 27px;
+  margin-left: 48px;
 }
 
 .useBox-detail {
@@ -395,7 +379,7 @@ onMounted(async () => {
   line-height: 46px;
   word-wrap: break-word;
   display: block;
-  padding-bottom: 20px; /* 간격 조정 */
+  padding-bottom: 20px;
 }
 
 .useBox-txt-sub {
@@ -412,8 +396,8 @@ onMounted(async () => {
   height: 161x;
   position: absolute;
   border-radius: 100%;
-  right: 59px; /* 오른쪽 50px 위치 */
-  bottom: 108px; /* 아래쪽 100px 위치 */
+  right: 59px;
+  bottom: 108px;
   border: none;
   cursor: pointer;
   box-shadow: 0px 0px 28px rgba(0, 0, 0, 0.15);
