@@ -17,7 +17,7 @@
         accept="image/*"
       />
     </div>
-    <!-- 모달 창 -->
+
     <div v-if="showModal" class="modal" @click="showModal = false">
       <div class="modal-content" @click.stop>
         <img
@@ -27,7 +27,7 @@
         />
       </div>
     </div>
-    <!-- 이름 필드 (읽기 전용) -->
+
     <TextInput
       class="textname"
       headerInput="이름"
@@ -36,7 +36,7 @@
       :readonly="true"
     />
     <div class="spacer"></div>
-    <!-- 닉네임 필드 -->
+
     <TextInput
       class="textname"
       headerInput="닉네임"
@@ -44,7 +44,7 @@
       v-model="profile.userNickname"
     />
     <div class="spacer"></div>
-    <!-- 이메일 필드 -->
+
     <TextInput
       class="textname"
       headerInput="이메일"
@@ -52,7 +52,7 @@
       v-model="profile.userEmail"
     />
     <div class="spacer"></div>
-    <!-- 비밀번호 필드 (초기값 비어 있음) -->
+
     <TextInput
       class="textname"
       headerInput="비밀번호"
@@ -76,28 +76,28 @@ import CtaBar from '@/components/used/CtaBar.vue';
 import { ref, reactive, onMounted, watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
+import { upload } from '@/api/file';
+import { getUserProfile, updateNewProfile } from '@/api/user';
 
 const authStore = useAuthStore();
 const profile = reactive({
   userProfileImg: '',
-  userUsername: '', // 이름 필드 (수정 불가)
+  userUsername: '',
   userNickname: '',
   userEmail: '',
-  userPassword: '', // 비밀번호 필드 초기값 비움
+  userPassword: '',
 });
 
-const showModal = ref(false); // 모달 창 표시 상태
+const showModal = ref(false);
 const isSaveEnabled = ref(false);
 const fileInput = ref(null);
-const previewImage = ref(''); // 로컬에서 미리보기용 이미지 URL
-const isImageChanged = ref(false); // 이미지 변경 여부
+const previewImage = ref('');
+const isImageChanged = ref(false);
 
-// 파일 선택 트리거
 const changeImg = () => {
-  fileInput.value.click(); // 숨겨진 파일 입력을 트리거
+  fileInput.value.click();
 };
 
-// 파일 선택 후 처리
 const handleFileChange = (event) => {
   const file = event.target.files[0];
   if (!file) {
@@ -105,70 +105,55 @@ const handleFileChange = (event) => {
     return;
   }
 
-  // 로컬에서 미리보기 이미지 설정
   const reader = new FileReader();
   reader.onload = (e) => {
-    previewImage.value = e.target.result; // 로컬 이미지 URL 설정
-    isImageChanged.value = true; // 이미지 변경 여부 설정
+    previewImage.value = e.target.result;
+    isImageChanged.value = true;
   };
   reader.readAsDataURL(file);
 };
 
-// 프로필 업데이트하기
 const updateProfile = async () => {
   if (!profile.userNickname.trim() && !profile.userPassword.trim()) {
     alert('닉네임이나 비밀번호 중 하나는 필수 항목입니다.');
     return;
   }
 
-  let imageUrl = profile.userProfileImg; // 기본적으로 기존 URL 사용
+  let imageUrl = profile.userProfileImg;
 
   try {
-    // 이미지가 변경된 경우 서버 업로드
     if (isImageChanged.value) {
       const file = fileInput.value.files[0];
       if (file) {
         const formData = new FormData();
         formData.append('file', file);
 
-        const uploadResponse = await axios.post(
-          'http://localhost:8080/file/upload',
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${authStore.token}`,
-            },
-          }
-        );
-        imageUrl = uploadResponse.data.url; // 새 이미지 URL 설정
+        const uploadResponse = await upload(formData);
+        imageUrl = uploadResponse.data.url;
       }
     }
 
-    // 프로필 업데이트 API 호출
     const payload = {
       userProfileImg: imageUrl,
       userNickname: profile.userNickname,
       userEmail: profile.userEmail,
-      ...(profile.userPassword && { userPassword: profile.userPassword }), // 비밀번호는 입력한 경우에만 포함
+      ...(profile.userPassword && { userPassword: profile.userPassword }),
     };
 
-    await axios.post('http://localhost:8080/user/profile', payload, {
-      headers: { Authorization: `Bearer ${authStore.token}` },
-    });
+    updateNewProfile(payload);
 
     alert('프로필이 성공적으로 저장되었습니다.');
-    profile.userProfileImg = imageUrl; // UI에 업데이트
-    profile.userPassword = ''; // 비밀번호 필드 초기화
-    previewImage.value = ''; // 로컬 미리보기 초기화
-    isImageChanged.value = false; // 이미지 변경 상태 초기화
-    fetchProfile(); // 화면 최신화
+    profile.userProfileImg = imageUrl;
+    profile.userPassword = '';
+    previewImage.value = '';
+    isImageChanged.value = false;
+    fetchProfile();
   } catch (error) {
     console.error('프로필 저장 실패:', error);
     alert('프로필 저장 중 오류가 발생했습니다.');
   }
 };
 
-// 모든 필드가 입력되었는지 확인하여 버튼 활성화
 watch(
   () => [
     profile.userNickname,
@@ -182,12 +167,9 @@ watch(
   }
 );
 
-// 프로필 가져오기
 const fetchProfile = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/user/profile', {
-      headers: { Authorization: `Bearer ${authStore.token}` },
-    });
+    const response = await getUserProfile();
     const { userProfileImg, userUsername, userNickname, userEmail } =
       response.data;
     Object.assign(profile, {

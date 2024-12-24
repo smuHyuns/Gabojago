@@ -52,32 +52,27 @@ import Calendar from '@/components/used/TripCalendar.vue';
 import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
+import { getTripDetail } from '@/api/trip';
 
-// API Base URL
 const BASEURL = 'http://localhost:8080';
 
-// 라우터 정보 및 인증 스토어
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
-// 여행 정보 초기값
 const trip = ref({
   id: null,
-  describe: ref(null), // 기본 설명 설정
-  startPeriod: ref(null), // 기본 날짜 설정
-  endPeriod: ref(null), // 기본 날짜 설정
+  describe: ref(null),
+  startPeriod: ref(null),
+  endPeriod: ref(null),
   usedBudget: 0,
   remainingBudget: 0,
 });
 
-// 데이터 로드 상태
 const isDataLoaded = ref(false);
 
-// 선택된 날짜
 const selectedDate = ref(null);
 
-// 오늘 날짜 가져오기
 const getTodayDate = () => {
   const today = new Date();
   const year = today.getFullYear();
@@ -86,12 +81,10 @@ const getTodayDate = () => {
   return `${year}-${month}-${day}`;
 };
 
-// 로그 출력 함수
 const logTrip = (trip) => {
   console.log(trip);
 };
 
-// 여행 정보를 가져오는 함수
 const fetchTripInfo = async () => {
   console.log('tripId : ', route.params.tripId);
   console.log(getTodayDate());
@@ -99,14 +92,10 @@ const fetchTripInfo = async () => {
 
   try {
     console.log(route.params.tripId);
-    const response = await axios.get(
-      `${BASEURL}/trip/detail/${route.params.tripId}`
-    );
+    const response = await getTripDetail(route.params.tripId);
 
     console.log('초기 여행정보 불러오기');
-    console.log(response);
-
-    if (response.data) {
+    if (response) {
       Object.assign(trip.value, {
         id: route.params.tripId,
         describe: response.data.description || '여행 설명이 없습니다',
@@ -124,7 +113,6 @@ const fetchTripInfo = async () => {
 
 const fetchTripExpense = async (date) => {
   try {
-    // 날짜를 yyyy-MM-dd 형식으로 변환 (타임존 영향 제거)
     const formattedDate = `${new Date(date).getFullYear()}-${String(
       new Date(date).getMonth() + 1
     ).padStart(2, '0')}-${String(new Date(date).getDate()).padStart(2, '0')}`;
@@ -152,7 +140,6 @@ const fetchTripExpense = async (date) => {
   }
 };
 
-// 날짜 클릭 이벤트 핸들러
 const handleDateClick = async (date) => {
   selectedDate.value = date;
   await fetchTripExpense(date);
@@ -161,12 +148,11 @@ const handleDateClick = async (date) => {
 const navigateToTripAddPayment = () => {
   router.push({
     name: 'Detail_AddPayment',
-    params: { tripId: route.params.tripId }, // 여행 ID
-    query: { date: selectedDate.value }, // 선택된 날짜
+    params: { tripId: route.params.tripId },
+    query: { date: selectedDate.value },
   });
 };
 
-// 컴포넌트 로드 시 여행 정보 가져오기
 onMounted(() => {
   fetchTripInfo();
 });
@@ -183,17 +169,16 @@ onMounted(() => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .calendar-box {
   width: 100%;
-  height: 100%; /* 원하는 높이로 조정하세요 */
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
+  box-sizing: border-box;
 }
 
 .calendar-container {
@@ -211,8 +196,8 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
-  aspect-ratio: 1 / 1; /* 1:1 비율을 유지 */
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
 }
 
 .result-box {

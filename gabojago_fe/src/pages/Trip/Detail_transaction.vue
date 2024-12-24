@@ -43,15 +43,16 @@ import { useRoute, useRouter } from 'vue-router';
 import TopbarWithIcon from '@/components/used/TopbarWithIcon_delete.vue';
 import HistoryListItemNoCheck from '@/components/used/HistoryListItemNoCheck.vue';
 import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
-import { getCurrency, getDetailDayTransaction } from '@/api/transaction';
+import { getDetailDayTransaction } from '@/api/transaction';
+import { getCurrency } from '@/api/trip';
 
 const route = useRoute();
 const router = useRouter();
 
-const tripId = route.params.tripId; // 여행 ID 가져오기
-const selectedDate = route.query.date; // 선택된 날짜 가져오기
+const tripId = route.params.tripId;
+const selectedDate = route.query.date;
 
-const expenses = ref([]); // 백엔드에서 받아온 거래 데이터 저장
+const expenses = ref([]);
 const totalExpense = ref(0);
 const currency = ref('');
 
@@ -73,7 +74,6 @@ const fetchTripExpense = async () => {
   }
 };
 
-// 날짜별로 데이터를 그룹화
 const groupedExpenses = computed(() => {
   return expenses.value.reduce((groups, expense) => {
     const date = expense.expenseDate;
@@ -85,14 +85,12 @@ const groupedExpenses = computed(() => {
   }, {});
 });
 
-// ExpenseType을 사용자 친화적인 이름으로 매핑
 const mapExpenseType = (type) => {
   const expenseTypes = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
   return expenseTypes[type] || '알 수 없음';
 };
 
 const getCategoryImage = (category) => {
-  // 카테고리 매핑
   const categoryMap = {
     관광: '관광',
     교통: '교통',
@@ -103,22 +101,19 @@ const getCategoryImage = (category) => {
     기타: '기타',
   };
 
-  // 매핑된 카테고리를 가져오기
   const mappedCategory = categoryMap[category] || '기타';
 
   try {
-    // 이미지 경로 생성
     const imagePath = new URL(
       `/src/assets/icons/${mappedCategory}.png`,
       import.meta.url
     ).href;
-    console.log('Category:', category); // 전달된 category 값
-    console.log('Mapped Category:', mappedCategory); // 매핑된 카테고리 값
-    console.log('이미지 경로:', imagePath); // 생성된 이미지 경로
+    console.log('Category:', category);
+    console.log('Mapped Category:', mappedCategory);
+    console.log('이미지 경로:', imagePath);
     return imagePath;
   } catch (error) {
     console.error('이미지 로드 실패:', error);
-    // 기본 이미지 경로 반환
     return new URL('/src/assets/icons/기타.png', import.meta.url).href;
   }
 };
@@ -126,12 +121,11 @@ const getCategoryImage = (category) => {
 const navigateToTripAddPayment = () => {
   router.push({
     name: 'Detail_AddPayment',
-    params: { tripId: tripId.value }, // 여행 ID
-    query: { date: route.query.date }, // 선택된 날짜
+    params: { tripId: tripId.value },
+    query: { date: route.query.date },
   });
 };
 
-// 컴포넌트 로드 시 데이터 요청
 onMounted(() => {
   fetchTripExpense();
 });
@@ -148,7 +142,6 @@ onMounted(() => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .print-box {

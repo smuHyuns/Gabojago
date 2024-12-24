@@ -60,7 +60,6 @@ onMounted(async () => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .content {

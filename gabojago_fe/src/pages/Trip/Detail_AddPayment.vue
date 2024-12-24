@@ -10,7 +10,6 @@
       />
       <div class="price-box">
         <div class="price-details">
-          <!-- 외화 입력 필드 -->
           <input
             v-model="displayBudget"
             @input="updateBudget"
@@ -20,7 +19,6 @@
           />
         </div>
         <div class="type-of-money" style="margin-left: 75px">{{}}</div>
-        <!-- KRW 환전 값 표시 -->
         <div class="print-small-price">{{ conversionResult.KRW }} 원</div>
       </div>
       <div class="payType">
@@ -91,14 +89,14 @@ import Topbar from '@/components/used/Topbar.vue';
 import CtaBar from '@/components/used/CtaBar.vue';
 import TopSelect from '@/components/used/TopSelect.vue';
 import { useRouter, useRoute } from 'vue-router';
-import { getCurrency, postTransaction } from '@/api/transaction';
-
+import { postTransaction } from '@/api/transaction';
+import { getCurrency } from '@/api/trip';
 const router = useRouter();
 const route = useRoute();
 
-const Budget = ref(0); // 외화 입력 값
-const displayBudget = ref(''); // 외화 입력 표시값
-const conversionResult = ref({ KRW: 0 }); // 환전 결과
+const Budget = ref(0);
+const displayBudget = ref('');
+const conversionResult = ref({ KRW: 0 });
 const expenseType = ref('지출');
 const paymentMethod = ref('현금');
 const expenseDetail = ref('');
@@ -120,7 +118,7 @@ const getRateAndCurrency = async () => {
     console.log('currency : ', response.currency);
     console.log('exchangeRate : ', response.rate);
     console.log('선택일자 : ', selectedDate.value);
-    convertCurrency(); // 환율을 가져온 후 즉시 변환 실행
+    convertCurrency();
   } catch (error) {
     console.log('페이지에서 환율, 통화단위 불러오기 실패! : ', error);
   }
@@ -153,17 +151,17 @@ const registerExpense = async () => {
 async function convertCurrency() {
   if (displayBudget.value && exchangeRate.value) {
     const inputAmount = parseFloat(displayBudget.value.replace(/\D/g, '')) || 0;
-    const exchangeRateToKRW = 1 / parseFloat(exchangeRate.value); // 1 KRW -> 외화 기준 환율 반전
-    conversionResult.value.KRW = (inputAmount * exchangeRateToKRW).toFixed(2); // 외화 → KRW 변환
+    const exchangeRateToKRW = 1 / parseFloat(exchangeRate.value);
+    conversionResult.value.KRW = (inputAmount * exchangeRateToKRW).toFixed(2);
   } else {
     conversionResult.value.KRW = 0;
   }
 }
 
 function updateBudget(event) {
-  const value = event.target.value.replace(/\D/g, ''); // 숫자만 추출
-  displayBudget.value = value ? `${value} ${currency.value}` : ''; // 외화 입력값 표시
-  convertCurrency(); // 환율 계산 실행
+  const value = event.target.value.replace(/\D/g, '');
+  displayBudget.value = value ? `${value} ${currency.value}` : '';
+  convertCurrency();
 }
 
 function selectPaymentMethod(method) {
@@ -187,7 +185,6 @@ function updateExpenseType(type) {
   console.log(expenseType.value);
 }
 
-// 컴포넌트 로드 시 여행 정보 가져오기
 onMounted(() => {
   getRateAndCurrency();
 });
@@ -201,11 +198,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 요소를 중앙에 배치 */
+  justify-content: center;
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .category-box .selected {
@@ -259,9 +255,7 @@ onMounted(() => {
 }
 
 .price-details {
-  /* display: flex; */
   flex-direction: row;
-  /* align-items: center; */
   gap: 10px;
   color: #8892a0;
   margin-left: 75px;

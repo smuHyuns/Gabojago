@@ -47,18 +47,19 @@ import TopbarWithIcon from '@/components/used/TopbarWithIcon-deleteFull.vue';
 import TransactionDeleteBtn from '@/components/used/TransactionDeleteBtn.vue';
 import CtaBarBlackSiwan from '@/components/used/CtaBarBlack-siwan.vue';
 import { useAuthStore } from '@/stores/auth';
-import { getCurrency, getDetailDayTransaction } from '@/api/transaction';
+import { deleteTransaction, getDetailDayTransaction } from '@/api/transaction';
+import { getCurrency } from '@/api/trip';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
 
 const BASEURL = 'http://localhost:8080/transaction';
-const tripId = route.params.tripId; // 여행 ID 가져오기
-const selectedDate = route.query.date; // 선택된 날짜 가져오기
+const tripId = route.params.tripId;
+const selectedDate = route.query.date;
 
-const expenses = ref([]); // 백엔드에서 받아온 거래 데이터 저장
-const selectedExpenses = ref([]); // 선택된 항목 ID 저장
+const expenses = ref([]);
+const selectedExpenses = ref([]);
 
 const totalExpense = ref(0);
 const currency = ref('');
@@ -87,31 +88,19 @@ async function deleteLog() {
   console.log();
 }
 
-//백엔드 삭제요청
-// 선택된 지출 항목 삭제
 async function deleteSelectedExpenses() {
   try {
-    // 선택된 항목 삭제 요청
-    await axios.delete(`${BASEURL}/delete`, {
-      headers: { Authorization: `Bearer ${authStore.token}` },
-      data: {
-        tripId: tripId, // 여행 ID
-        transactionIds: selectedExpenses.value, // 선택된 transactionId 배열 전달
-      },
-    });
+    await deleteTransaction(tripId, selectedExpenses);
 
-    // 로컬 상태 업데이트: 선택된 항목 제거
     expenses.value = expenses.value.filter(
       (expense) => !selectedExpenses.value.includes(expense.transactionId)
     );
 
-    // 총 지출 업데이트
     totalExpense.value = expenses.value.reduce(
       (sum, expense) => sum + (expense.expenseAmount || 0),
       0
     );
 
-    // 성공 알림 및 초기화
     alert('선택된 지출 내역이 삭제되었습니다.');
     selectedExpenses.value = [];
   } catch (error) {
@@ -120,7 +109,6 @@ async function deleteSelectedExpenses() {
   }
 }
 
-// 날짜별로 데이터를 그룹화
 const groupedExpenses = computed(() => {
   return expenses.value.reduce((groups, expense) => {
     const date = expense.expenseDate;
@@ -132,7 +120,6 @@ const groupedExpenses = computed(() => {
   }, {});
 });
 
-// 선택된 지출 항목 업데이트
 function updateSelectedExpenses(expenseId) {
   if (selectedExpenses.value.includes(expenseId)) {
     selectedExpenses.value = selectedExpenses.value.filter(
@@ -143,7 +130,6 @@ function updateSelectedExpenses(expenseId) {
   }
 }
 
-// ExpenseType을 사용자 친화적인 이름으로 매핑
 const mapExpenseType = (type) => {
   const expenseTypes = ['관광', '교통', '쇼핑', '숙박', '음식', '항공', '기타'];
   return expenseTypes[type] || '알 수 없음';
@@ -159,7 +145,6 @@ const getCategoryImage = (type) => {
   }
 };
 
-// 컴포넌트 로드 시 데이터 요청
 onMounted(() => {
   fetchTripExpense();
 });
@@ -176,7 +161,6 @@ onMounted(() => {
   margin: 0 auto;
   background-color: #fff;
   position: relative;
-  border: 1px solid black;
 }
 
 .print-box {
