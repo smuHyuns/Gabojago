@@ -3,8 +3,11 @@ package Gabojago.gabojago_be.user;
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
 import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
+import Gabojago.gabojago_be.exception.ErrorCode;
+import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.file.S3FileServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserUtilService {
     private final PasswordEncoder passwordEncoder;
     @Value("${default.profile.image:none}")
@@ -30,7 +34,8 @@ public class UserUtilService {
             LocalDate localDate = LocalDate.parse(date, formatter);
             return Date.valueOf(localDate);
         } catch (Exception e) {
-            throw new IllegalArgumentException("유효하지 않은 포맷입니다. 'YYYY-MM-DD' 를 사용해주세요.", e);
+            log.info("에러 메시지 : {}", e.getMessage());
+            throw new GabojagoException(ErrorCode.USER_UTIL_INVALID_DATE_FORMAT);
         }
     }
 

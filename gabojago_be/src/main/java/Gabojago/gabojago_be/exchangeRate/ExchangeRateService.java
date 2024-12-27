@@ -2,8 +2,11 @@ package Gabojago.gabojago_be.exchangeRate;
 
 import Gabojago.gabojago_be.entity.ExchangeRate;
 import Gabojago.gabojago_be.entity.ExchangeRateTemp;
+import Gabojago.gabojago_be.exception.ErrorCode;
+import Gabojago.gabojago_be.exception.GabojagoException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ExchangeRateService {
 
     private final ExchangeRateRepository exchangeRateRepository;
@@ -90,7 +94,7 @@ public class ExchangeRateService {
                     if (value instanceof Number) {
                         temp.setRate(((Number) value).doubleValue());
                     } else {
-                        throw new RuntimeException("환율 데이터 형식이 올바르지 않습니다: " + entry.getKey());
+                        throw new GabojagoException(ErrorCode.EXCHANGE_RATE_INVALID_FORMAT);
                     }
 
                     temp.setCountry(CurrencyCountryMapping.getMapping().getOrDefault(entry.getKey(), "Unknown"));
@@ -107,22 +111,20 @@ public class ExchangeRateService {
 
         System.out.println("Request URL: " + url);
 
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
-            System.out.println("API Response: " + response);
+        System.out.println("API Response: " + response);
 
-            if (response != null && "success".equals(response.get("result"))) {
-                return (Map<String, Object>) response.get("conversion_rates");
-            }
-
-            throw new RuntimeException("환율 데이터를 가져오는데 실패했습니다.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("환율 API 호출 실패: " + e.getMessage());
+        if (response != null && "success".equals(response.get("result"))) {
+            return (Map<String, Object>) response.get("conversion_rates");
         }
+
+        // 실패 시 예외 발생
+        log.info("response : {}", response);
+        throw new GabojagoException(ErrorCode.EXCHANGE_RATE_API_CALL_FAILED);
     }
+
 
     public Optional<ExchangeRate> getExchangeRateByCountry(String country) {
         return exchangeRateRepository.findExchangeRateByCountry(country);
