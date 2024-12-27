@@ -38,44 +38,15 @@ public class TransactionService {
     private final TransactionUtilService transactionUtilService;
     private final TransactionTripCoordinator transactionTripCoordinator;
 
-    @Transactional
-    public Transaction saveTransaction(RequestTransactionDto requestTransactionDto) {
-        Trip trip = tripRepository.findById(requestTransactionDto.getTripId())
-                .orElseThrow(() -> new TripNotFoundException(requestTransactionDto.getTripId()));
-
-        User user = userRepository.findById(requestTransactionDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(requestTransactionDto.getUserId()));
-
-        // Transaction 엔티티 생성 및 값 설정
-        Transaction transaction = new Transaction();
-        transaction.setTrip(trip);
-        transaction.setUser(user);
-        transaction.setExpenseType(requestTransactionDto.getExpenseType());
-        transaction.setExpenseDate(requestTransactionDto.getExpenseDate());
-        transaction.setExpenseAmount(requestTransactionDto.getExpenseAmount());
-        transaction.setExchangeAmount(requestTransactionDto.getExchangeAmount());
-
-        // 데이터베이스에 저장
-        return transactionRepository.save(transaction);
-    }
-
 
     public Long getSum(Long tripId) {
         Long response = transactionRepository.findSumByTripId(tripId);
         return response;
     }
 
-    public ResponseTripDetailDayDto getExpenseByDate(Long tripId, LocalDate date) {
-        Long expense = transactionRepository.findSumByTripIdAndExpenseDate(tripId, date);
-        System.out.println(expense);
-        ResponseTripDetailDayDto response = new ResponseTripDetailDayDto();
-        response.setTotalExpense(expense);
-        return response;
-    }
-
     public List<Transaction> getTripDetailTransaction(String token, Long tripId, LocalDate date) {
         //토큰검증
-        //Long userId = jwtUtil.extractUserIdFromToken(token);
+        Long userId = jwtUtil.extractUserIdFromToken(token);
         //탐색
         List<Transaction> transactions = transactionRepository.findAllByTripTripIdAndExpenseDate(tripId, date);
         System.out.println("transactions 크기 : " + transactions.size());
@@ -97,7 +68,6 @@ public class TransactionService {
             Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() ->
                     new TransactionNotFoundException(transactionId));
 
-            // 트랜잭션 삭제
             transactionRepository.deleteById(transactionId);
 
             //지출 -> + , 추가 + -> -
@@ -106,7 +76,7 @@ public class TransactionService {
                 curExchangeBudget += transaction.getExchangeAmount();
             } else {
                 curBudget -= transaction.getExpenseAmount();
-                curExchangeBudget -= transaction.getExpenseAmount();
+                curExchangeBudget -= transaction.getExchangeAmount();
             }
         }
 
@@ -136,4 +106,36 @@ public class TransactionService {
 
         return response;
     }
+
+    //미사용
+
+//    @Transactional
+//    public Transaction saveTransaction(RequestTransactionDto requestTransactionDto) {
+//        Trip trip = tripRepository.findById(requestTransactionDto.getTripId())
+//                .orElseThrow(() -> new TripNotFoundException(requestTransactionDto.getTripId()));
+//
+//        User user = userRepository.findById(requestTransactionDto.getUserId())
+//                .orElseThrow(() -> new UserNotFoundException(requestTransactionDto.getUserId()));
+//
+//        // Transaction 엔티티 생성 및 값 설정
+//        Transaction transaction = new Transaction();
+//        transaction.setTrip(trip);
+//        transaction.setUser(user);
+//        transaction.setExpenseType(requestTransactionDto.getExpenseType());
+//        transaction.setExpenseDate(requestTransactionDto.getExpenseDate());
+//        transaction.setExpenseAmount(requestTransactionDto.getExpenseAmount());
+//        transaction.setExchangeAmount(requestTransactionDto.getExchangeAmount());
+//
+//        // 데이터베이스에 저장
+//        return transactionRepository.save(transaction);
+//    }
+
+//    public ResponseTripDetailDayDto getExpenseByDate(Long tripId, LocalDate date) {
+//        Long expense = transactionRepository.findSumByTripIdAndExpenseDate(tripId, date);
+//        System.out.println(expense);
+//        ResponseTripDetailDayDto response = new ResponseTripDetailDayDto();
+//        response.setTotalExpense(expense);
+//        return response;
+//    }
+
 }
