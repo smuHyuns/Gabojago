@@ -1,15 +1,16 @@
 package Gabojago.gabojago_be.transaction;
 
-import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
 import Gabojago.gabojago_be.entity.Trip;
-import Gabojago.gabojago_be.exception.TripNotFoundException;
+import Gabojago.gabojago_be.exception.ErrorCode;
+import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.trip.TripRepository;
-import Gabojago.gabojago_be.trip.TripService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class TransactionTripCoordinator {
     private final TripRepository tripRepository;
@@ -17,7 +18,7 @@ public class TransactionTripCoordinator {
     @Transactional
     public void updateBudget(long tripId, Integer tripBudget, Integer exchangeTripBudget, String transactionType) {
         Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new TripNotFoundException(tripId));
+                .orElseThrow(() -> new GabojagoException(ErrorCode.TRIP_NOT_FOUND));
 
         Integer curBudget = trip.getTripBudget();
         Integer exchangedCurBudget = trip.getTripExchangeBudget();
@@ -29,7 +30,8 @@ public class TransactionTripCoordinator {
             curBudget += tripBudget;
             exchangedCurBudget += exchangeTripBudget;
         } else {
-            throw new IllegalArgumentException("유효하지 않은 트랜잭션 타입입니다: " + transactionType);
+            log.info("타입 : {}", transactionType);
+            throw new GabojagoException(ErrorCode.TRANSACTION_INVALID_TYPE);
         }
 
         trip.setTripBudget(curBudget);

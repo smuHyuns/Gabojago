@@ -2,27 +2,18 @@ package Gabojago.gabojago_be.transaction;
 
 import Gabojago.gabojago_be.dto.request.RequestTransactionAddDto;
 import Gabojago.gabojago_be.dto.request.RequestTransactionDeleteDto;
-import Gabojago.gabojago_be.dto.request.RequestTransactionDto;
-import Gabojago.gabojago_be.dto.response.ResponseTripDetailDayDto;
 import Gabojago.gabojago_be.entity.Transaction;
 import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.entity.User;
-import Gabojago.gabojago_be.exception.TransactionNotFoundException;
-import Gabojago.gabojago_be.exception.TripNotFoundException;
-import Gabojago.gabojago_be.exception.UserNotFoundException;
+import Gabojago.gabojago_be.exception.ErrorCode;
+import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.trip.TripRepository;
-import Gabojago.gabojago_be.trip.TripService;
 import Gabojago.gabojago_be.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -66,7 +57,7 @@ public class TransactionService {
 
         for (long transactionId : transactionIds) {
             Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() ->
-                    new TransactionNotFoundException(transactionId));
+                    new GabojagoException(ErrorCode.TRANSACTION_NOT_FOUND));
 
             transactionRepository.deleteById(transactionId);
 
@@ -93,10 +84,10 @@ public class TransactionService {
         Long userId = jwtUtil.extractUserIdFromToken(token);
 
         Trip trip = tripRepository.findById(request.getTripId())
-                .orElseThrow(() -> new TripNotFoundException(request.getTripId()));
+                .orElseThrow(() -> new GabojagoException(ErrorCode.TRIP_NOT_FOUND));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+                .orElseThrow(() -> new GabojagoException(ErrorCode.USER_NOT_FOUND));
 
         Transaction transaction = transactionUtilService.setTransaction(trip, user, request);
         Transaction response = transactionRepository.save(transaction);
