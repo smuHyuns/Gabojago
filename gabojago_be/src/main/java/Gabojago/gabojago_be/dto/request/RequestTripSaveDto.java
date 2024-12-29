@@ -3,12 +3,12 @@ package Gabojago.gabojago_be.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestTripSaveDto {

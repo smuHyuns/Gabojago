@@ -14,6 +14,7 @@ import Gabojago.gabojago_be.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -59,8 +60,9 @@ class TransactionServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("거래내역_저장_테스트")
     @Test
-    void 거래내역_저장_테스트() {
+    void saveTransactionFromTrip() {
         // Given
         long userId = 1L;
         long tripId = 1L;
@@ -93,8 +95,9 @@ class TransactionServiceTest {
         );
     }
 
+    @DisplayName("거래내역_저장_TRIP_NOP_FOUND_EXCEPTION")
     @Test
-    void 거래내역_저장_TRIP_NOP_FOUND_EXCEPTION() {
+    void saveTransactionFromTrip_TRIP_NOP_FOUND_EXCEPTION() {
         // Given
         long userId = 1L;
         long tripId = 1L;
@@ -122,8 +125,9 @@ class TransactionServiceTest {
         );
     }
 
+    @DisplayName("거래내역_저장_USER_NOT_FOUND_EXCEPTION")
     @Test
-    void 거래내역_저장_USER_NOT_FOUND_EXCEPTION() {
+    void saveTransactionFromTrip_USER_NOT_FOUND_EXCEPTION() {
         // Given
         long userId = 1L;
         long tripId = 1L;
@@ -154,8 +158,9 @@ class TransactionServiceTest {
         );
     }
 
+    @DisplayName("거래내역_저장_COORDINATOR_TRIP_NOT_FOUND")
     @Test
-    void 거래내역_저장_COORDINATOR_TRIP_NOT_FOUND() {
+    void saveTransactionFromTrip_COORDINATOR_TRIP_NOT_FOUND() {
         // Given
         long userId = 1L;
         long tripId = 1L;
@@ -193,8 +198,9 @@ class TransactionServiceTest {
         verify(coordinator, times(1)).updateBudget(tripId, 3000, 3000, "추가");
     }
 
+    @DisplayName("거래내역_저장_COORDINATOR_TRANSACTION_INVALID_TYPE")
     @Test
-    void 거래내역_저장_COORDINATOR_TRANSACTION_INVALID_TYPE() {
+    void saveTransactionFromTrip_COORDINATOR_TRANSACTION_INVALID_TYPE() {
         // Given
         long userId = 1L;
         long tripId = 1L;
@@ -229,9 +235,9 @@ class TransactionServiceTest {
         verify(coordinator, times(1)).updateBudget(anyLong(), anyInt(), anyInt(), anyString());
     }
 
-
+    @DisplayName("소비내역_총합_불러오기_테스트")
     @Test
-    void 소비내역_총합_불러오기_테스트() {
+    void getSum() {
         //Given
         Long tripId = 1L;
         Long expected = 139974L;
@@ -247,8 +253,9 @@ class TransactionServiceTest {
         verify(transactionRepository, times(1)).findSumByTripId(tripId);
     }
 
+    @DisplayName("여행아이디_해당하는_거래내역_불러오기_테스트")
     @Test
-    void 여행아이디_해당하는_거래내역_불러오기_테스트() {
+    void getTripDetailTransaction() {
         //Given
         Long userId = 1L;
         Long tripId = 1L;
@@ -267,8 +274,9 @@ class TransactionServiceTest {
         verify(transactionRepository, times(1)).findAllByTripTripIdAndExpenseDate(tripId, date);
     }
 
+    @DisplayName("거래내역_삭제_테스트")
     @Test
-    void 거래내역_삭제_테스트() {
+    void deleteTransaction() {
         // Given
         Long userId = 1L;
         Long tripId = 1L;
@@ -332,8 +340,9 @@ class TransactionServiceTest {
         verify(transactionRepository, times(3)).deleteById(anyLong());
     }
 
+    @DisplayName("거래내역_삭제_NOT_FOUND_EXCEPTION")
     @Test
-    void 거래내역_삭제_NOT_FOUND_EXCEPTION() {
+    void deleteTransaction_NOT_FOUND_EXCEPTION() {
         // Given
         Long userId = 1L;
         Long tripId = 1L;

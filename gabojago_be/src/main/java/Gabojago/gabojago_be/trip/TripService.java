@@ -25,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,7 +87,6 @@ public class TripService {
     @Transactional
     public ResponseTripDetailEntireDto getEntireTripDetail(String token, Long tripId) {
         Long userId = jwtUtil.extractUserIdFromToken(token);
-        log.info("tripId = {}", tripId);
         return getDetail(tripId);
     }
 
@@ -105,7 +103,6 @@ public class TripService {
         response.setStartPeriod(t.getStartPeriod());
         response.setEndPeriod(t.getEndPeriod());
         response.setTotalExpense(totalExpense);
-
         return response;
     }
 
@@ -121,29 +118,6 @@ public class TripService {
         return response;
     }
 
-    public void updateTripBudget(long tripId, Integer tripBudget, Integer exchangeTripBudget, String transactionType) {
-        Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new GabojagoException(ErrorCode.TRIP_NOT_FOUND));
-
-        Integer curBudget = trip.getTripBudget();
-        Integer exchangedCurBudget = trip.getTripExchangeBudget();
-
-        if ("지출".equals(transactionType)) {
-            curBudget -= tripBudget;
-            exchangedCurBudget -= exchangeTripBudget;
-        } else if ("추가".equals(transactionType)) {
-            curBudget += tripBudget;
-            exchangedCurBudget += exchangeTripBudget;
-        } else {
-            throw new GabojagoException(ErrorCode.TRANSACTION_INVALID_TYPE);
-        }
-
-        trip.setTripBudget(curBudget);
-        trip.setTripExchangeBudget(exchangedCurBudget);
-
-        tripRepository.save(trip);
-    }
-
 
     public ResponseTripSaveDto saveTrip(String token, RequestTripSaveDto request) {
         long userId = jwtUtil.extractUserIdFromToken(token);
@@ -155,9 +129,6 @@ public class TripService {
                 request.getStartPeriod() == null || request.getEndPeriod() == null) {
             throw new GabojagoException(ErrorCode.TRIP_INVALID_FORMAT);
         }
-
-
-        log.info("reqeuest의 description  : {}", request.getDescription());
 
         Trip trip = new Trip();
         trip.setTripCountry(request.getCountry());
@@ -199,7 +170,7 @@ public class TripService {
         log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
     }
 
-    private int updateTrips(List<Trip> trips) {
+    public int updateTrips(List<Trip> trips) {
         int updatedCount = 0;
 
         for (Trip trip : trips) {
@@ -212,5 +183,28 @@ public class TripService {
         }
 
         return updatedCount;
+    }
+
+    public void updateTripBudget(long tripId, Integer tripBudget, Integer exchangeTripBudget, String transactionType) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new GabojagoException(ErrorCode.TRIP_NOT_FOUND));
+
+        Integer curBudget = trip.getTripBudget();
+        Integer exchangedCurBudget = trip.getTripExchangeBudget();
+
+        if ("지출".equals(transactionType)) {
+            curBudget -= tripBudget;
+            exchangedCurBudget -= exchangeTripBudget;
+        } else if ("추가".equals(transactionType)) {
+            curBudget += tripBudget;
+            exchangedCurBudget += exchangeTripBudget;
+        } else {
+            throw new GabojagoException(ErrorCode.TRANSACTION_INVALID_TYPE);
+        }
+
+        trip.setTripBudget(curBudget);
+        trip.setTripExchangeBudget(exchangedCurBudget);
+
+        tripRepository.save(trip);
     }
 }
