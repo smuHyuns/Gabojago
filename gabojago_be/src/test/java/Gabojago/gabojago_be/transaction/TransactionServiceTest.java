@@ -60,7 +60,7 @@ class TransactionServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("거래내역_저장_테스트")
+    @DisplayName("거래내역_저장")
     @Test
     void saveTransactionFromTrip() {
         // Given
@@ -235,7 +235,7 @@ class TransactionServiceTest {
         verify(coordinator, times(1)).updateBudget(anyLong(), anyInt(), anyInt(), anyString());
     }
 
-    @DisplayName("소비내역_총합_불러오기_테스트")
+    @DisplayName("소비내역_총합_불러오기")
     @Test
     void getSum() {
         //Given
@@ -253,7 +253,7 @@ class TransactionServiceTest {
         verify(transactionRepository, times(1)).findSumByTripId(tripId);
     }
 
-    @DisplayName("여행아이디_해당하는_거래내역_불러오기_테스트")
+    @DisplayName("여행아이디_해당하는_거래내역_불러오기")
     @Test
     void getTripDetailTransaction() {
         //Given
@@ -274,7 +274,7 @@ class TransactionServiceTest {
         verify(transactionRepository, times(1)).findAllByTripTripIdAndExpenseDate(tripId, date);
     }
 
-    @DisplayName("거래내역_삭제_테스트")
+    @DisplayName("거래내역_삭제")
     @Test
     void deleteTransaction() {
         // Given
