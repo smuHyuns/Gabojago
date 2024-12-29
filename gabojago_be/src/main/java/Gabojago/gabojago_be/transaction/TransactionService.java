@@ -36,9 +36,7 @@ public class TransactionService {
     }
 
     public List<Transaction> getTripDetailTransaction(String token, Long tripId, LocalDate date) {
-        //토큰검증
         Long userId = jwtUtil.extractUserIdFromToken(token);
-        //탐색
         List<Transaction> transactions = transactionRepository.findAllByTripTripIdAndExpenseDate(tripId, date);
         log.info("transactions 크기 : {}", transactions.size());
         return transactions;

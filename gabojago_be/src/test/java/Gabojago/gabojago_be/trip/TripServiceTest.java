@@ -72,7 +72,7 @@ public class TripServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @DisplayName("나라조회_테스트")
+    @DisplayName("나라조회")
     @Test
     void getCountry() {
         //Given
@@ -89,7 +89,7 @@ public class TripServiceTest {
         verify(tripRepository, times(1)).findByTripId(tripId);
     }
 
-    @DisplayName("여행불러오기_테스트")
+    @DisplayName("여행불러오기")
     @Test
     void getTrips() {
         // Given
