@@ -8,15 +8,13 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
-
-    // userId 반환 메서드 추가
     @Getter
-    private final Long userId; // Long userId 추가
+    private final Long userId;
     private final String userLoginId;
     private final String password;
 
     public CustomUserDetails(Long userId, String userLoginId, String password) {
-        this.userId = userId; // Long userId 초기화
+        this.userId = userId;
         this.userLoginId = userLoginId;
         this.password = password;
     }
@@ -33,7 +31,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userLoginId; // 여기서는 userId 대신 username을 사용할 수도 있음
+        return userLoginId;
     }
 
     @Override

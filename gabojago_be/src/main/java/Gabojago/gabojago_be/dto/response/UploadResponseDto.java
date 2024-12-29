@@ -2,8 +2,7 @@ package Gabojago.gabojago_be.dto.response;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadResponseDto {

@@ -7,13 +7,14 @@ import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
 import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.dto.response.ResponseUserDto;
 import Gabojago.gabojago_be.entity.User;
-import Gabojago.gabojago_be.exception.InvalidCredentialsException;
-import Gabojago.gabojago_be.file.S3FileServiceImpl;
+import Gabojago.gabojago_be.exception.ErrorCode;
+import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.jwt.JwtTokenProvider;
 import Gabojago.gabojago_be.jwt.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,22 +33,8 @@ public class UserService {
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
 
-    //테스트구간
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public List<ResponseUserDto> getAllUsersWithoutTrips() {
-        return userRepository.findAllUserDto();
-    }
-    //테스트용
-
     public Optional<User> getUserByUserId(Long userId) {
         return userRepository.findById(userId);
-    }
-
-    public Optional<User> getUserByUserLoginId(String userLoginId) {
-        return userRepository.findByUserLoginId(userLoginId);
     }
 
     public User addUser(RequestSignUpDto dto) {
@@ -67,10 +54,10 @@ public class UserService {
         ResponseLoginDto response = new ResponseLoginDto();
 
         User user = userRepository.findByUserLoginId(dto.getUserLoginId())
-                .orElseThrow(() -> new InvalidCredentialsException("존재하지 않는 아이디 입니다."));
+                .orElseThrow(() -> new GabojagoException(ErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(dto.getUserPassword(), user.getUserPassword())) {
-            throw new InvalidCredentialsException("아이디와 비밀번호가 일치하지 않습니다.");
+            throw new GabojagoException(ErrorCode.USER_INVALID_LOGIN);
         }
 
         String token = jwtTokenProvider.generateToken(user.getUserId());
@@ -90,9 +77,9 @@ public class UserService {
         Long userId = jwtUtil.extractUserIdFromToken(token);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저가 발견되지 않았습니다."));
+                .orElseThrow(() -> new GabojagoException(ErrorCode.USER_NOT_FOUND));
 
-        if(dto.getUserPassword() != null) {
+        if (dto.getUserPassword() != null) {
             String password = dto.getUserPassword();
             password = passwordEncoder.encode(password);
             user.setUserPassword(password);
@@ -105,15 +92,28 @@ public class UserService {
         user.setUserNickname(dto.getUserNickname());
     }
 
-    public boolean checkUserProfileImg(String token, String userProfileImg) {
-        Long userId = jwtUtil.extractUserIdFromToken(token);
-        User user = userRepository.findById(userId).orElseThrow();
-        return user.getUserProfileImg().equals(userProfileImg);
-    }
+//    public boolean checkUserProfileImg(String token, String userProfileImg) {
+//        Long userId = jwtUtil.extractUserIdFromToken(token);
+//        User user = userRepository.findById(userId).orElseThrow();
+//        return user.getUserProfileImg().equals(userProfileImg);
+//    }
+//
+//    public String getUserProfileImg(String token) {
+//        Long userId = jwtUtil.extractUserIdFromToken(token);
+//        User user = userRepository.findById(userId).orElseThrow();
+//        return user.getUserProfileImg();
+//    }
+//
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    public List<ResponseUserDto> getAllUsersWithoutTrips() {
+//        return userRepository.findAllUserDto();
+//    }
+//
+//    public Optional<User> getUserByUserLoginId(String userLoginId) {
+//        return userRepository.findByUserLoginId(userLoginId);
+//    }
 
-    public String getUserProfileImg(String token) {
-        Long userId = jwtUtil.extractUserIdFromToken(token);
-        User user = userRepository.findById(userId).orElseThrow();
-        return user.getUserProfileImg();
-    }
 }
