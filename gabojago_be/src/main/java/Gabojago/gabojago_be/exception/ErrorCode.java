@@ -25,6 +25,10 @@ public enum ErrorCode {
     EXCHANGE_RATE_INVALID_FORMAT(HttpStatus.BAD_REQUEST, "EXCHANGE_RATE_001", "유효하지 않은환율 데이터 형식입니다."),
     EXCHANGE_RATE_API_CALL_FAILED(HttpStatus.BAD_GATEWAY, "EXCHANGE_RATE_002", "환율 데이터를 가져오는데 실패했습니다."),
 
+    FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST, "FILE_001", "파일 업로드 중 오류가 발생하였습니다."),
+    FILE_DELETE_FAILED(HttpStatus.BAD_REQUEST, "FILE_002", "파일 삭제 중 오류가 발생하였습니다."),
+    FILE_INVALID_URL(HttpStatus.BAD_REQUEST, "FILE_003", "해당 URL의 형식이 유효하지 않습니다."),
+    FILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "FILE_004", "해당 URL과 일치하는 파일이 존재하지 않습니다."),
     ;
 
 

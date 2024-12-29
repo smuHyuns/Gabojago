@@ -33,22 +33,8 @@ public class UserService {
     @Value("${default.profile.image:none}")
     private String defaultProfileImage;
 
-    //테스트구간
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public List<ResponseUserDto> getAllUsersWithoutTrips() {
-        return userRepository.findAllUserDto();
-    }
-    //테스트용
-
     public Optional<User> getUserByUserId(Long userId) {
         return userRepository.findById(userId);
-    }
-
-    public Optional<User> getUserByUserLoginId(String userLoginId) {
-        return userRepository.findByUserLoginId(userLoginId);
     }
 
     public User addUser(RequestSignUpDto dto) {
@@ -106,15 +92,28 @@ public class UserService {
         user.setUserNickname(dto.getUserNickname());
     }
 
-    public boolean checkUserProfileImg(String token, String userProfileImg) {
-        Long userId = jwtUtil.extractUserIdFromToken(token);
-        User user = userRepository.findById(userId).orElseThrow();
-        return user.getUserProfileImg().equals(userProfileImg);
-    }
+//    public boolean checkUserProfileImg(String token, String userProfileImg) {
+//        Long userId = jwtUtil.extractUserIdFromToken(token);
+//        User user = userRepository.findById(userId).orElseThrow();
+//        return user.getUserProfileImg().equals(userProfileImg);
+//    }
+//
+//    public String getUserProfileImg(String token) {
+//        Long userId = jwtUtil.extractUserIdFromToken(token);
+//        User user = userRepository.findById(userId).orElseThrow();
+//        return user.getUserProfileImg();
+//    }
+//
+//    public List<User> getAllUsers() {
+//        return userRepository.findAll();
+//    }
+//
+//    public List<ResponseUserDto> getAllUsersWithoutTrips() {
+//        return userRepository.findAllUserDto();
+//    }
+//
+//    public Optional<User> getUserByUserLoginId(String userLoginId) {
+//        return userRepository.findByUserLoginId(userLoginId);
+//    }
 
-    public String getUserProfileImg(String token) {
-        Long userId = jwtUtil.extractUserIdFromToken(token);
-        User user = userRepository.findById(userId).orElseThrow();
-        return user.getUserProfileImg();
-    }
 }
