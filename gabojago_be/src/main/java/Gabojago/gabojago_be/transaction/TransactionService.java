@@ -40,7 +40,7 @@ public class TransactionService {
         Long userId = jwtUtil.extractUserIdFromToken(token);
         //탐색
         List<Transaction> transactions = transactionRepository.findAllByTripTripIdAndExpenseDate(tripId, date);
-        System.out.println("transactions 크기 : " + transactions.size());
+        log.info("transactions 크기 : {}", transactions.size());
         return transactions;
     }
 
