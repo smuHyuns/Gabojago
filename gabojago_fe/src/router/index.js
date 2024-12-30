@@ -18,7 +18,7 @@ import Trip_AddCalendar from '@/pages/Trip/Trip_AddCalendar.vue';
 import Trip_AddMember from '@/pages/Trip/Trip_AddMember.vue';
 import Trip_AddPayment from '@/pages/Trip/Trip_AddPayment.vue';
 import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
-
+//
 const routes = [
   {
     path: '/sign-up',
