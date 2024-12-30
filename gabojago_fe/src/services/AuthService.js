@@ -2,8 +2,9 @@
 import axios from 'axios';
 import router from '../router';
 import { useAuthStore } from '../stores/auth';
+import { API_BASE_URL } from '@/config/config';
 
-const BASEURL = 'http://localhost:8080';
+const BASEURL = API_BASE_URL;
 
 export const login = async (credentials) => {
   try {
