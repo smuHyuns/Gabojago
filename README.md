@@ -16,7 +16,7 @@
 ⠀
 ## ② 프로젝트 소개
 해외 여행 중 환율 변동에 따른 예산 관리를 도와 여행에 집중할 수 있도록 돕는 가계부 앱입니다.
-
+##### 주소 : https://gabojago.vercel.app/
 ⠀
 ⠀
 ## ③ 프로젝트 주요 기능
@@ -33,7 +33,7 @@
     <th align="center">FE</th>
     <th align="center">FE, UI/UX</th>
     <th align="center">FE, Motion</th>
-    <th align="center">FE, BE, DB</th>
+    <th align="center">FE, BE, DB, DEPLOY</th>
   </tr>
   <tr>
     <td align="center"><img src="https://github.com/Kimsiwan30.png?s=100" width="160"></td>
