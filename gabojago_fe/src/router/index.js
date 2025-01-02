@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import Profile from '@/pages/Dashboard/Profile.vue';
-import Dashboard from '@/pages/Dashboard/Dashboard.vue';
+import Dashboard from '@/pages/Dashboard/dashboard.vue';
 
 import Trip_AddDescription from '@/pages/Trip/Trip_AddDescription.vue';
 import Modal from '@/components/used/Modal.vue';

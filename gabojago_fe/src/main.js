@@ -13,7 +13,6 @@ app.use(router);
 app.use(pinia);
 app.mount('#app');
 
-// V-Calendar 설정
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
 

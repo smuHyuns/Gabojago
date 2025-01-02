@@ -59,7 +59,9 @@
       placeholder="변경할 비밀번호를 입력해 주세요"
       v-model="profile.userPassword"
     />
+
     <div class="spacer"></div>
+    <div class="logout-btn" @click="logout">로그아웃 하기</div>
     <CtaBar
       class="bottom-bar"
       inputname="마이페이지 저장하기"
@@ -78,6 +80,7 @@ import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 import { upload } from '@/api/file';
 import { getUserProfile, updateNewProfile } from '@/api/user';
+import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
 const profile = reactive({
@@ -93,6 +96,7 @@ const isSaveEnabled = ref(false);
 const fileInput = ref(null);
 const previewImage = ref('');
 const isImageChanged = ref(false);
+const router = useRouter();
 
 const changeImg = () => {
   fileInput.value.click();
@@ -184,6 +188,12 @@ const fetchProfile = async () => {
   }
 };
 
+const logout = () => {
+  alert('로그아웃되었습니다!\n다음에만나요~');
+  authStore.clearAuth();
+  router.push('/login');
+};
+
 onMounted(() => {
   fetchProfile();
 });
@@ -227,6 +237,19 @@ onMounted(() => {
   margin-top: 10px;
   margin-bottom: 70px;
   padding: 10px;
+  background-color: #3e444e;
+  color: snow;
+  width: 350px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.logout-btn {
+  border-radius: 15px;
+  margin-top: 50px;
+  margin-bottom: 70px;
+  padding: 10px;
+  font-size: 33px;
   background-color: #3e444e;
   color: snow;
   width: 350px;
