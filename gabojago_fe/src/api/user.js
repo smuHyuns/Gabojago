@@ -93,3 +93,16 @@ export const authEmailCheck = async (userEmail, authCode) => {
     throw error;
   }
 };
+
+export const changePassword = async (userLoginId, newPassword) => {
+  try {
+    const request = {
+      userLoginId: userLoginId,
+      newPassword: newPassword,
+    };
+    await axios.post(`${BASEURL}/change-password`, request);
+  } catch (error) {
+    console.log('changePassword / 비밀번호 변경 실패 : ', error);
+    throw error;
+  }
+};
