@@ -19,6 +19,9 @@ import Trip_AddMember from '@/pages/Trip/Trip_AddMember.vue';
 import Trip_AddPayment from '@/pages/Trip/Trip_AddPayment.vue';
 import Trip_Detail from '@/pages/Trip/Trip_Detail.vue';
 
+import Find_ID from '@/pages/User/FindID.vue';
+import Find_PW from '@/pages/User/FindPW.vue';
+
 const routes = [
   {
     path: '/sign-up',
@@ -34,6 +37,16 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+  },
+  {
+    path: '/find-id',
+    name: 'find-id',
+    component: Find_ID,
+  },
+  {
+    path: '/find-pw',
+    name: 'find-pw',
+    component: Find_PW,
   },
   {
     path: '/dashboard',
