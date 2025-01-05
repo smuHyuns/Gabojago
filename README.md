@@ -10,8 +10,8 @@
 ⠀
 ⠀
 ## ① 프로젝트 기간
-2024.07.13 - 2024.08.04
-
+#### 1차(FE) : 2024.06.08 - 2024.06.14
+#### 2차(FE, BE) : 2024.11.21 - 2025.01.02
 ⠀
 ⠀
 ## ② 프로젝트 소개
@@ -20,6 +20,10 @@
 
 #### 시스템 아키텍쳐
 <img src="https://github.com/user-attachments/assets/d4013df5-2164-4f3a-a950-d02fe28b72d9"/>
+
+#### ERD
+<img src="https://github.com/user-attachments/assets/7966e2a3-052f-4bf8-ada0-23fc60c86aac"/>
+
 
 
 ⠀

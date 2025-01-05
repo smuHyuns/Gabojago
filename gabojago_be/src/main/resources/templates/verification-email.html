@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Gabojago 인증 이메일</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: black;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            /*border: 1px solid #ddd;*/
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .email-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .email-header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .email-content {
+        }
+
+        .email-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .email-footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+        }
+
+        .highlight {
+            color: #5d8bff;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-header">
+        <img src="https://gabojago.s3.ap-northeast-2.amazonaws.com/%ED%85%9C%ED%94%8C%EB%A6%BF.png"
+             alt="Gabojago">
+    </div>
+
+    <div class="email-content">
+        <p>안녕하세요! 실시간 환율 반영 여행 가계부 서비스 <span class="highlight">Gabojago</span>입니다.</p>
+        <p>아래 인증번호를 사용하여 인증을 완료해주세요!</p>
+        <h2 class="highlight" style="text-align: center" th:text="${authNumber}">인증번호</h2>
+    </div>
+
+    <div class="email-footer">
+        <p>&copy; 2025 Gabojago. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

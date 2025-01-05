@@ -1,8 +1,11 @@
 package Gabojago.gabojago_be.user;
 
+import Gabojago.gabojago_be.dto.request.RequestEmailAuthDto;
 import Gabojago.gabojago_be.dto.request.RequestLoginDto;
 import Gabojago.gabojago_be.dto.request.RequestProfileDto;
 import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
+import Gabojago.gabojago_be.dto.response.ResponseEmailAuthDto;
+import Gabojago.gabojago_be.dto.response.ResponseFindIdDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
 import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
@@ -62,5 +65,19 @@ public class UserController {
                                               @RequestBody RequestProfileDto request) {
         userService.updateUser(token, request);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/authEmail")
+    @Operation(summary = "유저 이메일 인증번호 발송", description = "같이 전송된 유저의 이메일 주소에 인증 번호를 보냅니다")
+    public ResponseEntity<ResponseEmailAuthDto> authEmail(@RequestBody RequestEmailAuthDto request) {
+        ResponseEmailAuthDto response = userService.sendEmail(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find-id")
+    @Operation(summary = "아이디 찾기", description = "사용자의 이름과 이메일에 해당하는 아이디를 반환합니다.")
+    public ResponseEntity<ResponseFindIdDto> findId(@RequestParam("email") String email, @RequestParam("username") String username) {
+        ResponseFindIdDto response = userService.findId(email, username);
+        return ResponseEntity.ok(response);
     }
 }
