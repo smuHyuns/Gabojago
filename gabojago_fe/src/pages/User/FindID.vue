@@ -31,27 +31,34 @@
         <button class="button" @click="sendAuth">보내기</button>
         <div class="announceBox">
           <h1 v-if="isSend">인증 메일이 발송되었습니다.</h1>
+          <h1 v-if="!isSend && isClick">
+            <span>인증 메일을 보내는 중.. 발송엔 대략 15초가 소요됩니다</span>
+          </h1>
         </div>
       </div>
 
       <div v-if="isSend" class="input-box">
-        <label for="emailCode" class="label">인증번호</label>
+        <label for="authCode" class="label">인증번호</label>
         <input
           type="text"
           class="input"
-          v-model="user.emailCode"
+          v-model="user.authCode"
           placeholder="인증번호를 입력해주세요"
-          id="emailCode"
+          id="authCode"
         />
-        <button class="button" @click="checkAuth">인증하기</button>
+        <button class="button" @click="checkAuthCode">인증하기</button>
       </div>
 
       <div class="result-box">
-        <h1 v-if="isAuth">
-          고객님의 아이디는
-          <a>{{ userId }}</a>
-          입니다
-        </h1>
+        <div v-if="isAuth">
+          <h1>
+            고객님의 아이디는
+            <a>{{ userId }}</a>
+            입니다
+          </h1>
+          <button class="button login" @click="goLogin">로그인 하러가기</button>
+        </div>
+
         <h1 v-if="!isAuth && isSend">
           인증을 완료하면 아이디가 이곳에 표시됩니다
         </h1>
@@ -63,25 +70,26 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
-import { authEmail, findId } from '@/api/user';
+import { authEmail, authEmailCheck, findId } from '@/api/user';
 
 const router = useRouter();
 
 const authNumber = ref('');
 const user = reactive({
+  username: '',
   userEmail: '',
-  emailCode: '',
+  authCode: '',
 });
-const username = ref('');
+
 const userId = ref('');
 const isAuth = ref(false);
 const isSend = ref(false);
+const isClick = ref(false);
 
 const sendAuth = async () => {
   try {
-    const response = await authEmail(user.userEmail);
-    authNumber.value = response.data.authenticateNumber;
-    console.log('authNumber :', authNumber.value);
+    isClick.value = true;
+    await authEmail(user.userEmail);
     isSend.value = true;
   } catch (error) {
     console.error('인증 메일 전송 실패:', error);
@@ -90,15 +98,17 @@ const sendAuth = async () => {
   }
 };
 
-const checkAuth = async () => {
-  if (authNumber.value === user.emailCode) {
+const checkAuthCode = async () => {
+  try {
+    await authEmailCheck(user.userEmail, user.authCode);
     isAuth.value = true;
     const response = await findId(user.username, user.userEmail);
     userId.value = response;
     console.log(userId.value);
     alert('인증이 완료되었습니다!');
-  } else {
-    alert('인증번호가 일치하지 않습니다!');
+  } catch (error) {
+    alert('올바르지 않은 인증 번호입니다.');
+    console.log('error : ', error);
   }
 };
 
@@ -227,5 +237,13 @@ const goLogin = () => {
 
 .link-button:hover {
   color: #0056b3;
+}
+
+.login {
+  margin-top: 3%;
+}
+
+span {
+  color: 0056b3;
 }
 </style>
