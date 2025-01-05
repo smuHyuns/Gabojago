@@ -19,7 +19,7 @@
 #### 주소 : https://gabojago.vercel.app/
 
 #### 시스템 아키텍쳐
-<img src="https://github.com/user-attachments/assets/d4013df5-2164-4f3a-a950-d02fe28b72d9"/>
+![아키텍쳐-개정판](https://github.com/user-attachments/assets/0786d577-ef22-43a5-a6fe-049ad7f903d8)
 
 #### ERD
 <img src="https://github.com/user-attachments/assets/7966e2a3-052f-4bf8-ada0-23fc60c86aac"/>
