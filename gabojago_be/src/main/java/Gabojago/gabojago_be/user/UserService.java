@@ -1,9 +1,6 @@
 package Gabojago.gabojago_be.user;
 
-import Gabojago.gabojago_be.dto.request.RequestEmailAuthDto;
-import Gabojago.gabojago_be.dto.request.RequestLoginDto;
-import Gabojago.gabojago_be.dto.request.RequestProfileDto;
-import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
+import Gabojago.gabojago_be.dto.request.*;
 import Gabojago.gabojago_be.dto.response.ResponseEmailAuthDto;
 import Gabojago.gabojago_be.dto.response.ResponseFindIdDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
@@ -96,11 +93,8 @@ public class UserService {
         user.setUserNickname(dto.getUserNickname());
     }
 
-    public ResponseEmailAuthDto sendEmail(RequestEmailAuthDto request) {
-        String authenticateNumber = mailService.mailSend(request.getEmail());
-        ResponseEmailAuthDto response = new ResponseEmailAuthDto();
-        response.setAuthenticateNumber(authenticateNumber);
-        return response;
+    public void sendEmail(RequestEmailAuthDto request) {
+        mailService.mailSend(request.getEmail());
     }
 
     public ResponseFindIdDto findId(String email, String username) {
@@ -109,4 +103,8 @@ public class UserService {
         return new ResponseFindIdDto(user.getUserLoginId());
     }
 
+    public void checkEmail(RequestAuthCheckDto request) {
+        boolean isEqual = mailService.verifyAuthNumber(request.getEmail(), request.getAuthCode());
+        if (!isEqual) throw new GabojagoException(ErrorCode.AUTH_NUMBER_INVALID);
+    }
 }

@@ -74,10 +74,22 @@ export const authEmail = async (userEmail) => {
       email: userEmail,
     };
     console.log('요청 : ', request);
-    const response = await axios.post(`${BASEURL}/authEmail`, request);
-    return response;
+    await axios.post(`${BASEURL}/authEmail`, request);
   } catch (error) {
     console.log('authEmail / 인증번호받아오기 실패 : ', error);
+    throw error;
+  }
+};
+
+export const authEmailCheck = async (userEmail, authCode) => {
+  try {
+    const request = {
+      email: userEmail,
+      authCode: authCode,
+    };
+    await axios.post(`${BASEURL}/authEmail-check`, request);
+  } catch (error) {
+    console.log('authEmailCheck / 인증번호확인 실패 : ', error);
     throw error;
   }
 };
