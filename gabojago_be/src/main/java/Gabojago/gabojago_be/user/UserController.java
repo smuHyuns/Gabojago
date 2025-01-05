@@ -85,4 +85,11 @@ public class UserController {
         ResponseFindIdDto response = userService.findId(email, username);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/change-password")
+    @Operation(summary = "비밀번호 바꾸기", description = "사용자의 아이디와 일치하는 유저의 비밀번호를 변경합니다")
+    public ResponseEntity<Void> changePw(@RequestBody RequestChangePwDto request){
+        userService.changePassword(request);
+        return ResponseEntity.ok().build();
+    }
 }

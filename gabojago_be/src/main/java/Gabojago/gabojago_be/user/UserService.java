@@ -14,6 +14,7 @@ import Gabojago.gabojago_be.jwt.JwtUtil;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserUtilService userUtilService;
@@ -106,5 +108,12 @@ public class UserService {
     public void checkEmail(RequestAuthCheckDto request) {
         boolean isEqual = mailService.verifyAuthNumber(request.getEmail(), request.getAuthCode());
         if (!isEqual) throw new GabojagoException(ErrorCode.AUTH_NUMBER_INVALID);
+    }
+
+    @Transactional
+    public void changePassword(RequestChangePwDto request) {
+        User user = userRepository.findByUserLoginId(request.getUserLoginId())
+                .orElseThrow(() -> new GabojagoException(ErrorCode.USER_NOT_FOUND));
+        user.setUserPassword(passwordEncoder.encode(request.getNewPassword()));
     }
 }
