@@ -33,7 +33,10 @@ public enum ErrorCode {
 
     EMAIL_SEND_FAILED(HttpStatus.BAD_REQUEST, "EMAIL_001", "올바르지 않은 이메일 주소입니다."),
 
-    MAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "MAIL_001", "메일을 보내는데 실패하였습니다.");
+    MAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "MAIL_001", "메일을 보내는데 실패하였습니다."),
+
+    AUTH_NUMBER_INVALID(HttpStatus.BAD_REQUEST, "AUTH_001", "인증번호가 유효하지 않거나 만료되었습니다."),
+    ;
 
 
     ErrorCode(HttpStatus httpStatus, String errorCode, String message) {

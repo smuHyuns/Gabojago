@@ -23,12 +23,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // Mail - 실패 ㅠ
-    implementation 'org.apache.httpcomponents.client5:httpclient5:5.1.3'
-
     // gmail 사용위함
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.apache.commons:commons-pool2' // 연결 풀 관리용
 
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

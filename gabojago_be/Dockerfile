@@ -8,7 +8,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y openssh-client default-mysql-client && rm -rf /var/lib/apt/lists/*
 
 # PEM 파일 저장 및 권한 설정
-RUN mkdir -p /tmp/ssh && chmod 700 /tmp/sshd
+#RUN mkdir -p /tmp/ssh && chmod 700 /tmp/sshd
+RUN mkdir -p /tmp/ssh /tmp/sshd && chmod 700 /tmp/ssh /tmp/sshd
 COPY ssh-keys/ec2_key_pair.pem /tmp/ssh/ec2_key_pair.pem
 RUN chmod 600 /tmp/ssh/ec2_key_pair.pem
 
