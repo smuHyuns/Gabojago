@@ -81,13 +81,14 @@
   ![Amazon S3](https://img.shields.io/badge/Amazon_S3-569A31?style=flat&logo=amazons3&logoColor=white)
   ![Amazon Ec2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=flat&logo=amazonec2&logoColor=white)
   ![Amazon Rds](https://img.shields.io/badge/Amazon_RDS-527FFF?style=flat&logo=amazonrds&logoColor=white)<br>
+  ![JWT](https://img.shields.io/badge/JWT-007396?style=flat-square&logo=JWT&logoColor=white)
   ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
   ![redis](https://img.shields.io/badge/Redis-FF4438?style=flat-square&logo=Redis&logoColor=white)
   ![docker](https://img.shields.io/badge/docker-2496ED?style=flat&logo=docker&logoColor=white)
   ![nginx](https://img.shields.io/badge/nginx-009639?style=flat-square&logo=nginx&logoColor=white)
   ![githubactions](https://img.shields.io/badge/Github_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
   ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=gradle&logoColor=white)
-
+  
   
   ##### Tools
   ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)
