@@ -1,8 +1,8 @@
 package Gabojago.gabojago_be.user;
 
-import Gabojago.gabojago_be.dto.request.RequestLoginDto;
-import Gabojago.gabojago_be.dto.request.RequestProfileDto;
-import Gabojago.gabojago_be.dto.request.RequestSignUpDto;
+import Gabojago.gabojago_be.dto.request.*;
+import Gabojago.gabojago_be.dto.response.ResponseEmailAuthDto;
+import Gabojago.gabojago_be.dto.response.ResponseFindIdDto;
 import Gabojago.gabojago_be.dto.response.ResponseLoginDto;
 import Gabojago.gabojago_be.dto.response.ResponseProfileDto;
 import Gabojago.gabojago_be.entity.User;
@@ -61,6 +61,35 @@ public class UserController {
     public ResponseEntity<Void> updateProfile(@RequestHeader("Authorization") String token,
                                               @RequestBody RequestProfileDto request) {
         userService.updateUser(token, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/authEmail")
+    @Operation(summary = "유저 이메일 인증번호 발송", description = "같이 전송된 유저의 이메일 주소에 인증 번호를 보냅니다")
+    public ResponseEntity<Void> authEmail(@RequestBody RequestEmailAuthDto request) {
+        userService.sendEmail(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/authEmail-check")
+    @Operation(summary = "유저 이메일 인증번호 확인", description = "유저에게 전송된 유저 이메일 인증번호와 캐시에 저장된 인증번호가 동일한지 확인합니다.")
+    public ResponseEntity<Void> authEmailCheck(@RequestBody RequestAuthCheckDto request) {
+        userService.checkEmail(request);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @GetMapping("/find-id")
+    @Operation(summary = "아이디 찾기", description = "사용자의 이름과 이메일에 해당하는 아이디를 반환합니다.")
+    public ResponseEntity<ResponseFindIdDto> findId(@RequestParam("email") String email, @RequestParam("username") String username) {
+        ResponseFindIdDto response = userService.findId(email, username);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/change-password")
+    @Operation(summary = "비밀번호 바꾸기", description = "사용자의 아이디와 일치하는 유저의 비밀번호를 변경합니다")
+    public ResponseEntity<Void> changePw(@RequestBody RequestChangePwDto request){
+        userService.changePassword(request);
         return ResponseEntity.ok().build();
     }
 }

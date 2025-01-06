@@ -65,7 +65,7 @@ const GoFindId = () => {
 };
 
 const GoFindPwd = () => {
-  router.push('/find-password');
+  router.push('/find-pw');
 };
 </script>
 

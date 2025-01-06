@@ -23,6 +23,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // gmail 사용위함
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.apache.commons:commons-pool2' // 연결 풀 관리용
+
+    //thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // JSON Processing Library
+    implementation 'com.google.code.gson:gson:2.10.1'
+
     // Database
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 

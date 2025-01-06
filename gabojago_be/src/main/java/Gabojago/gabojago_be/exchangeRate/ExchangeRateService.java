@@ -34,10 +34,6 @@ public class ExchangeRateService {
 
     private static final String BASE_CURRENCY = "KRW";
 
-    /**
-     * 환율 데이터를 API로부터 가져와 업데이트
-     */
-
     @Transactional
     public void clear() {
         exchangeRateTempRepository.deleteAll();
@@ -60,7 +56,6 @@ public class ExchangeRateService {
             }
         }
 
-        // 업데이트 또는 삽입
         exchangeRateTempRepository.saveAll(tempRates);
 
         switchTables();
@@ -120,7 +115,6 @@ public class ExchangeRateService {
             return (Map<String, Object>) response.get("conversion_rates");
         }
 
-        // 실패 시 예외 발생
         log.info("response : {}", response);
         throw new GabojagoException(ErrorCode.EXCHANGE_RATE_API_CALL_FAILED);
     }
