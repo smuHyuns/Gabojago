@@ -40,6 +40,7 @@ out/
 application-aws.properties
 application.properties
 application.yml
+
 #docker
 docker-elements.env
 ssh-keys/
