@@ -19,11 +19,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Debug gabojago_be directory
-        run: ls -la gabojago_be
-
       - name: Build Docker image without Buildx
         run: |
+          ls -la gabojago_be
           docker build \
             --file gabojago_be/Dockerfile \
             --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
