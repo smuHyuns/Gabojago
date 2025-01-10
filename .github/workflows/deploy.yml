@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -19,19 +18,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
-      - name: Copy environment file
-        run: |
-          echo "${{ secrets.DOCKER_ELEMENTS_ENV }}" > docker-elements.env
-
       - name: Build Docker image
         run: |
-          docker build --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-                       --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
-                       --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-                       -t gabojago_be-app .
+          docker build \
+            --file Gabojago/gabojago_be/Dockerfile \
+            --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+            --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+            --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+            -t gabojago_be-app .
 
       - name: Copy files to EC2
         env:
@@ -41,7 +35,7 @@ jobs:
         run: |
           echo "${PRIVATE_KEY}" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem docker-compose.yml docker-elements.env $SSH_USER@$SSH_HOST:/home/$SSH_USER/
+          scp -i private_key.pem docker-compose.yml docker-elements.env $SSH_USER@$SSH_HOST:/home/$SSH_USER/Gabojago/gabojago_be/
 
       - name: Deploy using Docker Compose
         env:
@@ -50,6 +44,8 @@ jobs:
           PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
         run: |
           ssh -i private_key.pem $SSH_USER@$SSH_HOST << EOF
-          docker-compose down
-          docker-compose up -d
+          cd /home/$SSH_USER/Gabojago/gabojago_be/
+          docker-compose --env-file docker-elements.env down
+          docker-compose --env-file docker-elements.env up --build -d
           EOF
+          rm private_key.pem
