@@ -21,6 +21,8 @@ jobs:
 
       - name: Build Docker image without Buildx
         run: |
+          docker --version
+          docker buildx version
           ls -la gabojago_be
           docker build \
             --file gabojago_be/Dockerfile \
