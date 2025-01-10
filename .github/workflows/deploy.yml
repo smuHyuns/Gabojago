@@ -21,11 +21,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --file Gabojago/gabojago_be \
+            --file Gabojago/gabojago_be/Dockerfile \
             --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
             --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-            -t gabojago_be-app .
+            -t gabojago_be-app Gabojago/gabojago_be
 
       - name: Copy files to EC2
         env:
