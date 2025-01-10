@@ -21,7 +21,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --file Gabojago/gabojago_be/Dockerfile \
+            --file Gabojago/gabojago_be \
             --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
             --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
