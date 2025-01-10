@@ -18,6 +18,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Check files in gabojago_be
+        run: ls -la Gabojago/gabojago_be
+
       - name: Build Docker image
         run: |
           docker build \
