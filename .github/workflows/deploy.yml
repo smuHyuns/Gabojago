@@ -13,6 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Check Docker Versions
+        run: |
+          docker --version
+          docker buildx version
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -21,15 +36,14 @@ jobs:
 
       - name: Build Docker image without Buildx
         run: |
-          docker --version
-          docker buildx version
           ls -la gabojago_be
           docker build \
             --file gabojago_be/Dockerfile \
             --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
             --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-            -t gabojago_be-app gabojago_be
+            -t gabojago_be-app \
+            gabojago_be
 
       - name: Copy files to EC2
         env:
