@@ -19,10 +19,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Verify gabojago_be directory
+      - name: Debug gabojago_be directory
         run: ls -la gabojago_be
 
-      - name: Build Docker image
+      - name: Build Docker image without Buildx
         run: |
           docker build \
             --file gabojago_be/Dockerfile \
