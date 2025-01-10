@@ -19,16 +19,16 @@ jobs:
           distribution: 'temurin'
 
       - name: Check files in gabojago_be
-        run: ls -la Gabojago/gabojago_be
+        run: ls -la gabojago_be
 
       - name: Build Docker image
         run: |
           docker build \
-            --file Gabojago/gabojago_be/Dockerfile \
+            --file gabojago_be/Dockerfile \
             --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
             --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-            -t gabojago_be-app Gabojago/gabojago_be
+            -t gabojago_be-app gabojago_be
 
       - name: Copy files to EC2
         env:
