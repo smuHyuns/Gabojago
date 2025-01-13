@@ -64,4 +64,9 @@ public class TripController {
         ResponseTripSaveDto response = tripService.saveTrip(token, request);
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/test/{tripId}")
+    public void test(@PathVariable("tripId") Long tripId) {
+        tripService.test(tripId);
+    }
 }

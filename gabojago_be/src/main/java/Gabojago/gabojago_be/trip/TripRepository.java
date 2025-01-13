@@ -1,4 +1,5 @@
 package Gabojago.gabojago_be.trip;
+
 import Gabojago.gabojago_be.entity.Trip;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     void updateTripByTripBudgetAndTripExchangeBudget(@Param("tripId") long tripId,
                                                      @Param("tripBudget") Integer tripBudget,
                                                      @Param("exchangeTripBudget") Integer exchangeTripBudget);
+
 
     Page<Trip> findAll(Pageable pageable);
 }

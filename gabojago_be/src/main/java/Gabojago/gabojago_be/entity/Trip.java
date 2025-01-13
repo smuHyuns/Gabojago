@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "trip")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "tripId")
 public class Trip {
 
     @Id
