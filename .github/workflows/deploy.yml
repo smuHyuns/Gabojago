@@ -1,0 +1,59 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check Docker Versions
+        run: |
+          docker --version
+          docker buildx version
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # - name: Build Docker image without Buildx
+      #   run: |
+      #     ls -la gabojago_be
+      #     docker build \
+      #       --file gabojago_be/Dockerfile \
+      #       --build-arg SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+      #       --build-arg SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
+      #       --build-arg SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+      #       -t gabojago_be-app \
+      #       gabojago_be
+
+      # - name: Copy files to EC2
+      #   env:
+      #     SSH_HOST: ${{ secrets.SSH_HOST }}
+      #     SSH_USER: ${{ secrets.SSH_USER }}
+      #     PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      #   run: |
+      #     echo "${PRIVATE_KEY}" > private_key.pem
+      #     chmod 600 private_key.pem
+      #     scp -i private_key.pem gabojago_be/docker-compose.yml gabojago_be/docker-elements.env $SSH_USER@$SSH_HOST:/home/$SSH_USER/gabojago_be/
+
+      # - name: Deploy using Docker Compose
+      #   env:
+      #     SSH_HOST: ${{ secrets.SSH_HOST }}
+      #     SSH_USER: ${{ secrets.SSH_USER }}
+      #     PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      #   run: |
+      #     ssh -i private_key.pem $SSH_USER@$SSH_HOST << EOF
+      #     cd /home/$SSH_USER/gabojago_be/
+      #     docker-compose --env-file docker-elements.env down
+      #     docker-compose --env-file docker-elements.env up --build -d
+      #     EOF
+      #     rm private_key.pem
