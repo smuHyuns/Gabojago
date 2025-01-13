@@ -123,4 +123,5 @@ public class ExchangeRateService {
     public Optional<ExchangeRate> getExchangeRateByCountry(String country) {
         return exchangeRateRepository.findExchangeRateByCountry(country);
     }
+
 }
