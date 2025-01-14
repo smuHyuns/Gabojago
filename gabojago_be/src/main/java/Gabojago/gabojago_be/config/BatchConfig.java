@@ -5,19 +5,26 @@ import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.exception.ErrorCode;
 import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.exchangeRate.CurrencyCountryMapping;
+import Gabojago.gabojago_be.exchangeRate.ExchangeRateRepository;
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateService;
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateTempRepository;
 import Gabojago.gabojago_be.trip.TripRepository;
 import Gabojago.gabojago_be.trip.TripService;
 import Gabojago.gabojago_be.trip.TripUtilService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -33,7 +40,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 @Configuration
-@RequiredArgsConstructor
 @EnableBatchProcessing
 @Slf4j
 public class BatchConfig {
@@ -43,6 +49,14 @@ public class BatchConfig {
     private final ExchangeRateTempRepository exchangeRateTempRepository;
     private final TripRepository tripRepository;
     private final JobRepository jobRepository;
+
+    public BatchConfig(final ExchangeRateService exchangeRateService, ExchangeRateTempRepository exchangeRateTempRepository,
+                       TripRepository tripRepository, JobRepository jobRepository) {
+        this.exchangeRateService = exchangeRateService;
+        this.exchangeRateTempRepository = exchangeRateTempRepository;
+        this.tripRepository = tripRepository;
+        this.jobRepository = jobRepository;
+    }
 
     @Bean
     public ItemReader<Map.Entry<String, Object>> exchangeRateReader() {
@@ -105,7 +119,7 @@ public class BatchConfig {
                                  ItemProcessor<Map.Entry<String, Object>, ExchangeRateTemp> processor,
                                  ItemWriter<ExchangeRateTemp> writer) {
         return new StepBuilder("exchangeRateStep", jobRepository)
-                .<Map.Entry<String, Object>, ExchangeRateTemp>chunk(10, transactionManager)
+                .<Map.Entry<String, Object>, ExchangeRateTemp>chunk(100, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -129,60 +143,56 @@ public class BatchConfig {
 
             @Override
             public Trip read() {
-                // 현재 리스트에서 데이터를 읽음
                 if (currentIndex < currentTrips.size()) {
                     return currentTrips.get(currentIndex++);
                 }
 
-                // 새로운 페이지 데이터를 로드
                 Pageable pageable = PageRequest.of(page, CHUNK_SIZE);
                 currentTrips = tripRepository.findAll(pageable).getContent();
                 currentIndex = 0;
                 page++;
 
-                // 데이터가 더 이상 없으면 null 반환
                 if (currentTrips.isEmpty()) {
                     return null;
                 }
 
+                log.info("Loaded {} trips for page {}", currentTrips.size(), page - 1);
                 return currentTrips.get(currentIndex++);
             }
         };
     }
 
-
     @Bean
+    @StepScope
     public ItemProcessor<Trip, Trip> tripProcessor(TripUtilService tripUtilService) {
         return trip -> {
             try {
+                int oldStatus = trip.getTripStatus();
                 int newStatus = tripUtilService.calculateTripStatus(trip.getStartPeriod(), trip.getEndPeriod());
                 trip.setTripStatus(newStatus);
-                log.info("처리된 Trip 데이터 상태: {}", trip.getTripStatus());
+                log.info("Trip ID: {}, Old Status: {}, New Status: {}",
+                        trip.getTripId(), oldStatus, trip.getTripStatus());
                 return trip;
             } catch (Exception e) {
-                log.error("Trip 상태 계산 중 오류 발생: {}", trip, e);
-                throw e;
+                log.error("Error processing Trip ID: {}", trip.getTripId(), e);
+                return trip;
             }
         };
     }
-
 
     @Bean
-    public ItemWriter<Trip> tripWriter(TripService tripService) {
-        return trips -> {
-            for (Trip trip : trips) {
-                log.info("tripID : {} / tripStatus : {}", trip.getTripId(), trip.getTripStatus());
-                tripService.saveTrips(trip);
-            }
-
-            if (trips.isEmpty()) {
-                log.warn("저장할 Trip 데이터가 비어 있습니다.");
+    @Transactional
+    public ItemWriter<Trip> tripWriter() {
+        return chunk -> {
+            if (chunk.isEmpty()) {
+                log.warn("청크에 값이 존재하지 않습니다.");
                 return;
             }
-            log.info("{}개의 Trip 데이터를 저장했습니다.", trips.size());
+            List<Trip> trips = (List<Trip>) chunk.getItems();
+            tripRepository.saveAll(trips);
+            log.info("저장한 Trip 수 : {}", trips.size());
         };
     }
-
 
     @Bean
     public Step tripUpdateStep(JobRepository jobRepository,
@@ -195,6 +205,23 @@ public class BatchConfig {
                 .reader(tripReader)
                 .processor(tripProcessor)
                 .writer(tripWriter)
+                .transactionManager(transactionManager)  // 명시적으로 트랜잭션 매니저 설정
+                .listener(new ChunkListener() {
+                    @Override
+                    public void beforeChunk(ChunkContext context) {
+                        log.info("Starting chunk processing 진행중 ...");
+                    }
+
+                    @Override
+                    public void afterChunk(ChunkContext context) {
+                        log.info("Chunk processing 완료");
+                    }
+
+                    @Override
+                    public void afterChunkError(ChunkContext context) {
+                        log.error("chunk processing 중 에러 발생");
+                    }
+                })
                 .build();
     }
 

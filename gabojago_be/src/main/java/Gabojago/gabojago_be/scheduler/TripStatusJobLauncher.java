@@ -1,5 +1,6 @@
 package Gabojago.gabojago_be.scheduler;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.springframework.batch.core.Job;

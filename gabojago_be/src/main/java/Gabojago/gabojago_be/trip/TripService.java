@@ -221,4 +221,9 @@ public class TripService {
         trip.setTripStatus(2);
         tripRepository.save(trip);
     }
+
+    @Transactional
+    public void saveAll(List<Trip> Trip) {
+        tripRepository.saveAll(Trip);
+    }
 }
