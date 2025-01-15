@@ -1,5 +1,7 @@
 package Gabojago.gabojago_be.trip;
+
 import Gabojago.gabojago_be.entity.Trip;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 
 
 import java.util.List;
-
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
     //List<Trip> findByUserIdOrderByStartPeriodAscEndPeriodAsc(Long userId);
@@ -29,5 +30,8 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
                                                      @Param("tripBudget") Integer tripBudget,
                                                      @Param("exchangeTripBudget") Integer exchangeTripBudget);
 
-    Page<Trip> findAll(Pageable pageable);
+//    @Transactional
+//    Page<Trip> findAll(Pageable pageable);
+
+//    void saveAll(List<Trip> trips);
 }
