@@ -30,6 +30,8 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
                                                      @Param("tripBudget") Integer tripBudget,
                                                      @Param("exchangeTripBudget") Integer exchangeTripBudget);
 
-    @Transactional
-    Page<Trip> findAll(Pageable pageable);
+//    @Transactional
+//    Page<Trip> findAll(Pageable pageable);
+
+//    void saveAll(List<Trip> trips);
 }

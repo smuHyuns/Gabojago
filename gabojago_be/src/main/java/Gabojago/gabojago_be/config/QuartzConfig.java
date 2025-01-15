@@ -50,7 +50,7 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(tripUpdateJobDetail)
                 .withIdentity("tripUpdateJobTrigger")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0 * * * * ?")
+                .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0 * * ?")
                         .inTimeZone(krTimeZone()))
                 .build();
     }

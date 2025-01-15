@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 public class TripStatusJobLauncher extends QuartzJobBean {
 
     private final JobLauncher jobLauncher;
-    private final Job tripUpdateJob;
+    private final Job updateTripStatusJob;
 
     public TripStatusJobLauncher(JobLauncher jobLauncher,
-                                 @Qualifier("tripUpdateJob") Job tripUpdateJob) {
+                                 @Qualifier("updateTripStatusJob") Job updateTripStatusJob) {
         this.jobLauncher = jobLauncher;
-        this.tripUpdateJob = tripUpdateJob;
+        this.updateTripStatusJob = updateTripStatusJob;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class TripStatusJobLauncher extends QuartzJobBean {
                     .addLong("timestamp", System.currentTimeMillis())
                     .toJobParameters();
             log.info("Quartz Trigger 실행: tripUpdateJob 시작");
-            jobLauncher.run(tripUpdateJob, jobParameters);
+            jobLauncher.run(updateTripStatusJob, jobParameters);
             log.info("Quartz Trigger 완료: tripUpdateJob 실행 완료");
         } catch (Exception e) {
             log.error("batch Job 실행 실패 : {}", e.getMessage());

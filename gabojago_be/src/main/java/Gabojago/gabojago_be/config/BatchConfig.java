@@ -5,58 +5,70 @@ import Gabojago.gabojago_be.entity.Trip;
 import Gabojago.gabojago_be.exception.ErrorCode;
 import Gabojago.gabojago_be.exception.GabojagoException;
 import Gabojago.gabojago_be.exchangeRate.CurrencyCountryMapping;
-import Gabojago.gabojago_be.exchangeRate.ExchangeRateRepository;
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateService;
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateTempRepository;
 import Gabojago.gabojago_be.trip.TripRepository;
-import Gabojago.gabojago_be.trip.TripService;
-import Gabojago.gabojago_be.trip.TripUtilService;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 
+import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+
 import org.springframework.transaction.PlatformTransactionManager;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
+import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.*;
 
 @Configuration
 @EnableBatchProcessing
 @Slf4j
 public class BatchConfig {
-
-    private static final int CHUNK_SIZE = 100;
+    private final EntityManager entityManager;
+    private final EntityManagerFactory entityManagerFactory;
     private final ExchangeRateService exchangeRateService;
     private final ExchangeRateTempRepository exchangeRateTempRepository;
-    private final TripRepository tripRepository;
-    private final JobRepository jobRepository;
 
-    public BatchConfig(final ExchangeRateService exchangeRateService, ExchangeRateTempRepository exchangeRateTempRepository,
-                       TripRepository tripRepository, JobRepository jobRepository) {
+    private final TripRepository tripRepository;
+
+    public BatchConfig(ExchangeRateService exchangeRateService, ExchangeRateTempRepository exchangeRateTempRepository,
+                       TripRepository tripRepository, EntityManagerFactory entityManagerFactory, EntityManager entityManager) {
         this.exchangeRateService = exchangeRateService;
         this.exchangeRateTempRepository = exchangeRateTempRepository;
         this.tripRepository = tripRepository;
-        this.jobRepository = jobRepository;
+        this.entityManagerFactory = entityManagerFactory;
+        this.entityManager = entityManager;
     }
+
+
+    @Bean
+    public JobRepository jobRepository(DataSource dataSource, PlatformTransactionManager transactionManager) throws Exception {
+        JobRepositoryFactoryBean factoryBean = new JobRepositoryFactoryBean();
+        factoryBean.setDataSource(dataSource);
+        factoryBean.setTransactionManager(transactionManager);
+        factoryBean.setIsolationLevelForCreate("ISOLATION_READ_COMMITTED");
+        factoryBean.setTablePrefix("BATCH_");
+        factoryBean.afterPropertiesSet();
+        return factoryBean.getObject();
+    }
+
 
     @Bean
     public ItemReader<Map.Entry<String, Object>> exchangeRateReader() {
@@ -99,7 +111,6 @@ public class BatchConfig {
     @Bean
     public ItemWriter<ExchangeRateTemp> exchangeRateWriter() {
         return items -> {
-            // 기존 데이터와 비교해 ID 설정 후 저장
             for (ExchangeRateTemp temp : items) {
                 ExchangeRateTemp existingRate = exchangeRateTempRepository.findByCountryAndCurrency(
                         temp.getCountry(), temp.getCurrency()
@@ -134,102 +145,75 @@ public class BatchConfig {
                 .build();
     }
 
+
     @Bean
-    public ItemReader<Trip> tripReader() {
-        return new ItemReader<>() {
-            private int page = 0;
-            private List<Trip> currentTrips = new ArrayList<>();
-            private int currentIndex = 0;
-
-            @Override
-            public Trip read() {
-                if (currentIndex < currentTrips.size()) {
-                    return currentTrips.get(currentIndex++);
-                }
-
-                Pageable pageable = PageRequest.of(page, CHUNK_SIZE);
-                currentTrips = tripRepository.findAll(pageable).getContent();
-                currentIndex = 0;
-                page++;
-
-                if (currentTrips.isEmpty()) {
-                    return null;
-                }
-
-                log.info("Loaded {} trips for page {}", currentTrips.size(), page - 1);
-                return currentTrips.get(currentIndex++);
-            }
-        };
+    public Job updateTripStatusJob(JobRepository jobRepository,
+                                   @Qualifier("updateTripStatusStep") Step updateTripStatusStep) {
+        return new JobBuilder("updateTripStatusJob", jobRepository)
+                .start(updateTripStatusStep)
+                .incrementer(new RunIdIncrementer())
+                .build();
     }
 
-    @Bean
-    @StepScope
-    public ItemProcessor<Trip, Trip> tripProcessor(TripUtilService tripUtilService) {
-        return trip -> {
-            try {
-                int oldStatus = trip.getTripStatus();
-                int newStatus = tripUtilService.calculateTripStatus(trip.getStartPeriod(), trip.getEndPeriod());
-                trip.setTripStatus(newStatus);
-                log.info("Trip ID: {}, Old Status: {}, New Status: {}",
-                        trip.getTripId(), oldStatus, trip.getTripStatus());
-                return trip;
-            } catch (Exception e) {
-                log.error("Error processing Trip ID: {}", trip.getTripId(), e);
-                return trip;
-            }
-        };
-    }
 
     @Bean
-    @Transactional
-    public ItemWriter<Trip> tripWriter() {
-        return chunk -> {
-            if (chunk.isEmpty()) {
-                log.warn("청크에 값이 존재하지 않습니다.");
-                return;
-            }
-            List<Trip> trips = (List<Trip>) chunk.getItems();
-            tripRepository.saveAll(trips);
-            log.info("저장한 Trip 수 : {}", trips.size());
-        };
-    }
-
-    @Bean
-    public Step tripUpdateStep(JobRepository jobRepository,
-                               PlatformTransactionManager transactionManager,
-                               ItemReader<Trip> tripReader,
-                               ItemProcessor<Trip, Trip> tripProcessor,
-                               ItemWriter<Trip> tripWriter) {
-        return new StepBuilder("tripUpdateStep", jobRepository)
-                .<Trip, Trip>chunk(CHUNK_SIZE, transactionManager)
+    public Step updateTripStatusStep(JobRepository jobRepository,
+                                     PlatformTransactionManager transactionManager,
+                                     JpaPagingItemReader<Trip> tripReader,
+                                     ItemProcessor<Trip, Trip> tripProcessor,
+                                     ItemWriter<Trip> tripWriter) {
+        return new StepBuilder("updateTripStatusStep", jobRepository)
+                .<Trip, Trip>chunk(100, transactionManager)
                 .reader(tripReader)
                 .processor(tripProcessor)
                 .writer(tripWriter)
-                .transactionManager(transactionManager)  // 명시적으로 트랜잭션 매니저 설정
-                .listener(new ChunkListener() {
-                    @Override
-                    public void beforeChunk(ChunkContext context) {
-                        log.info("Starting chunk processing 진행중 ...");
-                    }
-
-                    @Override
-                    public void afterChunk(ChunkContext context) {
-                        log.info("Chunk processing 완료");
-                    }
-
-                    @Override
-                    public void afterChunkError(ChunkContext context) {
-                        log.error("chunk processing 중 에러 발생");
-                    }
-                })
                 .build();
+    }
+
+
+    @Bean
+    public JpaPagingItemReader<Trip> tripReader() {
+        JpaPagingItemReader<Trip> reader = new JpaPagingItemReader<>();
+        reader.setQueryString("SELECT t FROM Trip t ORDER BY t.tripId ASC");
+        reader.setEntityManagerFactory(entityManagerFactory);
+        reader.setPageSize(100);
+        return reader;
+    }
+
+
+    @Bean
+    public ItemProcessor<Trip, Trip> tripProcessor(EntityManager entityManager) {
+        return trip -> {
+            LocalDate today = LocalDate.now();
+
+            int newStatus = trip.getEndPeriod().isBefore(today) ? 2 :
+                    (!trip.getStartPeriod().isAfter(today)) ? 1 : 0;
+
+            if (trip.getTripStatus() != newStatus) {
+                log.info("Trip ID {}: Status updated from {} to {}", trip.getTripId(), trip.getTripStatus(), newStatus);
+                trip.setTripStatus(newStatus);
+                return entityManager.merge(trip);
+            }
+            return null;
+        };
     }
 
     @Bean
-    public Job tripUpdateJob(JobRepository jobRepository, @Qualifier("tripUpdateStep") Step tripUpdateStep) {
-        return new JobBuilder("tripUpdateJob", jobRepository)
-                .start(tripUpdateStep)
-                .build();
+    public ItemWriter<Trip> tripWriter(EntityManagerFactory entityManagerFactory) {
+        return items -> {
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+            try {
+                for (Trip trip : items) {
+                    entityManager.merge(trip);
+                }
+                entityManager.getTransaction().commit();
+            } catch (Exception e) {
+                entityManager.getTransaction().rollback();
+                throw e;
+            } finally {
+                entityManager.close();
+            }
+        };
     }
-
 }
