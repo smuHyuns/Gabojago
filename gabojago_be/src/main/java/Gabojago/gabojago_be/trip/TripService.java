@@ -207,4 +207,23 @@ public class TripService {
 
         tripRepository.save(trip);
     }
+
+    @Transactional
+    public void saveTrips(Trip paraTrip) {
+        Trip trip = tripRepository.findByTripId(paraTrip.getTripId());
+        trip.setTripStatus(paraTrip.getTripStatus());
+        tripRepository.save(trip);
+    }
+
+    @Transactional
+    public void test(long tripId) {
+        Trip trip = tripRepository.findByTripId(tripId);
+        trip.setTripStatus(2);
+        tripRepository.save(trip);
+    }
+
+    @Transactional
+    public void saveAll(List<Trip> Trip) {
+        tripRepository.saveAll(Trip);
+    }
 }

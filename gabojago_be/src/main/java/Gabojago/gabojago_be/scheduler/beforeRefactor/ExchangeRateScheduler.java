@@ -1,4 +1,4 @@
-package Gabojago.gabojago_be.scheduler;
+package Gabojago.gabojago_be.scheduler.beforeRefactor;
 
 import Gabojago.gabojago_be.exchangeRate.ExchangeRateService;
 import lombok.RequiredArgsConstructor;
