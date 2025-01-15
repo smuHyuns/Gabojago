@@ -19,7 +19,7 @@
 #### 주소 : https://gabojago.vercel.app/
 
 #### 시스템 아키텍쳐
-![아키텍쳐-개정판](https://github.com/user-attachments/assets/0786d577-ef22-43a5-a6fe-049ad7f903d8)
+![아키텍쳐-개정판](https://github.com/user-attachments/assets/a2c635c2-4467-4f16-9681-a7ba7411e87c)
 
 #### ERD
 <img src="https://github.com/user-attachments/assets/7966e2a3-052f-4bf8-ada0-23fc60c86aac"/>
@@ -78,6 +78,8 @@
   ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat&logo=springboot&logoColor=white)
   ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat&logo=springsecurity&logoColor=white)
   ![Spring_Data_Jpa](https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=flat-square&logo=springJpa&logoColor=white)
+  ![Spring_Batch](https://img.shields.io/badge/Spring_Batch-6DB33F?style=flat-square&logo=Spring_Batch&logoColor=white)
+  ![Quartz](https://img.shields.io/badge/Quartz-4479A1?style=flat-square&logo=Quartz&logoColor=white)
   ![Amazon S3](https://img.shields.io/badge/Amazon_S3-569A31?style=flat&logo=amazons3&logoColor=white)
   ![Amazon Ec2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=flat&logo=amazonec2&logoColor=white)
   ![Amazon Rds](https://img.shields.io/badge/Amazon_RDS-527FFF?style=flat&logo=amazonrds&logoColor=white)<br>
