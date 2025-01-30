@@ -65,8 +65,8 @@ public class TripController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/test/{tripId}")
-    public void test(@PathVariable("tripId") Long tripId) {
-        tripService.test(tripId);
+    @PostMapping("/create-mock")
+    public void test() {
+        tripService.createMockData();
     }
 }

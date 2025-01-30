@@ -15,17 +15,22 @@ import Gabojago.gabojago_be.jwt.JwtUtil;
 import Gabojago.gabojago_be.transaction.TransactionService;
 import Gabojago.gabojago_be.user.UserService;
 
-import jakarta.transaction.Transactional;
+
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -40,6 +45,8 @@ public class TripService {
     private final TripUtilService tripUtilService;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final EntityManager entityManager;
+    private final TransactionTemplate transactionTemplate; // 트랜잭션 강제 적용
 
 
     public String getCountry(long tripId) {
@@ -148,27 +155,31 @@ public class TripService {
         return new ResponseTripSaveDto(savedTrip.getTripId());
     }
 
-    @Transactional
     public void updateTripStatus() {
-        int page = 0;
-        int size = 100;
         int totalUpdatedCount = 0;
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
 
-        Page<Trip> tripPage;
+        List<Trip> trips = tripRepository.findAll();
 
-        do {
-            Pageable pageable = PageRequest.of(page, size);
-            tripPage = tripRepository.findAll(pageable);
-            List<Trip> trips = tripPage.getContent();
+        for (Trip trip : trips) {
+            Integer tripStatus = trip.getTripStatus();
+            Integer correctStatus = 0;
 
-            int updatedCount = updateTrips(trips);
-            totalUpdatedCount += updatedCount;
+            if (trip.getStartPeriod().isBefore(today)) {
+                correctStatus = 2;
+            } else if (!trip.getEndPeriod().isAfter(today)) {
+                correctStatus = 1;
+            }
 
-            page++;
-        } while (!tripPage.isLast());
-
+            if (!Objects.equals(tripStatus, correctStatus)) {
+                trip.setTripStatus(correctStatus);
+                totalUpdatedCount++;
+            }
+        }
+        tripRepository.saveAll(trips);
         log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
     }
+
 
     public int updateTrips(List<Trip> trips) {
         int updatedCount = 0;
@@ -225,5 +236,33 @@ public class TripService {
     @Transactional
     public void saveAll(List<Trip> Trip) {
         tripRepository.saveAll(Trip);
+    }
+
+    @Transactional
+    public void createMockData() {
+        log.info("출발~");
+        List<Trip> trips = new ArrayList<>();
+        Optional<User> user = userService.getUserByUserId(2L);
+        try {
+            for (int i = 0; i < 10; i++) {
+                Trip trip = Trip.builder()
+                        .user(user.get())
+                        .tripCountry("테스트")
+                        .tripStatus(-1)
+                        .tripBudget(0)
+                        .tripExchangeBudget(0)
+                        .description("")
+                        .headcount(0)
+                        .startPeriod(LocalDate.parse("2024-01-01"))
+                        .endPeriod(LocalDate.parse("2024-01-02"))
+                        .build();
+
+                trips.add(trip);
+            }
+            tripRepository.saveAll(trips);
+        } catch (Exception e) {
+            log.info("추가 중 에러 발생");
+            log.info("에러메시지 : {}", e.getMessage());
+        }
     }
 }
