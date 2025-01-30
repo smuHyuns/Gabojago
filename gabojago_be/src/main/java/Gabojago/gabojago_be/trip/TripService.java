@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 
 
 import java.time.LocalDate;
@@ -46,7 +45,6 @@ public class TripService {
     private final JwtUtil jwtUtil;
     private final UserService userService;
     private final EntityManager entityManager;
-    private final TransactionTemplate transactionTemplate; // 트랜잭션 강제 적용
 
 
     public String getCountry(long tripId) {
@@ -155,6 +153,7 @@ public class TripService {
         return new ResponseTripSaveDto(savedTrip.getTripId());
     }
 
+    @Transactional
     public void updateTripStatus() {
         int totalUpdatedCount = 0;
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
@@ -176,6 +175,7 @@ public class TripService {
                 totalUpdatedCount++;
             }
         }
+
         tripRepository.saveAll(trips);
         log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
     }

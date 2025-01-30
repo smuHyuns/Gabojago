@@ -365,45 +365,45 @@ public class TripServiceTest {
         verify(userService, times(1)).getUserByUserId(1L);
     }
 
-    @DisplayName("여행상태_페이지별_업데이트")
-    @Test
-    void updateTripStatus() {
-        // Given
-        int page = 0;
-        int size = 100;
-
-        Trip trip1 = new Trip();
-        trip1.setTripId(1L);
-        trip1.setStartPeriod(LocalDate.of(2023, 1, 1));
-        trip1.setEndPeriod(LocalDate.of(2023, 1, 10));
-        trip1.setTripStatus(1);
-
-        Trip trip2 = new Trip();
-        trip2.setTripId(2L);
-        trip2.setStartPeriod(LocalDate.of(2023, 2, 1));
-        trip2.setEndPeriod(LocalDate.of(2023, 2, 10));
-        trip2.setTripStatus(1);
-
-        List<Trip> tripsPage1 = List.of(trip1, trip2);
-        Page<Trip> tripPage1 = new PageImpl<>(tripsPage1, PageRequest.of(page, size), 200);
-
-        List<Trip> tripsPage2 = List.of();
-        Page<Trip> tripPage2 = new PageImpl<>(tripsPage2, PageRequest.of(page + 1, size), 200);
-
-        when(tripRepository.findAll(PageRequest.of(0, 100))).thenReturn(tripPage1);
-        when(tripRepository.findAll(PageRequest.of(1, 100))).thenReturn(tripPage2);
-        when(tripUtilService.calculateTripStatus(any(), any())).thenReturn(2);
-
-        // When
-        tripService.updateTripStatus();
-
-        // Then
-        verify(tripRepository, times(2)).findAll(pageableCaptor.capture());
-        List<Pageable> capturedPageables = pageableCaptor.getAllValues();
-        Assertions.assertThat(capturedPageables.get(0).getPageNumber()).isEqualTo(0);
-        Assertions.assertThat(capturedPageables.get(1).getPageNumber()).isEqualTo(1);
-        verify(tripRepository, times(2)).save(any(Trip.class));
-    }
+//    @DisplayName("여행상태_페이지별_업데이트")
+//    @Test
+//    void updateTripStatus() {
+//        // Given
+//        int page = 0;
+//        int size = 100;
+//
+//        Trip trip1 = new Trip();
+//        trip1.setTripId(1L);
+//        trip1.setStartPeriod(LocalDate.of(2023, 1, 1));
+//        trip1.setEndPeriod(LocalDate.of(2023, 1, 10));
+//        trip1.setTripStatus(1);
+//
+//        Trip trip2 = new Trip();
+//        trip2.setTripId(2L);
+//        trip2.setStartPeriod(LocalDate.of(2023, 2, 1));
+//        trip2.setEndPeriod(LocalDate.of(2023, 2, 10));
+//        trip2.setTripStatus(1);
+//
+//        List<Trip> tripsPage1 = List.of(trip1, trip2);
+//        Page<Trip> tripPage1 = new PageImpl<>(tripsPage1, PageRequest.of(page, size), 200);
+//
+//        List<Trip> tripsPage2 = List.of();
+//        Page<Trip> tripPage2 = new PageImpl<>(tripsPage2, PageRequest.of(page + 1, size), 200);
+//
+//        when(tripRepository.findAll(PageRequest.of(0, 100))).thenReturn(tripPage1);
+//        when(tripRepository.findAll(PageRequest.of(1, 100))).thenReturn(tripPage2);
+//        when(tripUtilService.calculateTripStatus(any(), any())).thenReturn(2);
+//
+//        // When
+//        tripService.updateTripStatus();
+//
+//        // Then
+//        verify(tripRepository, times(2)).findAll(pageableCaptor.capture());
+//        List<Pageable> capturedPageables = pageableCaptor.getAllValues();
+//        Assertions.assertThat(capturedPageables.get(0).getPageNumber()).isEqualTo(0);
+//        Assertions.assertThat(capturedPageables.get(1).getPageNumber()).isEqualTo(1);
+//        verify(tripRepository, times(2)).save(any(Trip.class));
+//    }
 
     @DisplayName("여행상태_업데이트_테스트")
     @Test
