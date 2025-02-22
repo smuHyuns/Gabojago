@@ -22,15 +22,19 @@ public class TripStatusScheduler {
 
     private final TripService tripService;
 
-    @Scheduled(cron = "0 * * * * ?", zone = "Asia/Seoul")
-    private void updatedTripStatus() {
-        try {
-            log.info("TripStatus 업데이트 시작");
-            tripService.updateTripStatus();
-            log.info("TripStatus 업데이트 작업 완료");
-        } catch (Exception e) {
-            log.error("TripStatus 업데이트 작업 중 오류 발생: {}", e.getMessage());
-        }
-    }
-
+//    @Scheduled(cron = "0 14 * * * ?", zone = "Asia/Seoul") // 매 분 0초에 실행
+//    private void updatedTripStatus() {
+//        long startTime = System.nanoTime(); // ⏳ 시작 시간 측정
+//        try {
+//            log.info("🚀 TripStatus 업데이트 시작...");
+//            tripService.updateTripStatus();
+//            log.info("✅ TripStatus 업데이트 완료!");
+//        } catch (Exception e) {
+//            log.error("❌ TripStatus 업데이트 중 오류 발생: {}", e.getMessage(), e);
+//        }
+//
+//        long endTime = System.nanoTime(); // 🕒 종료 시간 측정
+//        long elapsedTimeMs = (endTime - startTime) / 1_000_000; // 밀리초(ms) 단위 변환
+//        log.info("🕒 TripStatus 업데이트 총 실행 시간: {}ms ({}초)", elapsedTimeMs, elapsedTimeMs / 1000.0);
+//    }
 }

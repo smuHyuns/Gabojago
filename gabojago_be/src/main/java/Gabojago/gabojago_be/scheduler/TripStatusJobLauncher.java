@@ -27,12 +27,18 @@ public class TripStatusJobLauncher extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
         try {
+            long startTime = System.nanoTime(); // ⏳ 시작 시간 측정
+
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("timestamp", System.currentTimeMillis())
                     .toJobParameters();
             log.info("Quartz Trigger 실행: tripUpdateJob 시작");
             jobLauncher.run(updateTripStatusJob, jobParameters);
             log.info("Quartz Trigger 완료: tripUpdateJob 실행 완료");
+
+            long endTime = System.nanoTime(); // 🕒 종료 시간 측정
+            long elapsedTimeMs = (endTime - startTime) / 1_000_000; // 밀리초(ms) 단위 변환
+            log.info("🕒 TripStatus 업데이트 총 실행 시간: {}ms ({}초)", elapsedTimeMs, elapsedTimeMs / 1000.0);
         } catch (Exception e) {
             log.error("batch Job 실행 실패 : {}", e.getMessage());
         }

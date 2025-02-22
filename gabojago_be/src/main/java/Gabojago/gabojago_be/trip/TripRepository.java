@@ -2,12 +2,14 @@ package Gabojago.gabojago_be.trip;
 
 import Gabojago.gabojago_be.entity.Trip;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TripRepository extends JpaRepository<Trip, Long> {
@@ -32,4 +34,18 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 //    Page<Trip> findAll(Pageable pageable);
 
 //    void saveAll(List<Trip> trips);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Trip t SET t.tripStatus = " +
+            "CASE " +
+            "WHEN t.startPeriod < :today THEN 2 " +
+            "WHEN t.endPeriod < :today THEN 1 " +
+            "ELSE t.tripStatus END " +
+            "WHERE t.tripStatus != CASE " +
+            "WHEN t.startPeriod < :today THEN 2 " +
+            "WHEN t.endPeriod < :today THEN 1 " +
+            "ELSE t.tripStatus END")
+    int bulkUpdateTripStatus(@Param("today") LocalDate today);
+
 }

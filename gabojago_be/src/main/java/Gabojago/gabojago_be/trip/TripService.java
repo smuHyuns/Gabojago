@@ -17,6 +17,7 @@ import Gabojago.gabojago_be.user.UserService;
 
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -44,6 +42,8 @@ public class TripService {
     private final TripUtilService tripUtilService;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+
+    @PersistenceContext
     private final EntityManager entityManager;
 
 
@@ -153,31 +153,38 @@ public class TripService {
         return new ResponseTripSaveDto(savedTrip.getTripId());
     }
 
+//    @Transactional
+//    public void updateTripStatus() {
+//        int totalUpdatedCount = 0;
+//        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+//
+//        List<Trip> trips = tripRepository.findAll();
+//
+//        for (Trip trip : trips) {
+//            Integer tripStatus = trip.getTripStatus();
+//            Integer correctStatus = 0;
+//
+//            if (trip.getStartPeriod().isBefore(today)) {
+//                correctStatus = 2;
+//            } else if (!trip.getEndPeriod().isAfter(today)) {
+//                correctStatus = 1;
+//            }
+//
+//            if (!Objects.equals(tripStatus, correctStatus)) {
+//                trip.setTripStatus(correctStatus);
+//                totalUpdatedCount++;
+//            }
+//        }
+//
+//        tripRepository.saveAll(trips);
+//        log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
+//    }
+
     @Transactional
     public void updateTripStatus() {
-        int totalUpdatedCount = 0;
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
-
-        List<Trip> trips = tripRepository.findAll();
-
-        for (Trip trip : trips) {
-            Integer tripStatus = trip.getTripStatus();
-            Integer correctStatus = 0;
-
-            if (trip.getStartPeriod().isBefore(today)) {
-                correctStatus = 2;
-            } else if (!trip.getEndPeriod().isAfter(today)) {
-                correctStatus = 1;
-            }
-
-            if (!Objects.equals(tripStatus, correctStatus)) {
-                trip.setTripStatus(correctStatus);
-                totalUpdatedCount++;
-            }
-        }
-
-        tripRepository.saveAll(trips);
-        log.info("총 {}개의 TripStatus가 업데이트되었습니다.", totalUpdatedCount);
+        int updatedCount = tripRepository.bulkUpdateTripStatus(today);
+        log.info("총 {}개의 TripStatus가 업데이트되었습니다.", updatedCount);
     }
 
 
@@ -238,31 +245,64 @@ public class TripService {
         tripRepository.saveAll(Trip);
     }
 
+//    @Transactional
+//    public void createMockData() {
+//        log.info("출발~");
+//        List<Trip> trips = new ArrayList<>();
+//        Optional<User> user = userService.getUserByUserId(2L);
+//        try {
+//            for (int i = 0; i < 10_000_000; i++) {
+//                Trip trip = Trip.builder()
+//                        .user(user.get())
+//                        .tripCountry("테스트")
+//                        .tripStatus(-1)
+//                        .tripBudget(0)
+//                        .tripExchangeBudget(0)
+//                        .description("")
+//                        .headcount(0)
+//                        .startPeriod(LocalDate.parse("2024-01-01"))
+//                        .endPeriod(LocalDate.parse("2024-01-02"))
+//                        .build();
+//
+//                trips.add(trip);
+//            }
+//            tripRepository.saveAll(trips);
+//        } catch (Exception e) {
+//            log.info("추가 중 에러 발생");
+//            log.info("에러메시지 : {}", e.getMessage());
+//        }
+//    }
+
     @Transactional
     public void createMockData() {
         log.info("출발~");
-        List<Trip> trips = new ArrayList<>();
         Optional<User> user = userService.getUserByUserId(2L);
-        try {
-            for (int i = 0; i < 10; i++) {
-                Trip trip = Trip.builder()
-                        .user(user.get())
-                        .tripCountry("테스트")
-                        .tripStatus(-1)
-                        .tripBudget(0)
-                        .tripExchangeBudget(0)
-                        .description("")
-                        .headcount(0)
-                        .startPeriod(LocalDate.parse("2024-01-01"))
-                        .endPeriod(LocalDate.parse("2024-01-02"))
-                        .build();
-
-                trips.add(trip);
-            }
-            tripRepository.saveAll(trips);
-        } catch (Exception e) {
-            log.info("추가 중 에러 발생");
-            log.info("에러메시지 : {}", e.getMessage());
+        if (user.isEmpty()) {
+            log.info("유저를 찾을 수 없음");
+            return;
         }
+
+        String sql = "INSERT INTO trip (user_id, trip_country, trip_status, trip_budget, trip_exchange_budget, " +
+                "description, headcount, start_period, end_period) VALUES ";
+
+        List<String> valueList = new ArrayList<>();
+        for (int i = 0; i < 1_000_000; i++) {
+            valueList.add("(" + user.get().getUserId() + ", '테스트', -1, 0, 0, '', 0, '2024-01-01', '2024-01-02')");
+
+            // 1000개씩 배치 실행
+            if (i % 1000 == 0) {
+                entityManager.createNativeQuery(sql + String.join(",", valueList)).executeUpdate();
+                valueList.clear();
+            }
+        }
+
+        // 마지막 남은 데이터 실행
+        if (!valueList.isEmpty()) {
+            entityManager.createNativeQuery(sql + String.join(",", valueList)).executeUpdate();
+        }
+
+        log.info("Bulk Insert 완료!");
     }
+
 }
+
